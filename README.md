@@ -1,2 +1,2 @@
-# metodo-paco
-Panel personal de inversion metodo paco 
+# metodo-paco-bit
+Panel personal de inversion metodo paco bit
