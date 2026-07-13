@@ -1,1 +1,1 @@
-2
+console.log("Método Paco iniciado");
