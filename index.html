@@ -1,45 +1,256 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Método Paco</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Método Paco</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-    <h1>📊 MÉTODO PACO</h1>
-    <p>Centro personal de inversión</p>
+<header class="header">
+    <h1>📈 Método Paco</h1>
+    <p>Centro de inversión personal</p>
 </header>
 
-<div class="contenedor">
 
-    <div class="tarjeta">
-        <h2>₿ Método Paco Bit</h2>
-        <p>Bitcoin y Metales</p>
+<main class="container">
+
+<section class="dashboard">
+
+    <div class="card" onclick="abrirModulo('cartera')">
+        <div class="icon">💼</div>
+        <h2>Método Paco</h2>
+        <p>Gestión de cartera e inversiones</p>
     </div>
 
-    <div class="tarjeta">
-        <h2>📈 Método Paco</h2>
-        <p>Cartera de acciones y ETFs</p>
+
+    <div class="card" onclick="abrirModulo('bitcoin')">
+        <div class="icon">₿</div>
+        <h2>Método Paco Bit</h2>
+        <p>Bitcoin, oro y plata</p>
     </div>
 
-    <div class="tarjeta">
-        <h2>👧 Método Nere</h2>
+
+    <div class="card" onclick="abrirModulo('nere')">
+        <div class="icon">👧</div>
+        <h2>Método Nere</h2>
         <p>Inversión a largo plazo</p>
     </div>
 
-    <div class="tarjeta">
-        <h2>🌍 Radar de Gangas</h2>
-        <p>Mejores oportunidades</p>
+
+    <div class="card" onclick="abrirModulo('radar')">
+        <div class="icon">🌍</div>
+        <h2>Radar de Gangas</h2>
+        <p>Oportunidades del mercado</p>
     </div>
 
+
+    <div class="card" onclick="abrirModulo('watchlist')">
+        <div class="icon">⭐</div>
+        <h2>Lista vigilancia</h2>
+        <p>Empresas bajo seguimiento</p>
+    </div>
+
+</section>
+
+
+<section id="content" class="content">
+
+<h2>Bienvenido a Método Paco</h2>
+
+<p>
+Tu centro personal de análisis, seguimiento e inversión.
+</p>
+
+</section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+<button onclick="inicio()">
+🏠
+<span>Inicio</span>
+</button>
+
+<button onclick="abrirModulo('cartera')">
+📊
+<span>Cartera</span>
+</button>
+
+<button onclick="abrirModulo('watchlist')">
+⭐
+<span>Vigilancia</span>
+</button>
+
+<button>
+⚙️
+<span>Ajustes</span>
+</button>
+
+</nav>
+<section id="cartera" class="module hidden">
+
+    <h2>💼 Método Paco</h2>
+
+    <div class="module-box">
+
+        <h3>Mi cartera</h3>
+
+        <button class="primary-btn" onclick="mostrarFormulario()">
+            ➕ Añadir activo
+        </button>
+
+
+        <div id="formularioActivo" class="hidden">
+
+            <input 
+            id="nombreActivo" 
+            type="text" 
+            placeholder="Nombre del activo">
+
+
+            <input 
+            id="tickerActivo" 
+            type="text" 
+            placeholder="Ticker">
+
+
+            <input 
+            id="precioCompra" 
+            type="number" 
+            placeholder="Precio compra">
+
+
+            <input 
+            id="participaciones" 
+            type="number" 
+            placeholder="Participaciones">
+
+
+            <button 
+            class="primary-btn" 
+            onclick="guardarActivo()">
+            Guardar
+            </button>
+
+        </div>
+
+
+        <div id="listaActivos">
+
+        </div>
+
+
+        <div class="summary">
+
+            <p>
+            💰 Total invertido:
+            <strong id="totalInvertido">0 €</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section id="bitcoin" class="module hidden">
+
+<h2>₿ Método Paco Bit</h2>
+
+<div class="module-box">
+
+<p>
+Bitcoin, oro y plata.
+</p>
+
+<p>
+Próximamente:
+</p>
+
+<ul>
+<li>Precio actual</li>
+<li>Análisis semanal</li>
+<li>Alertas</li>
+<li>Watchlist</li>
+</ul>
+
 </div>
+
+</section>
+
+
+
+<section id="nere" class="module hidden">
+
+<h2>👧 Método Nere</h2>
+
+<div class="module-box">
+
+<p>
+Plan de inversión a largo plazo.
+</p>
+
+<ul>
+<li>Aportaciones mensuales</li>
+<li>Simulación futura</li>
+<li>Objetivos</li>
+</ul>
+
+</div>
+
+</section>
+
+
+
+<section id="radar" class="module hidden">
+
+<h2>🌍 Radar de Gangas</h2>
+
+<div class="module-box">
+
+<p>
+Empresas de calidad con posibles descuentos.
+</p>
+
+</div>
+
+</section>
+<section id="watchlist" class="module hidden">
+
+<h2>⭐ Lista de vigilancia</h2>
+
+<div class="module-box">
+
+<p>
+Empresas y activos en seguimiento.
+</p>
+
+<ul>
+<li>Broadcom</li>
+<li>Novo Nordisk</li>
+<li>Nike</li>
+<li>Vanguard FTSE All-World</li>
+</ul>
+
+</div>
+
+</section>
+
+
+</main>
+
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
