@@ -4,6 +4,7 @@
 // ==========================
 
 let cartera = JSON.parse(localStorage.getItem("cartera")) || [];
+let indiceEditar = -1;
 
 function ocultarTodo() {
     document.getElementById("inicio").classList.add("oculto");
