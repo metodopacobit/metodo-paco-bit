@@ -54,15 +54,15 @@ if (indiceEditar === -1) {
     indiceEditar = -1;
 }
 
-    guardarDatos();
+guardarDatos();
 
-    document.getElementById("nombre").value = "";
-    document.getElementById("ticker").value = "";
-    document.getElementById("precio").value = "";
-    document.getElementById("actual").value = "";
-    document.getElementById("cantidad").value = "";
+document.getElementById("nombre").value = "";
+document.getElementById("ticker").value = "";
+document.getElementById("precio").value = "";
+document.getElementById("actual").value = "";
+document.getElementById("cantidad").value = "";
 
-    pintarCartera();
+pintarCartera();
 }
 
 function eliminarActivo(indice) {
