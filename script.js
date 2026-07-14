@@ -10,19 +10,13 @@ let indiceEditar = -1;
 // ==========================
 
 function ocultarTodo() {
-    document.querySelectorAll(".pantalla").forEach(p => {
-        p.classList.add("oculto");
-    });
+    document.getElementById("inicio").classList.add("oculto");
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.add("oculto"));
 }
 
 function mostrar(id) {
     ocultarTodo();
-
-    const pantalla = document.getElementById(id);
-
-    if (pantalla) {
-        pantalla.classList.remove("oculto");
-    }
+    document.getElementById(id).classList.remove("oculto");
 
     if (id === "cartera") {
         pintarCartera();
@@ -30,7 +24,7 @@ function mostrar(id) {
 }
 
 function volver() {
-    ocultarTodo();
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.add("oculto"));
     document.getElementById("inicio").classList.remove("oculto");
 }
 
@@ -43,31 +37,18 @@ function guardarDatos() {
 }
 
 // ==========================
-// GUARDAR ACTIVO
+// AÑADIR / EDITAR
 // ==========================
 
 function guardarActivo() {
 
     const nombre = document.getElementById("nombre").value.trim();
-
-    const ticker = document
-        .getElementById("ticker")
-        .value
-        .trim()
-        .toUpperCase();
-
+    const ticker = document.getElementById("ticker").value.trim();
     const precio = parseFloat(document.getElementById("precio").value);
-
     const actual = parseFloat(document.getElementById("actual").value);
-
     const cantidad = parseFloat(document.getElementById("cantidad").value);
 
-    if (
-        nombre === "" ||
-        isNaN(precio) ||
-        isNaN(actual) ||
-        isNaN(cantidad)
-    ) {
+    if (!nombre || isNaN(precio) || isNaN(actual) || isNaN(cantidad)) {
         alert("Completa todos los campos.");
         return;
     }
@@ -97,11 +78,19 @@ function guardarActivo() {
 
     pintarCartera();
 }
-// ==========================
-// EDITAR
-// ==========================
 
-function editarActivo(indice) {
+function eliminarActivo(indice){
+
+    if(!confirm("¿Eliminar este activo?")) return;
+
+    cartera.splice(indice,1);
+
+    guardarDatos();
+
+    pintarCartera();
+}
+
+function editarActivo(indice){
 
     const activo = cartera[indice];
 
@@ -113,36 +102,18 @@ function editarActivo(indice) {
 
     indiceEditar = indice;
 }
-
-// ==========================
-// ELIMINAR
-// ==========================
-
-function eliminarActivo(indice) {
-
-    if (!confirm("¿Eliminar este activo?")) {
-        return;
-    }
-
-    cartera.splice(indice, 1);
-
-    guardarDatos();
-
-    pintarCartera();
-}
-
 // ==========================
 // RESUMEN
 // ==========================
 
-function pintarResumen(totalInvertido, totalActual) {
+function pintarResumen(totalInvertido, totalActual){
 
     const beneficio = totalActual - totalInvertido;
 
     const porcentaje =
         totalInvertido > 0
-            ? (beneficio / totalInvertido) * 100
-            : 0;
+        ? (beneficio / totalInvertido) * 100
+        : 0;
 
     document.getElementById("numActivos").textContent = cartera.length;
 
@@ -153,87 +124,89 @@ function pintarResumen(totalInvertido, totalActual) {
         totalActual.toFixed(2) + " €";
 
     document.getElementById("rentabilidad").textContent =
-        beneficio.toFixed(2) + " € (" + porcentaje.toFixed(2) + "%)";
+        `${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)`;
 }
+
 // ==========================
 // PINTAR CARTERA
 // ==========================
 
-function pintarCartera() {
+function pintarCartera(){
 
     const lista = document.getElementById("lista");
 
-    if (!lista) return;
+    if(!lista) return;
 
     lista.innerHTML = "";
 
     let totalInvertido = 0;
     let totalActual = 0;
 
-    cartera.forEach((activo, indice) => {
+    cartera.forEach(function(activo,indice){
 
         const invertido = activo.precio * activo.cantidad;
         const valorActual = activo.actual * activo.cantidad;
+
         const beneficio = valorActual - invertido;
 
         const porcentaje =
             invertido > 0
-                ? (beneficio / invertido) * 100
-                : 0;
+            ? (beneficio / invertido) * 100
+            : 0;
 
         totalInvertido += invertido;
         totalActual += valorActual;
 
-        const color = beneficio >= 0 ? "lime" : "red";
-
         lista.innerHTML += `
-            <div class="activo">
+        <div class="activo">
 
-                <h3>${activo.nombre}</h3>
+            <h3>${activo.nombre}</h3>
 
-                <p><strong>Ticker:</strong> ${activo.ticker}</p>
+            <p><b>Ticker:</b> ${activo.ticker}</p>
 
-                <p><strong>Precio compra:</strong> ${activo.precio.toFixed(2)} €</p>
+            <p><b>Precio compra:</b> ${activo.precio.toFixed(2)} €</p>
 
-                <p><strong>Precio actual:</strong> ${activo.actual.toFixed(2)} €</p>
+            <p><b>Precio actual:</b> ${activo.actual.toFixed(2)} €</p>
 
-                <p><strong>Cantidad:</strong> ${activo.cantidad}</p>
+            <p><b>Participaciones:</b> ${activo.cantidad}</p>
 
-                <p><strong>Invertido:</strong> ${invertido.toFixed(2)} €</p>
+            <p><b>Invertido:</b> ${invertido.toFixed(2)} €</p>
 
-                <p><strong>Valor actual:</strong> ${valorActual.toFixed(2)} €</p>
+            <p><b>Valor actual:</b> ${valorActual.toFixed(2)} €</p>
 
-                <p style="color:${color}">
-                    <strong>Rentabilidad:</strong>
-                    ${beneficio.toFixed(2)} €
-                    (${porcentaje.toFixed(2)}%)
-                </p>
+            <p style="color:${beneficio >= 0 ? 'lime' : 'red'}">
 
-                <button onclick="editarActivo(${indice})">
-                    ✏️ Editar
-                </button>
+                <b>Rentabilidad:</b>
 
-                <button onclick="eliminarActivo(${indice})">
-                    🗑 Eliminar
-                </button>
+                ${beneficio.toFixed(2)} €
 
-            </div>
+                (${porcentaje.toFixed(2)}%)
+
+            </p>
+
+            <button onclick="editarActivo(${indice})">
+                ✏️ Editar
+            </button>
+
+            <button onclick="eliminarActivo(${indice})">
+                🗑 Eliminar
+            </button>
+
+        </div>
         `;
+
     });
 
     pintarResumen(totalInvertido, totalActual);
+
 }
+
 // ==========================
 // INICIO
 // ==========================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",function(){
 
-    // Mostrar pantalla inicial
-    ocultarTodo();
-    document.getElementById("inicio").classList.remove("oculto");
-
-    // Cargar cartera guardada
     pintarCartera();
 
 });
