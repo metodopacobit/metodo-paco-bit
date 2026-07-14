@@ -1,99 +1,90 @@
 /* ==========================
    Método Paco v0.7
-========================== */
+   ========================== */
 
 *{
-    margin:0;
-    padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
-    background:#111827;
-    color:white;
+    margin:0;
+    padding:20px;
+    background:#111;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-.header{
-    background:#1f2937;
+h1,h2,h3{
     text-align:center;
-    padding:20px;
-    border-bottom:2px solid #374151;
 }
 
-.header h1{
-    margin-bottom:5px;
-}
-
-.container{
-    max-width:900px;
+.pantalla{
+    max-width:700px;
     margin:auto;
-    padding:20px;
-}
-
-.card{
-    background:#1f2937;
-    border:1px solid #374151;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:15px;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.card:hover{
-    transform:scale(1.02);
-}
-
-.activo{
-    background:#1f2937;
-    border:1px solid #374151;
-    border-radius:12px;
-    padding:15px;
-    margin-bottom:15px;
-}
-
-.activo h3{
-    margin-bottom:10px;
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin:8px 0;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#1d4ed8;
 }
 
 .oculto{
     display:none;
 }
 
-.pantalla{
-    margin-top:20px;
+.formulario{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
-h2,h3{
-    margin-bottom:15px;
+input{
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
 }
 
-p{
+button{
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#2e7d32;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#388e3c;
+}
+
+.activo{
+    margin:15px 0;
+    padding:15px;
+    border:1px solid #333;
+    border-radius:10px;
+    background:#1c1c1c;
+}
+
+.activo h3{
+    margin-top:0;
+    color:#4caf50;
+}
+
+.activo p{
     margin:6px 0;
+}
+
+hr{
+    border:1px solid #333;
+    margin:20px 0;
+}
+
+@media (max-width:600px){
+
+    body{
+        padding:12px;
+    }
+
+    button,
+    input{
+        width:100%;
+    }
+
 }
