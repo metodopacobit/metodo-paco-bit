@@ -31,6 +31,7 @@ function guardarActivo() {
     const ticker = document.getElementById("ticker").value.trim();
     const precio = parseFloat(document.getElementById("precio").value);
     const cantidad = parseFloat(document.getElementById("cantidad").value);
+    const actual = parseFloat(document.getElementById("actual").value);
 
     if (!nombre || isNaN(precio) || isNaN(cantidad)) {
         alert("Completa todos los campos.");
@@ -41,6 +42,7 @@ function guardarActivo() {
         nombre,
         ticker,
         precio,
+        actual,
         cantidad
     });
 
@@ -49,6 +51,7 @@ function guardarActivo() {
     document.getElementById("nombre").value = "";
     document.getElementById("ticker").value = "";
     document.getElementById("precio").value = "";
+    document.getElementById("actual").value = "";
     document.getElementById("cantidad").value = "";
 
     pintarCartera();
@@ -94,6 +97,10 @@ function pintarCartera(){
 
         const invertido = activo.precio * activo.cantidad;
 
+        const valorActual = activo.actual * activo.cantidad;
+const beneficio = valorActual - invertido;
+const porcentaje = (beneficio / invertido) * 100;
+
         total += invertido;
 
         lista.innerHTML += `
@@ -108,6 +115,18 @@ function pintarCartera(){
             <p><b>Participaciones:</b> ${activo.cantidad}</p>
 
             <p><b>Invertido:</b> ${invertido.toFixed(2)} €</p>
+
+<p><b>Valor actual:</b> ${valorActual.toFixed(2)} €</p>
+
+<p style="color:${beneficio>=0?'lime':'red'}">
+
+<b>Rentabilidad:</b>
+
+${beneficio.toFixed(2)} €
+
+(${porcentaje.toFixed(2)}%)
+
+</p>
 
             <button onclick="eliminarActivo(${indice})">
             🗑 Eliminar
