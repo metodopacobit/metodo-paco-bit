@@ -122,10 +122,10 @@ document.getElementById("totalInvertido").textContent =
 totalInvertido.toFixed(2) + " €";
 
 document.getElementById("valorActual").textContent =
-totalActual.toFixed(2) + " €";
+totalActual.toFixed(2) + " 
 
 document.getElementById("rentabilidad").textContent =
-${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%);
+`${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)`;
 }
 
 // ==========================
@@ -161,17 +161,18 @@ totalActual += valorActual;
 lista.innerHTML += `
 <div class="activo">
 
-<h3>$`{activo.nombre}</h3>
+<h3>${activo.nombre}</h3>
 
 <p><b>Ticker:</b> `${activo.ticker}</p>
 
-<p><b>Precio compra:</b> $`{activo.precio.toFixed(2)} €</p>
+<p><b>Precio compra:</b> ${activo.precio.toFixed(2)} €</p>
 
-<p><b>Precio actual:</b> `${activo.actual.toFixed(2)} €</p>
+<p><b>Precio actual:</b> ${activo.actual.toFixed(2)} €</p>
 
-<p><b>Participaciones:</b> $`{activo.cantidad}</p>
+<p><b>Participaciones:</b> $
+{activo.cantidad}</p>
 
-<p><b>Invertido:</b> `${invertido.toFixed(2)} €</p>
+<p><b>Invertido:</b> ${invertido.toFixed(2)} €</p>
 
 <p><b>Valor actual:</b> $`{valorActual.toFixed(2)} €</p>
 
@@ -179,7 +180,7 @@ lista.innerHTML += `
 (`${porcentaje.toFixed(2)}%)
 </p>
 
-<button onclick="editarActivo($`{indice})">
+<button onclick="editarActivo(${indice})">
 ✏️ Editar
 </button>
 
