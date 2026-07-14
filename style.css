@@ -1,33 +1,33 @@
 /* ==========================
-   Método Paco v0.7
+   MÉTODO PACO v1.0
 ========================== */
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-    background:#111827;
-    color:#ffffff;
+    background:#0f172a;
+    color:#fff;
 }
 
 .header{
-    background:#1f2937;
-    padding:20px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
     text-align:center;
-    border-bottom:2px solid #374151;
+    padding:25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.35);
 }
 
 .header h1{
     font-size:32px;
-    margin-bottom:5px;
 }
 
 .header p{
-    color:#d1d5db;
+    margin-top:6px;
+    color:#dbeafe;
 }
 
 .container{
@@ -36,19 +36,22 @@ body{
     padding:20px;
 }
 
+/* MENÚ */
+
 .card{
-    background:#1f2937;
-    border:1px solid #374151;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:15px;
+    background:#1e293b;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
     cursor:pointer;
     transition:.25s;
+    border:1px solid #334155;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
 }
 
 .card:hover{
-    transform:scale(1.02);
-    border-color:#2563eb;
+    transform:translateY(-4px);
+    border-color:#3b82f6;
 }
 
 .card h2{
@@ -56,113 +59,149 @@ body{
 }
 
 .card p{
-    color:#d1d5db;
+    color:#cbd5e1;
 }
 
-.activo{
-    background:#1f2937;
-    border:1px solid #374151;
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:18px;
-}
+/* PANTALLAS */
 
-.activo h3{
-    margin-bottom:12px;
-}
-
-.activo p{
-    margin:8px 0;
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin:8px 0;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:.2s;
-}
-
-button:hover{
-    background:#1d4ed8;
+.pantalla{
+    animation:fade .25s;
 }
 
 .oculto{
     display:none;
 }
 
-.pantalla{
-    margin-top:20px;
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(10px);
 }
 
-h2{
-    margin-bottom:15px;
+to{
+opacity:1;
+transform:translateY(0);
 }
 
-h3{
-    margin-bottom:12px;
 }
 
-ul{
-    margin-left:20px;
+/* TARJETAS */
+
+.activo{
+    background:#1e293b;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+    border-left:6px solid #3b82f6;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+
+.activo h3{
+    margin-bottom:14px;
+    color:#60a5fa;
+}
+
+.activo p{
+    margin:8px 0;
+    color:#e2e8f0;
+}
+
+/* FORMULARIOS */
+
+input{
+    width:100%;
+    padding:14px;
     margin-top:10px;
+    margin-bottom:10px;
+    border:none;
+    border-radius:12px;
+    background:#334155;
+    color:white;
+    font-size:16px;
 }
 
-li{
-    margin-bottom:8px;
+input::placeholder{
+    color:#94a3b8;
 }
 
-#lista button{
-    margin-top:8px;
-}
-/* ==========================
-   Método Paco v0.8 Diseño
-========================== */
+/* BOTONES */
 
-#cartera .activo:first-of-type{
-    background:#182235;
-    border:2px solid #2563eb;
-}
-
-#cartera .activo:first-of-type p{
-    font-size:17px;
-    padding:8px 0;
-    border-bottom:1px solid #374151;
-}
-
-#cartera .activo:first-of-type p:last-child{
-    border-bottom:none;
-}
-
-#lista .activo{
-    border-left:5px solid #2563eb;
+button{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
     transition:.25s;
 }
 
-#lista .activo:hover{
-    transform:translateY(-2px);
+button:hover{
+    background:#1d4ed8;
 }
+
+/* BOTONES DE CARTERA */
 
 #lista button{
     width:48%;
     display:inline-block;
-    margin-top:12px;
 }
 
-#lista button:first-of-type{
-    margin-right:2%;
+#lista button:last-child{
+    margin-left:4%;
+    background:#dc2626;
+}
+
+#lista button:last-child:hover{
+    background:#b91c1c;
+}
+
+/* LISTA */
+
+ul{
+    margin-left:22px;
+}
+
+li{
+    margin-bottom:10px;
+}
+
+/* RESUMEN */
+
+#cartera .activo:first-child{
+
+background:linear-gradient(135deg,#1e3a8a,#2563eb);
+
+border-left:none;
+
+}
+
+#cartera .activo:first-child h3{
+
+color:white;
+
+}
+
+#cartera .activo:first-child p{
+
+font-size:17px;
+
+font-weight:bold;
+
+margin:12px 0;
+
+}
+
+/* TITULOS */
+
+h2{
+    margin:20px 0 15px;
+}
+
+h3{
+    margin-bottom:12px;
 }
