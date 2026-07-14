@@ -1,16 +1,13 @@
 // ==========================
 // Método Paco
-// Versión 0.4.1
+// Versión 0.5
 // ==========================
 
 let cartera = JSON.parse(localStorage.getItem("cartera")) || [];
 
 function ocultarTodo() {
     document.getElementById("inicio").classList.add("oculto");
-
-    document.querySelectorAll(".pantalla").forEach(function (pantalla) {
-        pantalla.classList.add("oculto");
-    });
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.add("oculto"));
 }
 
 function mostrar(id) {
@@ -20,11 +17,12 @@ function mostrar(id) {
 }
 
 function volver() {
-    document.querySelectorAll(".pantalla").forEach(function (pantalla) {
-        pantalla.classList.add("oculto");
-    });
-
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.add("oculto"));
     document.getElementById("inicio").classList.remove("oculto");
+}
+
+function guardarDatos() {
+    localStorage.setItem("cartera", JSON.stringify(cartera));
 }
 
 function guardarActivo() {
@@ -60,28 +58,39 @@ function eliminarActivo(indice) {
 
     if (!confirm("¿Eliminar este activo?")) return;
 
-    cartera.splice(indice, 1);
+    cartera.splice(indice,1);
 
     guardarDatos();
 
     pintarCartera();
 }
 
-function guardarDatos() {
-    localStorage.setItem("cartera", JSON.stringify(cartera));
+function pintarResumen(totalInvertido){
+
+    document.getElementById("numActivos").textContent = cartera.length;
+
+    document.getElementById("totalInvertido").textContent =
+        totalInvertido.toFixed(2) + " €";
+
+    // De momento usamos el mismo valor.
+    document.getElementById("valorActual").textContent =
+        totalInvertido.toFixed(2) + " €";
+
+    document.getElementById("rentabilidad").textContent =
+        "0.00 € (0%)";
 }
 
-function pintarCartera() {
+function pintarCartera(){
 
     const lista = document.getElementById("lista");
 
-    if (!lista) return;
+    if(!lista) return;
 
-    lista.innerHTML = "";
+    lista.innerHTML="";
 
-    let total = 0;
+    let total=0;
 
-    cartera.forEach(function (activo, indice) {
+    cartera.forEach(function(activo,indice){
 
         const invertido = activo.precio * activo.cantidad;
 
@@ -92,13 +101,13 @@ function pintarCartera() {
 
             <h3>${activo.nombre}</h3>
 
-            <p><strong>Ticker:</strong> ${activo.ticker}</p>
+            <p><b>Ticker:</b> ${activo.ticker}</p>
 
-            <p><strong>Precio compra:</strong> ${activo.precio.toFixed(2)} €</p>
+            <p><b>Precio compra:</b> ${activo.precio.toFixed(2)} €</p>
 
-            <p><strong>Participaciones:</strong> ${activo.cantidad}</p>
+            <p><b>Participaciones:</b> ${activo.cantidad}</p>
 
-            <p><strong>Invertido:</strong> ${invertido.toFixed(2)} €</p>
+            <p><b>Invertido:</b> ${invertido.toFixed(2)} €</p>
 
             <button onclick="eliminarActivo(${indice})">
             🗑 Eliminar
@@ -108,19 +117,12 @@ function pintarCartera() {
         `;
     });
 
-    lista.innerHTML += `
-    <div class="activo">
+    pintarResumen(total);
 
-        <h3>📊 Resumen</h3>
-
-        <p><strong>Activos:</strong> ${cartera.length}</p>
-
-        <p><strong>Total invertido:</strong> ${total.toFixed(2)} €</p>
-
-    </div>
-    `;
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded",function(){
+
     pintarCartera();
+
 });
