@@ -39,13 +39,20 @@ function guardarActivo() {
         return;
     }
 
-    cartera.push({
-        nombre,
-        ticker,
-        precio,
-        actual,
-        cantidad
-    });
+    const nuevoActivo = {
+    nombre,
+    ticker,
+    precio,
+    actual,
+    cantidad
+};
+
+if (indiceEditar === -1) {
+    cartera.push(nuevoActivo);
+} else {
+    cartera[indiceEditar] = nuevoActivo;
+    indiceEditar = -1;
+}
 
     guardarDatos();
 
@@ -136,9 +143,13 @@ ${beneficio.toFixed(2)} €
 
 </p>
 
-            <button onclick="eliminarActivo(${indice})">
-            🗑 Eliminar
-            </button>
+            <button onclick="editarActivo(${indice})">
+✏️ Editar
+</button>
+
+<button onclick="eliminarActivo(${indice})">
+🗑 Eliminar
+</button>
 
         </div>
         `;
