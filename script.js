@@ -1,6 +1,5 @@
 // ==========================
-// Método Paco
-// Versión 0.7
+// Método Paco v0.7
 // ==========================
 
 let cartera = JSON.parse(localStorage.getItem("cartera")) || [];
@@ -30,7 +29,7 @@ function volver() {
 }
 
 // ==========================
-// GUARDAR DATOS
+// LOCAL STORAGE
 // ==========================
 
 function guardarDatos() {
@@ -38,7 +37,7 @@ function guardarDatos() {
 }
 
 // ==========================
-// AÑADIR / EDITAR ACTIVO
+// AÑADIR / EDITAR
 // ==========================
 
 function guardarActivo() {
@@ -49,17 +48,12 @@ function guardarActivo() {
     const actual = parseFloat(document.getElementById("actual").value);
     const cantidad = parseFloat(document.getElementById("cantidad").value);
 
-    if (
-        !nombre ||
-        isNaN(precio) ||
-        isNaN(actual) ||
-        isNaN(cantidad)
-    ) {
+    if (!nombre || isNaN(precio) || isNaN(actual) || isNaN(cantidad)) {
         alert("Completa todos los campos.");
         return;
     }
 
-    const nuevoActivo = {
+    const activo = {
         nombre,
         ticker,
         precio,
@@ -68,9 +62,9 @@ function guardarActivo() {
     };
 
     if (indiceEditar === -1) {
-        cartera.push(nuevoActivo);
+        cartera.push(activo);
     } else {
-        cartera[indiceEditar] = nuevoActivo;
+        cartera[indiceEditar] = activo;
         indiceEditar = -1;
     }
 
@@ -84,25 +78,17 @@ function guardarActivo() {
 
     pintarCartera();
 }
-// ==========================
-// ELIMINAR ACTIVO
-// ==========================
 
-function eliminarActivo(indice){
+function eliminarActivo(indice) {
 
-    if(!confirm("¿Eliminar este activo?")) return;
+    if (!confirm("¿Eliminar este activo?")) return;
 
     cartera.splice(indice,1);
 
     guardarDatos();
 
     pintarCartera();
-
 }
-
-// ==========================
-// EDITAR ACTIVO
-// ==========================
 
 function editarActivo(indice){
 
@@ -115,35 +101,32 @@ function editarActivo(indice){
     document.getElementById("cantidad").value = activo.cantidad;
 
     indiceEditar = indice;
-
 }
-
 // ==========================
 // RESUMEN
 // ==========================
 
-function pintarResumen(totalInvertido,totalActual){
+function pintarResumen(totalInvertido, totalActual) {
 
     const beneficio = totalActual - totalInvertido;
 
     const porcentaje =
         totalInvertido > 0
-        ? (beneficio/totalInvertido)*100
+        ? (beneficio / totalInvertido) * 100
         : 0;
 
-    document.getElementById("numActivos").textContent =
-        cartera.length;
+    document.getElementById("numActivos").textContent = cartera.length;
 
     document.getElementById("totalInvertido").textContent =
-        totalInvertido.toFixed(2)+" €";
+        totalInvertido.toFixed(2) + " €";
 
     document.getElementById("valorActual").textContent =
-        totalActual.toFixed(2)+" €";
+        totalActual.toFixed(2) + " €";
 
     document.getElementById("rentabilidad").textContent =
         `${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)`;
-
 }
+
 // ==========================
 // PINTAR CARTERA
 // ==========================
@@ -163,6 +146,7 @@ function pintarCartera() {
 
         const invertido = activo.precio * activo.cantidad;
         const valorActual = activo.actual * activo.cantidad;
+
         const beneficio = valorActual - invertido;
 
         const porcentaje =
@@ -209,7 +193,6 @@ function pintarCartera() {
     });
 
     pintarResumen(totalInvertido, totalActual);
-
 }
 
 // ==========================
@@ -217,7 +200,5 @@ function pintarCartera() {
 // ==========================
 
 document.addEventListener("DOMContentLoaded", function () {
-
     pintarCartera();
-
 });
