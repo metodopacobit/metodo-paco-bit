@@ -1,113 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Método Paco v0.7</title>
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background:#111;
-    color:white;
-    padding:20px;
-}
-
-.oculto {
-    display:none;
-}
-
-.activo {
-    border:1px solid #555;
-    padding:15px;
-    margin:10px 0;
-    border-radius:10px;
-}
-
-input, button {
-    padding:10px;
-    margin:5px;
-}
-
-button {
-    cursor:pointer;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<!-- INICIO -->
 <div id="inicio" class="pantalla">
 
-<h1>Método Paco v0.7</h1>
+    <h1>MÉTODO PACO</h1>
 
-<button onclick="mostrar('cartera')">
-Ver cartera
-</button>
+    <p>Gestión sencilla de cartera</p>
+
+    <button onclick="mostrar('cartera')">
+        📈 Mi cartera
+    </button>
 
 </div>
 
-
-<!-- CARTERA -->
 <div id="cartera" class="pantalla oculto">
 
-<h2>Mi cartera</h2>
+    <h2>Mi cartera</h2>
 
+    <div class="formulario">
 
-<input id="nombre" placeholder="Nombre activo">
+        <input
+            type="text"
+            id="nombre"
+            placeholder="Nombre del activo">
 
-<input id="ticker" placeholder="Ticker">
+        <input
+            type="text"
+            id="ticker"
+            placeholder="Ticker">
 
-<input id="precio" type="number" placeholder="Precio compra">
+        <input
+            type="number"
+            id="precio"
+            step="0.01"
+            placeholder="Precio compra">
 
-<input id="actual" type="number" placeholder="Precio actual">
+        <input
+            type="number"
+            id="actual"
+            step="0.01"
+            placeholder="Precio actual">
 
-<input id="cantidad" type="number" placeholder="Cantidad">
+        <input
+            type="number"
+            id="cantidad"
+            step="0.000001"
+            placeholder="Cantidad">
 
+        <button onclick="guardarActivo()">
+            💾 Guardar activo
+        </button>
 
-<button onclick="guardarActivo()">
-Guardar activo
-</button>
+    </div>
 
+    <hr>
 
-<div id="lista"></div>
+    <h3>Resumen</h3>
 
+    <p><strong>Activos:</strong> <span id="numActivos">0</span></p>
 
-<h3>Resumen</h3>
+    <p><strong>Total invertido:</strong> <span id="totalInvertido">0 €</span></p>
 
-<p>
-Activos:
-<span id="numActivos">0</span>
-</p>
+    <p><strong>Valor actual:</strong> <span id="valorActual">0 €</span></p>
 
-<p>
-Invertido:
-<span id="totalInvertido">0 €</span>
-</p>
+    <p><strong>Rentabilidad:</strong> <span id="rentabilidad">0 €</span></p>
 
-<p>
-Valor actual:
-<span id="valorActual">0 €</span>
-</p>
+    <hr>
 
-<p>
-Rentabilidad:
-<span id="rentabilidad">0 €</span>
-</p>
+    <div id="lista"></div>
 
-
-<button onclick="volver()">
-Volver
-</button>
-
+    <button onclick="volver()">
+        ⬅ Volver
+    </button>
 
 </div>
-
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
