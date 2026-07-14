@@ -68,19 +68,25 @@ function eliminarActivo(indice) {
     pintarCartera();
 }
 
-function pintarResumen(totalInvertido){
+function pintarResumen(totalInvertido, totalActual){
+
+    const beneficio = totalActual - totalInvertido;
+
+    const porcentaje =
+        totalInvertido > 0
+        ? (beneficio / totalInvertido) * 100
+        : 0;
 
     document.getElementById("numActivos").textContent = cartera.length;
 
     document.getElementById("totalInvertido").textContent =
         totalInvertido.toFixed(2) + " €";
 
-    // De momento usamos el mismo valor.
     document.getElementById("valorActual").textContent =
-        totalInvertido.toFixed(2) + " €";
+        totalActual.toFixed(2) + " €";
 
     document.getElementById("rentabilidad").textContent =
-        "0.00 € (0%)";
+        `${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)`;
 }
 
 function pintarCartera(){
@@ -93,6 +99,8 @@ function pintarCartera(){
 
     let total=0;
 
+    let totalActual = 0;
+
     cartera.forEach(function(activo,indice){
 
         const invertido = activo.precio * activo.cantidad;
@@ -102,7 +110,7 @@ const beneficio = valorActual - invertido;
 const porcentaje = (beneficio / invertido) * 100;
 
         total += invertido;
-
+        totalActual += valorActual;
         lista.innerHTML += `
         <div class="activo">
 
@@ -136,7 +144,7 @@ ${beneficio.toFixed(2)} €
         `;
     });
 
-    pintarResumen(total);
+    pintarResumen(total, totalActual);
 
 }
 
