@@ -14,79 +14,146 @@
 
 <body>
 
-<div id="inicio" class="pantalla">
+<header class="header">
 
-    <h1>MÉTODO PACO</h1>
+<h1>📈 Método Paco</h1>
+<p>Tu centro personal de inversión</p>
 
-    <p>Gestión sencilla de cartera</p>
+</header>
 
-    <button onclick="mostrar('cartera')">
-        📈 Mi cartera
-    </button>
+<main class="container">
+
+<!-- ================== INICIO ================== -->
+
+<section id="inicio">
+
+<div class="card" onclick="mostrar('cartera')">
+<h2>💼 Método Paco</h2>
+<p>Gestiona tu cartera</p>
+</div>
+
+<div class="card" onclick="mostrar('bit')">
+<h2>₿ Método Paco Bit</h2>
+<p>Bitcoin · Oro · Plata</p>
+</div>
+
+<div class="card" onclick="mostrar('nere')">
+<h2>👧 Método Nere</h2>
+<p>Plan de inversión</p>
+</div>
+
+<div class="card" onclick="mostrar('radar')">
+<h2>🌍 Radar de Gangas</h2>
+<p>Oportunidades del mercado</p>
+</div>
+
+<div class="card" onclick="mostrar('watchlist')">
+<h2>⭐ Lista de vigilancia</h2>
+<p>Empresas favoritas</p>
+</div>
+
+</section>
+
+<!-- ================== CARTERA ================== -->
+
+<section id="cartera" class="pantalla oculto">
+
+<button onclick="volver()">⬅ Volver</button>
+
+<h2>💼 Método Paco</h2>
+
+<div class="activo">
+
+<h3>📊 Resumen de cartera</h3>
+
+<p><strong>Activos:</strong> <span id="numActivos">0</span></p>
+
+<p><strong>Total invertido:</strong> <span id="totalInvertido">0.00 €</span></p>
+
+<p><strong>Valor actual:</strong> <span id="valorActual">0.00 €</span></p>
+
+<p><strong>Rentabilidad:</strong> <span id="rentabilidad">0.00 € (0%)</span></p>
 
 </div>
 
-<div id="cartera" class="pantalla oculto">
+<h3>Añadir activo</h3>
 
-    <h2>Mi cartera</h2>
+<input id="nombre" type="text" placeholder="Nombre">
 
-    <div class="formulario">
+<input id="ticker" type="text" placeholder="Ticker">
 
-        <input
-            type="text"
-            id="nombre"
-            placeholder="Nombre del activo">
+<input id="precio" type="number" placeholder="Precio compra">
 
-        <input
-            type="text"
-            id="ticker"
-            placeholder="Ticker">
+<input id="actual" type="number" placeholder="Precio actual">
 
-        <input
-            type="number"
-            id="precio"
-            step="0.01"
-            placeholder="Precio compra">
+<input id="cantidad" type="number" placeholder="Participaciones">
 
-        <input
-            type="number"
-            id="actual"
-            step="0.01"
-            placeholder="Precio actual">
+<button onclick="guardarActivo()">
+💾 Guardar activo
+</button>
 
-        <input
-            type="number"
-            id="cantidad"
-            step="0.000001"
-            placeholder="Cantidad">
+<h3>Mi cartera</h3>
 
-        <button onclick="guardarActivo()">
-            💾 Guardar activo
-        </button>
+<div id="lista"></div>
 
-    </div>
+</section>
 
-    <hr>
+<!-- ================== MÉTODO PACO BIT ================== -->
 
-    <h3>Resumen</h3>
+<section id="bit" class="pantalla oculto">
 
-    <p><strong>Activos:</strong> <span id="numActivos">0</span></p>
+<button onclick="volver()">⬅ Volver</button>
 
-    <p><strong>Total invertido:</strong> <span id="totalInvertido">0 €</span></p>
+<h2>₿ Método Paco Bit</h2>
 
-    <p><strong>Valor actual:</strong> <span id="valorActual">0 €</span></p>
+<p>Bitcoin</p>
+<p>Oro</p>
+<p>Plata</p>
 
-    <p><strong>Rentabilidad:</strong> <span id="rentabilidad">0 €</span></p>
+</section>
 
-    <hr>
+<!-- ================== MÉTODO NERE ================== -->
 
-    <div id="lista"></div>
+<section id="nere" class="pantalla oculto">
 
-    <button onclick="volver()">
-        ⬅ Volver
-    </button>
+<button onclick="volver()">⬅ Volver</button>
 
-</div>
+<h2>👧 Método Nere</h2>
+
+<p>Próximamente...</p>
+
+</section>
+
+<!-- ================== RADAR ================== -->
+
+<section id="radar" class="pantalla oculto">
+
+<button onclick="volver()">⬅ Volver</button>
+
+<h2>🌍 Radar de Gangas</h2>
+
+<p>Próximamente...</p>
+
+</section>
+
+<!-- ================== WATCHLIST ================== -->
+
+<section id="watchlist" class="pantalla oculto">
+
+<button onclick="volver()">⬅ Volver</button>
+
+<h2>⭐ Lista de vigilancia</h2>
+
+<ul>
+<li>Broadcom</li>
+<li>Novo Nordisk</li>
+<li>Nike</li>
+<li>VWCE</li>
+</ul>
+
+</section>
+
+</main>
 
 <script src="script.js"></script>
 
