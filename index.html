@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Método Paco v0.3</title>
+<title>Método Paco v0.7</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -13,45 +12,50 @@
 
 <header class="header">
     <h1>📈 Método Paco</h1>
-    <p>Tu centro personal de inversión</p>
+    <p>Centro de inversión personal</p>
 </header>
 
 <main class="container">
 
-<div id="inicio">
+<!-- ================== MENU ================== -->
 
-<div class="card" onclick="mostrar('cartera')">
-<h2>💼 Método Paco</h2>
-<p>Gestiona tu cartera</p>
-</div>
+<section id="inicio">
 
-<div class="card" onclick="mostrar('bit')">
-<h2>₿ Método Paco Bit</h2>
-<p>Bitcoin, Oro y Plata</p>
-</div>
+    <div class="card" onclick="mostrar('cartera')">
+        <h2>💼 Método Paco</h2>
+        <p>Gestiona tu cartera</p>
+    </div>
 
-<div class="card" onclick="mostrar('nere')">
-<h2>👧 Método Nere</h2>
-<p>Plan de inversión</p>
-</div>
+    <div class="card" onclick="mostrar('bit')">
+        <h2>₿ Método Paco Bit</h2>
+        <p>Bitcoin · Oro · Plata</p>
+    </div>
 
-<div class="card" onclick="mostrar('radar')">
-<h2>🌍 Radar de Gangas</h2>
-<p>Oportunidades del mercado</p>
-</div>
+    <div class="card" onclick="mostrar('nere')">
+        <h2>👧 Método Nere</h2>
+        <p>Plan de inversión</p>
+    </div>
 
-<div class="card" onclick="mostrar('watchlist')">
-<h2>⭐ Lista de vigilancia</h2>
-<p>Empresas favoritas</p>
-</div>
+    <div class="card" onclick="mostrar('radar')">
+        <h2>🌍 Radar de Gangas</h2>
+        <p>Oportunidades</p>
+    </div>
 
-</div>
+    <div class="card" onclick="mostrar('watchlist')">
+        <h2>⭐ Watchlist</h2>
+        <p>Lista de seguimiento</p>
+    </div>
+
+</section>
+
+<!-- ================== CARTERA ================== -->
 
 <section id="cartera" class="pantalla oculto">
 
+<button onclick="volver()">⬅ Volver</button>
+
 <h2>💼 Método Paco</h2>
 
-<button onclick="volver()">⬅ Volver</button>
 <div class="activo">
 
 <h3>📊 Resumen de cartera</h3>
@@ -78,7 +82,7 @@
 
 <input id="cantidad" type="number" placeholder="Participaciones">
 
-<button onclick="guardarActivo()">Guardar activo</button>
+<button onclick="guardarActivo()">💾 Guardar activo</button>
 
 <h3>Mi cartera</h3>
 
@@ -86,17 +90,19 @@
 
 </section>
 
+<!-- ================== BIT ================== -->
+
 <section id="bit" class="pantalla oculto">
 
 <button onclick="volver()">⬅ Volver</button>
 
 <h2>₿ Método Paco Bit</h2>
 
-<p>Bitcoin</p>
-<p>Oro</p>
-<p>Plata</p>
+<p>Próximamente...</p>
 
 </section>
+
+<!-- ================== NERE ================== -->
 
 <section id="nere" class="pantalla oculto">
 
@@ -108,6 +114,8 @@
 
 </section>
 
+<!-- ================== RADAR ================== -->
+
 <section id="radar" class="pantalla oculto">
 
 <button onclick="volver()">⬅ Volver</button>
@@ -118,18 +126,15 @@
 
 </section>
 
+<!-- ================== WATCHLIST ================== -->
+
 <section id="watchlist" class="pantalla oculto">
 
 <button onclick="volver()">⬅ Volver</button>
 
-<h2>⭐ Lista de vigilancia</h2>
+<h2>⭐ Watchlist</h2>
 
-<ul>
-<li>Broadcom</li>
-<li>Novo Nordisk</li>
-<li>Nike</li>
-<li>VWCE</li>
-</ul>
+<p>Próximamente...</p>
 
 </section>
 
