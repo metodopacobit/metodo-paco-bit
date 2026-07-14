@@ -1,5 +1,5 @@
 // ==========================
-// Método Paco v0.7
+// Método Paco v0.8
 // ==========================
 
 let cartera = JSON.parse(localStorage.getItem("cartera")) || [];
@@ -46,9 +46,16 @@ function guardarActivo() {
     const ticker = document.getElementById("ticker").value.trim();
     const precio = parseFloat(document.getElementById("precio").value);
     const actual = parseFloat(document.getElementById("actual").value);
+    const objetivo = parseFloat(document.getElementById("objetivo").value);
     const cantidad = parseFloat(document.getElementById("cantidad").value);
 
-    if (!nombre || isNaN(precio) || isNaN(actual) || isNaN(cantidad)) {
+    if (
+        !nombre ||
+        isNaN(precio) ||
+        isNaN(actual) ||
+        isNaN(objetivo) ||
+        isNaN(cantidad)
+    ) {
         alert("Completa todos los campos.");
         return;
     }
@@ -58,6 +65,7 @@ function guardarActivo() {
         ticker,
         precio,
         actual,
+        objetivo,
         cantidad
     };
 
@@ -74,14 +82,15 @@ function guardarActivo() {
     document.getElementById("ticker").value = "";
     document.getElementById("precio").value = "";
     document.getElementById("actual").value = "";
+    document.getElementById("objetivo").value = "";
     document.getElementById("cantidad").value = "";
 
     pintarCartera();
 }
 
-function eliminarActivo(indice) {
+function eliminarActivo(indice){
 
-    if (!confirm("¿Eliminar este activo?")) return;
+    if(!confirm("¿Eliminar este activo?")) return;
 
     cartera.splice(indice,1);
 
@@ -98,6 +107,7 @@ function editarActivo(indice){
     document.getElementById("ticker").value = activo.ticker;
     document.getElementById("precio").value = activo.precio;
     document.getElementById("actual").value = activo.actual;
+    document.getElementById("objetivo").value = activo.objetivo;
     document.getElementById("cantidad").value = activo.cantidad;
 
     indiceEditar = indice;
@@ -106,7 +116,7 @@ function editarActivo(indice){
 // RESUMEN
 // ==========================
 
-function pintarResumen(totalInvertido, totalActual) {
+function pintarResumen(totalInvertido, totalActual){
 
     const beneficio = totalActual - totalInvertido;
 
@@ -131,18 +141,18 @@ function pintarResumen(totalInvertido, totalActual) {
 // PINTAR CARTERA
 // ==========================
 
-function pintarCartera() {
+function pintarCartera(){
 
     const lista = document.getElementById("lista");
 
-    if (!lista) return;
+    if(!lista) return;
 
     lista.innerHTML = "";
 
     let totalInvertido = 0;
     let totalActual = 0;
 
-    cartera.forEach(function(activo, indice) {
+    cartera.forEach(function(activo,indice){
 
         const invertido = activo.precio * activo.cantidad;
         const valorActual = activo.actual * activo.cantidad;
@@ -152,6 +162,11 @@ function pintarCartera() {
         const porcentaje =
             invertido > 0
             ? (beneficio / invertido) * 100
+            : 0;
+
+        const potencial =
+            activo.objetivo > 0
+            ? ((activo.objetivo - activo.actual) / activo.actual) * 100
             : 0;
 
         totalInvertido += invertido;
@@ -168,16 +183,24 @@ function pintarCartera() {
 
             <p><b>Precio actual:</b> ${activo.actual.toFixed(2)} €</p>
 
+            <p><b>Precio objetivo:</b> ${activo.objetivo.toFixed(2)} €</p>
+
             <p><b>Participaciones:</b> ${activo.cantidad}</p>
 
             <p><b>Invertido:</b> ${invertido.toFixed(2)} €</p>
 
             <p><b>Valor actual:</b> ${valorActual.toFixed(2)} €</p>
 
+            <p><b>Potencial:</b> ${potencial.toFixed(2)} %</p>
+
             <p style="color:${beneficio >= 0 ? 'lime' : 'red'}">
+
                 <b>Rentabilidad:</b>
+
                 ${beneficio.toFixed(2)} €
+
                 (${porcentaje.toFixed(2)}%)
+
             </p>
 
             <button onclick="editarActivo(${indice})">
@@ -190,15 +213,19 @@ function pintarCartera() {
 
         </div>
         `;
+
     });
 
     pintarResumen(totalInvertido, totalActual);
+
 }
 
 // ==========================
 // INICIO
 // ==========================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded",function(){
+
     pintarCartera();
+
 });
