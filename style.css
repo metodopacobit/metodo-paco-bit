@@ -129,3 +129,40 @@ li{
 #lista button{
     margin-top:8px;
 }
+/* ==========================
+   Método Paco v0.8 Diseño
+========================== */
+
+#cartera .activo:first-of-type{
+    background:#182235;
+    border:2px solid #2563eb;
+}
+
+#cartera .activo:first-of-type p{
+    font-size:17px;
+    padding:8px 0;
+    border-bottom:1px solid #374151;
+}
+
+#cartera .activo:first-of-type p:last-child{
+    border-bottom:none;
+}
+
+#lista .activo{
+    border-left:5px solid #2563eb;
+    transition:.25s;
+}
+
+#lista .activo:hover{
+    transform:translateY(-2px);
+}
+
+#lista button{
+    width:48%;
+    display:inline-block;
+    margin-top:12px;
+}
+
+#lista button:first-of-type{
+    margin-right:2%;
+}
