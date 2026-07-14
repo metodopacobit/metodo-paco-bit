@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco v0.7</title>
+<title>Método Paco v0.8</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -17,38 +17,38 @@
 
 <main class="container">
 
-<!-- ================== MENU ================== -->
+<!-- MENÚ -->
 
 <section id="inicio">
 
-    <div class="card" onclick="mostrar('cartera')">
-        <h2>💼 Método Paco</h2>
-        <p>Gestiona tu cartera</p>
-    </div>
+<div class="card" onclick="mostrar('cartera')">
+<h2>💼 Método Paco</h2>
+<p>Gestiona tu cartera</p>
+</div>
 
-    <div class="card" onclick="mostrar('bit')">
-        <h2>₿ Método Paco Bit</h2>
-        <p>Bitcoin · Oro · Plata</p>
-    </div>
+<div class="card" onclick="mostrar('bit')">
+<h2>₿ Método Paco Bit</h2>
+<p>Bitcoin · Oro · Plata</p>
+</div>
 
-    <div class="card" onclick="mostrar('nere')">
-        <h2>👧 Método Nere</h2>
-        <p>Plan de inversión</p>
-    </div>
+<div class="card" onclick="mostrar('nere')">
+<h2>👧 Método Nere</h2>
+<p>Plan de inversión</p>
+</div>
 
-    <div class="card" onclick="mostrar('radar')">
-        <h2>🌍 Radar de Gangas</h2>
-        <p>Oportunidades</p>
-    </div>
+<div class="card" onclick="mostrar('radar')">
+<h2>🌍 Radar de Gangas</h2>
+<p>Oportunidades</p>
+</div>
 
-    <div class="card" onclick="mostrar('watchlist')">
-        <h2>⭐ Watchlist</h2>
-        <p>Lista de seguimiento</p>
-    </div>
+<div class="card" onclick="mostrar('watchlist')">
+<h2>⭐ Watchlist</h2>
+<p>Lista de seguimiento</p>
+</div>
 
 </section>
 
-<!-- ================== CARTERA ================== -->
+<!-- CARTERA -->
 
 <section id="cartera" class="pantalla oculto">
 
@@ -80,6 +80,8 @@
 
 <input id="actual" type="number" placeholder="Precio actual">
 
+<input id="objetivo" type="number" placeholder="Precio objetivo">
+
 <input id="cantidad" type="number" placeholder="Participaciones">
 
 <button onclick="guardarActivo()">💾 Guardar activo</button>
@@ -90,7 +92,7 @@
 
 </section>
 
-<!-- ================== BIT ================== -->
+<!-- MÉTODO PACO BIT -->
 
 <section id="bit" class="pantalla oculto">
 
@@ -102,7 +104,7 @@
 
 </section>
 
-<!-- ================== NERE ================== -->
+<!-- MÉTODO NERE -->
 
 <section id="nere" class="pantalla oculto">
 
@@ -114,7 +116,7 @@
 
 </section>
 
-<!-- ================== RADAR ================== -->
+<!-- RADAR -->
 
 <section id="radar" class="pantalla oculto">
 
@@ -126,7 +128,7 @@
 
 </section>
 
-<!-- ================== WATCHLIST ================== -->
+<!-- WATCHLIST -->
 
 <section id="watchlist" class="pantalla oculto">
 
