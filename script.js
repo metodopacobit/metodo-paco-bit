@@ -85,7 +85,6 @@ function editarActivo(indice){
     document.getElementById("actual").value = activo.actual;
     document.getElementById("cantidad").value = activo.cantidad;
 
-    indiceEditar = indice;
 
     mostrarFormulario();
 }
@@ -107,8 +106,7 @@ function pintarResumen(totalInvertido, totalActual){
     document.getElementById("valorActual").textContent =
         totalActual.toFixed(2) + " €";
 
-    document.getElementById("rentabilidad").textContent =
-`Beneficio: ${beneficio} | Invertido: ${totalInvertido} | Actual: ${totalActual}`;
+   document.getElementById("rentabilidad").textContent =
 
 function pintarCartera(){
 
