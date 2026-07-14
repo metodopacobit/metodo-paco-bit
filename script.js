@@ -10,12 +10,19 @@ let indiceEditar = -1;
 // ==========================
 
 function ocultarTodo() {
-    document.querySelectorAll(".pantalla").forEach(p => p.classList.add("oculto"));
+    document.querySelectorAll(".pantalla").forEach(p => {
+        p.classList.add("oculto");
+    });
 }
 
 function mostrar(id) {
     ocultarTodo();
-    document.getElementById(id).classList.remove("oculto");
+
+    const pantalla = document.getElementById(id);
+
+    if (pantalla) {
+        pantalla.classList.remove("oculto");
+    }
 
     if (id === "cartera") {
         pintarCartera();
@@ -36,18 +43,31 @@ function guardarDatos() {
 }
 
 // ==========================
-// AÑADIR / EDITAR
+// GUARDAR ACTIVO
 // ==========================
 
 function guardarActivo() {
 
     const nombre = document.getElementById("nombre").value.trim();
-    const ticker = document.getElementById("ticker").value.trim();
+
+    const ticker = document
+        .getElementById("ticker")
+        .value
+        .trim()
+        .toUpperCase();
+
     const precio = parseFloat(document.getElementById("precio").value);
+
     const actual = parseFloat(document.getElementById("actual").value);
+
     const cantidad = parseFloat(document.getElementById("cantidad").value);
 
-    if (!nombre || isNaN(precio) || isNaN(actual) || isNaN(cantidad)) {
+    if (
+        nombre === "" ||
+        isNaN(precio) ||
+        isNaN(actual) ||
+        isNaN(cantidad)
+    ) {
         alert("Completa todos los campos.");
         return;
     }
@@ -77,6 +97,9 @@ function guardarActivo() {
 
     pintarCartera();
 }
+// ==========================
+// EDITAR
+// ==========================
 
 function editarActivo(indice) {
 
@@ -91,9 +114,15 @@ function editarActivo(indice) {
     indiceEditar = indice;
 }
 
+// ==========================
+// ELIMINAR
+// ==========================
+
 function eliminarActivo(indice) {
 
-    if (!confirm("¿Eliminar este activo?")) return;
+    if (!confirm("¿Eliminar este activo?")) {
+        return;
+    }
 
     cartera.splice(indice, 1);
 
@@ -116,12 +145,16 @@ function pintarResumen(totalInvertido, totalActual) {
             : 0;
 
     document.getElementById("numActivos").textContent = cartera.length;
-    document.getElementById("totalInvertido").textContent = totalInvertido.toFixed(2) + " €";
-    document.getElementById("valorActual").textContent = totalActual.toFixed(2) + " €";
-    document.getElementById("rentabilidad").textContent =
-        `${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)`;
-}
 
+    document.getElementById("totalInvertido").textContent =
+        totalInvertido.toFixed(2) + " €";
+
+    document.getElementById("valorActual").textContent =
+        totalActual.toFixed(2) + " €";
+
+    document.getElementById("rentabilidad").textContent =
+        beneficio.toFixed(2) + " € (" + porcentaje.toFixed(2) + "%)";
+}
 // ==========================
 // PINTAR CARTERA
 // ==========================
@@ -142,48 +175,65 @@ function pintarCartera() {
         const invertido = activo.precio * activo.cantidad;
         const valorActual = activo.actual * activo.cantidad;
         const beneficio = valorActual - invertido;
-        const porcentaje = invertido > 0 ? (beneficio / invertido) * 100 : 0;
+
+        const porcentaje =
+            invertido > 0
+                ? (beneficio / invertido) * 100
+                : 0;
 
         totalInvertido += invertido;
         totalActual += valorActual;
 
+        const color = beneficio >= 0 ? "lime" : "red";
+
         lista.innerHTML += `
-        <div class="activo">
+            <div class="activo">
 
-            <h3>${activo.nombre}</h3>
+                <h3>${activo.nombre}</h3>
 
-            <p><b>Ticker:</b> ${activo.ticker}</p>
+                <p><strong>Ticker:</strong> ${activo.ticker}</p>
 
-            <p><b>Precio compra:</b> ${activo.precio.toFixed(2)} €</p>
+                <p><strong>Precio compra:</strong> ${activo.precio.toFixed(2)} €</p>
 
-            <p><b>Precio actual:</b> ${activo.actual.toFixed(2)} €</p>
+                <p><strong>Precio actual:</strong> ${activo.actual.toFixed(2)} €</p>
 
-            <p><b>Participaciones:</b> ${activo.cantidad}</p>
+                <p><strong>Cantidad:</strong> ${activo.cantidad}</p>
 
-            <p><b>Invertido:</b> ${invertido.toFixed(2)} €</p>
+                <p><strong>Invertido:</strong> ${invertido.toFixed(2)} €</p>
 
-            <p><b>Valor actual:</b> ${valorActual.toFixed(2)} €</p>
+                <p><strong>Valor actual:</strong> ${valorActual.toFixed(2)} €</p>
 
-            <p style="color:${beneficio >= 0 ? 'lime' : 'red'}">
-                <b>Rentabilidad:</b>
-                ${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)
-            </p>
+                <p style="color:${color}">
+                    <strong>Rentabilidad:</strong>
+                    ${beneficio.toFixed(2)} €
+                    (${porcentaje.toFixed(2)}%)
+                </p>
 
-            <button onclick="editarActivo(${indice})">✏️ Editar</button>
+                <button onclick="editarActivo(${indice})">
+                    ✏️ Editar
+                </button>
 
-            <button onclick="eliminarActivo(${indice})">🗑 Eliminar</button>
+                <button onclick="eliminarActivo(${indice})">
+                    🗑 Eliminar
+                </button>
 
-        </div>
+            </div>
         `;
     });
 
     pintarResumen(totalInvertido, totalActual);
 }
-
 // ==========================
 // INICIO
 // ==========================
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    // Mostrar pantalla inicial
+    ocultarTodo();
+    document.getElementById("inicio").classList.remove("oculto");
+
+    // Cargar cartera guardada
     pintarCartera();
+
 });
