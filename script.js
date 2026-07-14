@@ -75,6 +75,20 @@ function eliminarActivo(indice) {
 
     pintarCartera();
 }
+function editarActivo(indice){
+
+    const activo = cartera[indice];
+
+    document.getElementById("nombre").value = activo.nombre;
+    document.getElementById("ticker").value = activo.ticker;
+    document.getElementById("precio").value = activo.precio;
+    document.getElementById("actual").value = activo.actual;
+    document.getElementById("cantidad").value = activo.cantidad;
+
+    indiceEditar = indice;
+
+    mostrarFormulario();
+}
 
 function pintarResumen(totalInvertido, totalActual){
 
