@@ -1,11 +1,14 @@
-// Método Paco v0.3
+// ==========================
+// Método Paco
+// Versión 0.4.1
+// ==========================
 
 let cartera = JSON.parse(localStorage.getItem("cartera")) || [];
 
 function ocultarTodo() {
     document.getElementById("inicio").classList.add("oculto");
 
-    document.querySelectorAll(".pantalla").forEach(function(pantalla) {
+    document.querySelectorAll(".pantalla").forEach(function (pantalla) {
         pantalla.classList.add("oculto");
     });
 }
@@ -13,10 +16,11 @@ function ocultarTodo() {
 function mostrar(id) {
     ocultarTodo();
     document.getElementById(id).classList.remove("oculto");
+    pintarCartera();
 }
 
 function volver() {
-    document.querySelectorAll(".pantalla").forEach(function(pantalla) {
+    document.querySelectorAll(".pantalla").forEach(function (pantalla) {
         pantalla.classList.add("oculto");
     });
 
@@ -42,7 +46,7 @@ function guardarActivo() {
         cantidad
     });
 
-    localStorage.setItem("cartera", JSON.stringify(cartera));
+    guardarDatos();
 
     document.getElementById("nombre").value = "";
     document.getElementById("ticker").value = "";
@@ -50,6 +54,21 @@ function guardarActivo() {
     document.getElementById("cantidad").value = "";
 
     pintarCartera();
+}
+
+function eliminarActivo(indice) {
+
+    if (!confirm("¿Eliminar este activo?")) return;
+
+    cartera.splice(indice, 1);
+
+    guardarDatos();
+
+    pintarCartera();
+}
+
+function guardarDatos() {
+    localStorage.setItem("cartera", JSON.stringify(cartera));
 }
 
 function pintarCartera() {
@@ -62,26 +81,43 @@ function pintarCartera() {
 
     let total = 0;
 
-    cartera.forEach(function(activo) {
+    cartera.forEach(function (activo, indice) {
 
-        total += activo.precio * activo.cantidad;
+        const invertido = activo.precio * activo.cantidad;
+
+        total += invertido;
 
         lista.innerHTML += `
-            <div class="activo">
-                <h3>${activo.nombre}</h3>
-                <p><strong>Ticker:</strong> ${activo.ticker}</p>
-                <p><strong>Precio compra:</strong> ${activo.precio.toFixed(2)} €</p>
-                <p><strong>Participaciones:</strong> ${activo.cantidad}</p>
-                <p><strong>Invertido:</strong> ${(activo.precio * activo.cantidad).toFixed(2)} €</p>
-            </div>
+        <div class="activo">
+
+            <h3>${activo.nombre}</h3>
+
+            <p><strong>Ticker:</strong> ${activo.ticker}</p>
+
+            <p><strong>Precio compra:</strong> ${activo.precio.toFixed(2)} €</p>
+
+            <p><strong>Participaciones:</strong> ${activo.cantidad}</p>
+
+            <p><strong>Invertido:</strong> ${invertido.toFixed(2)} €</p>
+
+            <button onclick="eliminarActivo(${indice})">
+            🗑 Eliminar
+            </button>
+
+        </div>
         `;
     });
 
     lista.innerHTML += `
-        <div class="activo">
-            <h3>Total invertido</h3>
-            <p><strong>${total.toFixed(2)} €</strong></p>
-        </div>
+    <div class="activo">
+
+        <h3>📊 Resumen</h3>
+
+        <p><strong>Activos:</strong> ${cartera.length}</p>
+
+        <p><strong>Total invertido:</strong> ${total.toFixed(2)} €</p>
+
+    </div>
     `;
 }
 
