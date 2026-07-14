@@ -86,8 +86,7 @@ function pintarResumen(totalInvertido, totalActual){
         totalActual.toFixed(2) + " €";
 
     document.getElementById("rentabilidad").textContent =
-        `${beneficio.toFixed(2)} € (${porcentaje.toFixed(2)}%)`;
-}
+`Beneficio: ${beneficio} | Invertido: ${totalInvertido} | Actual: ${totalActual}`;
 
 function pintarCartera(){
 
