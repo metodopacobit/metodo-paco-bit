@@ -18,13 +18,15 @@
 
 <h1>📈 Método Paco</h1>
 
-<p>Centro de inversión personal</p>
+<p>Centro personal de inversión</p>
 
 </header>
 
 <main class="container">
 
-<!-- =================== INICIO =================== -->
+<!-- ===================== -->
+<!-- MENU PRINCIPAL -->
+<!-- ===================== -->
 
 <section id="inicio">
 
@@ -32,7 +34,7 @@
 
 <h2>💼 Método Paco</h2>
 
-<p>Gestiona toda tu cartera</p>
+<p>Gestiona tu cartera</p>
 
 </div>
 
@@ -40,7 +42,7 @@
 
 <h2>₿ Método Paco Bit</h2>
 
-<p>Bitcoin · Oro · Plata</p>
+<p>Bitcoin y Metales</p>
 
 </div>
 
@@ -48,7 +50,7 @@
 
 <h2>👧 Método Nere</h2>
 
-<p>Plan de inversión</p>
+<p>Plan de inversión para Nere</p>
 
 </div>
 
@@ -56,7 +58,7 @@
 
 <h2>🌍 Radar de Gangas</h2>
 
-<p>Oportunidades del mercado</p>
+<p>Empresas infravaloradas</p>
 
 </div>
 
@@ -64,7 +66,7 @@
 
 <h2>⭐ Watchlist</h2>
 
-<p>Empresas favoritas</p>
+<p>Lista de seguimiento</p>
 
 </div>
 
@@ -78,7 +80,9 @@
 
 </section>
 
-<!-- =================== MÉTODO PACO =================== -->
+<!-- ===================== -->
+<!-- MÉTODO PACO -->
+<!-- ===================== -->
 
 <section id="cartera" class="pantalla oculto">
 
@@ -94,7 +98,7 @@
 
 <div class="resumen">
 
-<h4>📦 Activos</h4>
+<h4>Activos</h4>
 
 <p id="numActivos">0</p>
 
@@ -102,7 +106,7 @@
 
 <div class="resumen">
 
-<h4>💰 Invertido</h4>
+<h4>Invertido</h4>
 
 <p id="totalInvertido">0 €</p>
 
@@ -110,7 +114,7 @@
 
 <div class="resumen">
 
-<h4>📈 Valor</h4>
+<h4>Valor actual</h4>
 
 <p id="valorActual">0 €</p>
 
@@ -118,7 +122,7 @@
 
 <div class="resumen">
 
-<h4>📊 Rentabilidad</h4>
+<h4>Rentabilidad</h4>
 
 <p id="rentabilidad">0 €</p>
 
@@ -132,15 +136,30 @@
 
 <h3>➕ Añadir activo</h3>
 
-<input id="nombre" placeholder="Nombre">
+<input
+id="nombre"
+type="text"
+placeholder="Nombre">
 
-<input id="ticker" placeholder="Ticker">
+<input
+id="ticker"
+type="text"
+placeholder="Ticker">
 
-<input id="precio" type="number" placeholder="Precio compra">
+<input
+id="precio"
+type="number"
+placeholder="Precio compra">
 
-<input id="actual" type="number" placeholder="Precio actual">
+<input
+id="actual"
+type="number"
+placeholder="Precio actual">
 
-<input id="cantidad" type="number" placeholder="Participaciones">
+<input
+id="cantidad"
+type="number"
+placeholder="Participaciones">
 
 <button onclick="guardarActivo()">
 
@@ -149,85 +168,237 @@
 </button>
 
 </section>
-<!-- =================== MÉTODO PACO BIT =================== -->
+
+<!-- ===================== -->
+<!-- MÉTODO PACO BIT -->
+<!-- ===================== -->
 
 <section id="bit" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+
+⬅ Volver
+
+</button>
 
 <h2>₿ Método Paco Bit</h2>
 
-<div class="card">
+<p style="margin-bottom:20px;">
+Análisis de Bitcoin y metales preciosos.
+</p>
+
+<div class="activo">
 
 <h3>₿ Bitcoin</h3>
 
-<p>Análisis del mercado.</p>
+<p><b>Precio actual:</b> --</p>
+
+<p><b>Última revisión:</b> --</p>
+
+<p><b>Variación:</b> --</p>
+
+<p><b>Índice Método Paco Bit:</b> --</p>
+
+<p><b>Estado:</b> --</p>
+
+<p><b>Acción:</b> --</p>
 
 </div>
 
-<div class="card">
+<div class="activo">
 
 <h3>🥇 Oro</h3>
 
-<p>Seguimiento del oro.</p>
+<p><b>Precio actual:</b> --</p>
+
+<p><b>Última revisión:</b> --</p>
+
+<p><b>Variación:</b> --</p>
+
+<p><b>Índice Método Paco Bit:</b> --</p>
+
+<p><b>Estado:</b> --</p>
+
+<p><b>Acción:</b> --</p>
 
 </div>
 
-<div class="card">
+<div class="activo">
 
 <h3>🥈 Plata</h3>
 
-<p>Seguimiento de la plata.</p>
+<p><b>Precio actual:</b> --</p>
+
+<p><b>Última revisión:</b> --</p>
+
+<p><b>Variación:</b> --</p>
+
+<p><b>Índice Método Paco Bit:</b> --</p>
+
+<p><b>Estado:</b> --</p>
+
+<p><b>Acción:</b> --</p>
 
 </div>
 
+<div class="activo">
+
+<h3>⚪ Platino</h3>
+
+<p><b>Precio actual:</b> --</p>
+
+<p><b>Última revisión:</b> --</p>
+
+<p><b>Variación:</b> --</p>
+
+<p><b>Índice Método Paco Bit:</b> --</p>
+
+<p><b>Estado:</b> --</p>
+
+<p><b>Acción:</b> --</p>
+
+</div>
+
+<div class="activo">
+
+<h3>🟠 Paladio</h3>
+
+<p><b>Precio actual:</b> --</p>
+
+<p><b>Última revisión:</b> --</p>
+
+<p><b>Variación:</b> --</p>
+
+<p><b>Índice Método Paco Bit:</b> --</p>
+
+<p><b>Estado:</b> --</p>
+
+<p><b>Acción:</b> --</p>
+
+</div>
+
+<div class="activo">
+
+<h3>🔘 Rodio</h3>
+
+<p><b>Precio actual:</b> --</p>
+
+<p><b>Última revisión:</b> --</p>
+
+<p><b>Variación:</b> --</p>
+
+<p><b>Índice Método Paco Bit:</b> --</p>
+
+<p><b>Estado:</b> --</p>
+
+<p><b>Acción:</b> --</p>
+
+</div>
+
+<h3>⭐ Lista de vigilancia</h3>
+
+<ul>
+
+<li>₿ Bitcoin</li>
+<li>🥇 Oro</li>
+<li>🥈 Plata</li>
+<li>⚪ Platino</li>
+<li>🟠 Paladio</li>
+<li>🔘 Rodio</li>
+
+</ul>
+
 </section>
 
-<!-- =================== MÉTODO NERE =================== -->
+<!-- ===================== -->
+<!-- MÉTODO NERE -->
+<!-- ===================== -->
 
 <section id="nere" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>👧 Método Nere</h2>
 
-<div class="card">
+<div class="activo">
 
 <h3>Plan de inversión</h3>
 
-<p>Próximamente...</p>
+<p>Esta sección estará dedicada al seguimiento del Método Nere.</p>
+
+<p>Próximamente incluirá:</p>
+
+<ul>
+
+<li>💰 Capital invertido</li>
+
+<li>📈 Rentabilidad acumulada</li>
+
+<li>📅 Aportaciones mensuales</li>
+
+<li>🎯 Objetivo a largo plazo</li>
+
+<li>📊 Simulación de crecimiento</li>
+
+</ul>
 
 </div>
 
 </section>
 
-<!-- =================== RADAR =================== -->
+<!-- ===================== -->
+<!-- RADAR DE GANGAS -->
+<!-- ===================== -->
 
 <section id="radar" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>🌍 Radar de Gangas</h2>
 
-<div class="card">
+<div class="activo">
 
-<h3>Empresas interesantes</h3>
+<h3>Radar Global</h3>
 
-<p>Próximamente...</p>
+<p>Aquí aparecerán automáticamente las empresas que el Método Paco considere infravaloradas.</p>
+
+<p>Próximamente:</p>
+
+<ul>
+
+<li>🔥 Ganga de la semana</li>
+
+<li>📉 Empresas cerca de mínimos</li>
+
+<li>💎 Alta calidad + precio atractivo</li>
+
+<li>⭐ Oportunidades por sectores</li>
+
+</ul>
 
 </div>
 
 </section>
 
-<!-- =================== WATCHLIST =================== -->
+<!-- ===================== -->
+<!-- WATCHLIST -->
+<!-- ===================== -->
 
 <section id="watchlist" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>⭐ Watchlist</h2>
 
-<div class="card">
+<div class="activo">
+
+<h3>Empresas favoritas</h3>
 
 <ul>
 
@@ -239,7 +410,17 @@
 
 <li>TSMC</li>
 
-<li>VWCE</li>
+<li>ASML</li>
+
+<li>Microsoft</li>
+
+<li>Alphabet</li>
+
+<li>Amazon</li>
+
+<li>Meta</li>
+
+<li>Vanguard FTSE All World (VWCE)</li>
 
 </ul>
 
@@ -247,17 +428,41 @@
 
 </section>
 
-<!-- =================== AJUSTES =================== -->
+<!-- ===================== -->
+<!-- AJUSTES -->
+<!-- ===================== -->
 
 <section id="ajustes" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>⚙️ Ajustes</h2>
 
-<div class="card">
+<div class="activo">
 
-<p>Esta sección se utilizará para configurar la aplicación en futuras versiones.</p>
+<h3>Configuración</h3>
+
+<p>Esta sección estará destinada a las futuras opciones de la aplicación.</p>
+
+<ul>
+
+<li>🌙 Modo oscuro / claro</li>
+
+<li>💾 Copia de seguridad</li>
+
+<li>📂 Importar cartera</li>
+
+<li>📤 Exportar cartera</li>
+
+<li>🔔 Alertas personalizadas</li>
+
+<li>🌍 Idioma</li>
+
+<li>ℹ️ Información de la aplicación</li>
+
+</ul>
 
 </div>
 
@@ -265,11 +470,9 @@
 
 </main>
 
-<script src="script.js"></script>
-
-</body>
-
-</html>
+<!-- ===================== -->
+<!-- SCRIPTS -->
+<!-- ===================== -->
 
 <script src="script.js"></script>
 <script src="cartera.js"></script>
@@ -277,3 +480,6 @@
 <script src="nere.js"></script>
 <script src="radar.js"></script>
 <script src="watchlist.js"></script>
+
+</body>
+</html>
