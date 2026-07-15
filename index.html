@@ -4,11 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Método Paco v2.0</title>
+<title>Método Paco v2.1</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -86,9 +84,7 @@ content="width=device-width, initial-scale=1.0">
 <!-- MÉTODO PACO -->
 <!-- ===================== -->
 
-<section
-id="cartera"
-class="pantalla oculto">
+<section id="cartera" class="pantalla oculto">
 
 <button onclick="volver()">
 
@@ -196,34 +192,95 @@ placeholder="Participaciones">
 <h2>₿ Método Paco Bit</h2>
 
 <p style="margin-bottom:20px;">
-Precios en tiempo real de Bitcoin y metales preciosos.
+Análisis en tiempo real de Bitcoin y metales preciosos.
 </p>
 
-<button onclick="actualizarBit()">
-🔄 Actualizar Método Paco Bit
-</button>
+<!-- ===================== -->
+<!-- BITCOIN -->
+<!-- ===================== -->
 
-<br><br>
+<h2>₿ Bitcoin</h2>
 
-<div id="bitLista">
+<div class="bitDashboard">
 
-<div class="activo">
+<div class="bitCard">
 
-<h3>₿ Bitcoin</h3>
+<h3>📊 Mercado</h3>
 
-<p><b>Precio:</b> <span id="bitcoinPrecio">--</span></p>
+<p><b>💶 Precio actual</b><br>
+<span id="bitcoinPrecio">--</span></p>
 
-<p><b>Variación:</b> <span id="bitcoinVariacion">--</span></p>
+<p><b>📈 Cambio 24 h</b><br>
+<span id="bitcoinVariacion">--</span></p>
 
-<p><b>Índice:</b> <span id="bitcoinIndice">--</span></p>
+<p><b>🏆 Máximo histórico</b><br>
+<span id="bitcoinATH">--</span></p>
 
-<p><b>Estado:</b> <span id="bitcoinEstado">--</span></p>
+<p><b>📉 Caída desde ATH</b><br>
+<span id="bitcoinCaidaATH">--</span></p>
 
-<p><b>Acción:</b> <span id="bitcoinAccion">--</span></p>
+<p><b>😨 Fear & Greed</b><br>
+<span id="bitcoinFearGreed">--</span></p>
 
-<p><b>Última revisión:</b> <span id="bitcoinRevision">--</span></p>
+<p><b>🎯 Índice Método Paco Bit</b><br>
+<span id="bitcoinIndice">--</span></p>
+
+<p><b>📌 Estado</b><br>
+<span id="bitcoinEstado">--</span></p>
 
 </div>
+
+<div class="bitCard">
+
+<h3>💼 Tu posición</h3>
+
+<p><b>💰 Precio compra</b><br>
+<span id="bitcoinCompra">--</span></p>
+
+<p><b>₿ Cantidad BTC</b><br>
+<span id="bitcoinCantidad">--</span></p>
+
+<p><b>💵 Invertido</b><br>
+<span id="bitcoinInvertido">--</span></p>
+
+<p><b>💎 Valor actual</b><br>
+<span id="bitcoinValorActual">--</span></p>
+
+<p><b>📊 Ganancia / Pérdida</b><br>
+<span id="bitcoinGanancia">--</span></p>
+
+<p><b>📈 Rentabilidad</b><br>
+<span id="bitcoinRentabilidad">--</span></p>
+
+</div>
+
+</div>
+
+<div style="text-align:center;margin-top:20px;">
+
+<button onclick="actualizarBit()">
+
+🔄 Actualizar
+
+</button>
+
+</div>
+
+<p style="text-align:center;margin-top:15px;">
+
+<b>Última actualización:</b>
+
+<span id="bitcoinRevision">--</span>
+
+</p>
+
+<hr style="margin:30px 0;">
+
+<!-- ===================== -->
+<!-- METALES -->
+<!-- ===================== -->
+
+<div id="bitLista">
 
 <div class="activo">
 
@@ -238,8 +295,6 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 <p><b>Estado:</b> <span id="oroEstado">--</span></p>
 
 <p><b>Acción:</b> <span id="oroAccion">--</span></p>
-
-<p><b>Última revisión:</b> <span id="oroRevision">--</span></p>
 
 </div>
 
@@ -257,8 +312,6 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <p><b>Acción:</b> <span id="plataAccion">--</span></p>
 
-<p><b>Última revisión:</b> <span id="plataRevision">--</span></p>
-
 </div>
 
 <div class="activo">
@@ -275,8 +328,6 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <p><b>Acción:</b> <span id="platinoAccion">--</span></p>
 
-<p><b>Última revisión:</b> <span id="platinoRevision">--</span></p>
-
 </div>
 
 <div class="activo">
@@ -292,8 +343,6 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 <p><b>Estado:</b> <span id="paladioEstado">--</span></p>
 
 <p><b>Acción:</b> <span id="paladioAccion">--</span></p>
-
-<p><b>Última revisión:</b> <span id="paladioRevision">--</span></p>
 
 </div>
 
@@ -319,7 +368,9 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <section id="nere" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>👧 Método Nere</h2>
 
@@ -327,15 +378,20 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <h3>Plan de inversión</h3>
 
-<p>Capital invertido: <span id="nereCapital">0 €</span></p>
+<p>Capital invertido:
+<span id="nereCapital">0 €</span></p>
 
-<p>Valor actual: <span id="nereValor">0 €</span></p>
+<p>Valor actual:
+<span id="nereValor">0 €</span></p>
 
-<p>Rentabilidad: <span id="nereRentabilidad">0 %</span></p>
+<p>Rentabilidad:
+<span id="nereRentabilidad">0 %</span></p>
 
-<p>Aportación mensual: <span id="nereMensual">100 €</span></p>
+<p>Aportación mensual:
+<span id="nereMensual">100 €</span></p>
 
-<p>Objetivo: Independencia financiera a largo plazo.</p>
+<p>Objetivo:
+Independencia financiera a largo plazo.</p>
 
 </div>
 
@@ -347,7 +403,9 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <section id="radar" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>🌍 Radar de Gangas</h2>
 
@@ -365,7 +423,9 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <h3>Esperando análisis...</h3>
 
-<p>El Radar de Gangas analizará automáticamente tu Watchlist.</p>
+<p>
+El Radar de Gangas analizará automáticamente tu Watchlist.
+</p>
 
 </div>
 
@@ -379,7 +439,9 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <section id="watchlist" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>⭐ Watchlist</h2>
 
@@ -414,17 +476,21 @@ Precios en tiempo real de Bitcoin y metales preciosos.
 
 <section id="ajustes" class="pantalla oculto">
 
-<button onclick="volver()">⬅ Volver</button>
+<button onclick="volver()">
+⬅ Volver
+</button>
 
 <h2>⚙️ Ajustes</h2>
 
 <div class="activo">
 
-<p>Versión 2.0</p>
+<p><b>Versión:</b> 2.1</p>
 
-<p>Método Paco</p>
+<p><b>Proyecto:</b> Método Paco</p>
 
-<p>Desarrollado por Paco + ChatGPT</p>
+<p><b>Estado:</b> En desarrollo</p>
+
+<p><b>Última mejora:</b> Dashboard Bitcoin</p>
 
 </div>
 
