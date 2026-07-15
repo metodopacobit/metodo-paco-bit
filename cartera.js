@@ -1,5 +1,8 @@
 // ==========================
-// MÉTODO PACO - CARTERA
+// MÉTODO PACO v1.2
+// CARTERA
+// Compatible con script.js
+// y precios.js
 // ==========================
 
 let cartera = JSON.parse(localStorage.getItem("cartera")) || [];
@@ -10,7 +13,26 @@ let indiceEditar = -1;
 // ==========================
 
 function guardarDatos() {
-    localStorage.setItem("cartera", JSON.stringify(cartera));
+
+    localStorage.setItem(
+        "cartera",
+        JSON.stringify(cartera)
+    );
+
+}
+
+// ==========================
+// LIMPIAR FORMULARIO
+// ==========================
+
+function limpiarFormulario() {
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("ticker").value = "";
+    document.getElementById("precio").value = "";
+    document.getElementById("actual").value = "";
+    document.getElementById("cantidad").value = "";
+
 }
 
 // ==========================
@@ -19,63 +41,70 @@ function guardarDatos() {
 
 function guardarActivo() {
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const ticker = document.getElementById("ticker").value.trim();
-    const precio = parseFloat(document.getElementById("precio").value);
-    const actual = parseFloat(document.getElementById("actual").value);
-    const cantidad = parseFloat(document.getElementById("cantidad").value);
+    const nombre =
+        document.getElementById("nombre").value.trim();
 
-    if (!nombre || isNaN(precio) || isNaN(actual) || isNaN(cantidad)) {
+    const ticker =
+        document.getElementById("ticker").value.trim().toUpperCase();
+
+    const precio =
+        parseFloat(document.getElementById("precio").value);
+
+    const actual =
+        parseFloat(document.getElementById("actual").value);
+
+    const cantidad =
+        parseFloat(document.getElementById("cantidad").value);
+
+    if (
+        !nombre ||
+        !ticker ||
+        isNaN(precio) ||
+        isNaN(actual) ||
+        isNaN(cantidad)
+    ) {
+
         alert("Completa todos los campos.");
+
         return;
+
     }
 
     const activo = {
+
         nombre,
         ticker,
         precio,
         actual,
         cantidad
+
     };
 
     if (indiceEditar === -1) {
+
         cartera.push(activo);
+
     } else {
+
         cartera[indiceEditar] = activo;
+
         indiceEditar = -1;
+
     }
 
     guardarDatos();
 
-    document.getElementById("nombre").value = "";
-    document.getElementById("ticker").value = "";
-    document.getElementById("precio").value = "";
-    document.getElementById("actual").value = "";
-    document.getElementById("cantidad").value = "";
+    limpiarFormulario();
 
     pintarCartera();
-}
 
-// ==========================
-// ELIMINAR
-// ==========================
-
-function eliminarActivo(indice){
-
-    if(!confirm("¿Eliminar este activo?")) return;
-
-    cartera.splice(indice,1);
-
-    guardarDatos();
-
-    pintarCartera();
 }
 
 // ==========================
 // EDITAR
 // ==========================
 
-function editarActivo(indice){
+function editarActivo(indice) {
 
     const activo = cartera[indice];
 
@@ -86,64 +115,88 @@ function editarActivo(indice){
     document.getElementById("cantidad").value = activo.cantidad;
 
     indiceEditar = indice;
+
+}
+
+// ==========================
+// ELIMINAR
+// ==========================
+
+function eliminarActivo(indice) {
+
+    if (!confirm("¿Eliminar este activo?")) return;
+
+    cartera.splice(indice, 1);
+
+    guardarDatos();
+
+    pintarCartera();
+
 }
 
 // ==========================
 // RESUMEN
 // ==========================
 
-function pintarResumen(totalInvertido,totalActual){
+function pintarResumen(totalInvertido, totalActual) {
 
-    const beneficio = totalActual-totalInvertido;
+    const beneficio = totalActual - totalInvertido;
 
     const porcentaje =
-        totalInvertido>0
-        ? (beneficio/totalInvertido)*100
+        totalInvertido > 0
+        ? (beneficio / totalInvertido) * 100
         : 0;
 
-    document.getElementById("numActivos").textContent = cartera.length;
+    document.getElementById("numActivos").textContent =
+        cartera.length;
 
     document.getElementById("totalInvertido").textContent =
-        totalInvertido.toFixed(2)+" €";
+        totalInvertido.toFixed(2) + " €";
 
     document.getElementById("valorActual").textContent =
-        totalActual.toFixed(2)+" €";
+        totalActual.toFixed(2) + " €";
 
     document.getElementById("rentabilidad").textContent =
-        beneficio.toFixed(2)+" € ("+porcentaje.toFixed(2)+"%)";
+        beneficio.toFixed(2) + " € (" +
+        porcentaje.toFixed(2) + "%)";
+
 }
 
 // ==========================
 // PINTAR CARTERA
 // ==========================
 
-function pintarCartera(){
+function pintarCartera() {
 
-    const lista=document.getElementById("lista");
+    const lista = document.getElementById("lista");
 
-    if(!lista) return;
+    if (!lista) return;
 
-    lista.innerHTML="";
+    lista.innerHTML = "";
 
-    let totalInvertido=0;
-    let totalActual=0;
+    let totalInvertido = 0;
+    let totalActual = 0;
 
-    cartera.forEach(function(activo,indice){
+    cartera.forEach((activo, indice) => {
 
-        const invertido=activo.precio*activo.cantidad;
-        const valorActual=activo.actual*activo.cantidad;
+        const invertido =
+            activo.precio * activo.cantidad;
 
-        const beneficio=valorActual-invertido;
+        const valorActual =
+            activo.actual * activo.cantidad;
 
-        const porcentaje=
-            invertido>0
-            ? (beneficio/invertido)*100
+        const beneficio =
+            valorActual - invertido;
+
+        const porcentaje =
+            invertido > 0
+            ? (beneficio / invertido) * 100
             : 0;
 
-        totalInvertido+=invertido;
-        totalActual+=valorActual;
+        totalInvertido += invertido;
+        totalActual += valorActual;
 
-        lista.innerHTML+=`
+        lista.innerHTML += `
 
 <div class="activo">
 
@@ -161,7 +214,7 @@ function pintarCartera(){
 
 <p><b>Valor actual:</b> ${valorActual.toFixed(2)} €</p>
 
-<p style="color:${beneficio>=0?'lime':'red'}">
+<p style="color:${beneficio >= 0 ? 'lime' : 'red'}">
 
 <b>Rentabilidad:</b>
 
@@ -185,6 +238,20 @@ ${beneficio.toFixed(2)} €
 
     });
 
-    pintarResumen(totalInvertido,totalActual);
+    pintarResumen(totalInvertido, totalActual);
 
 }
+
+// ==========================
+// INICIO
+// ==========================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    pintarCartera();
+
+});
+
+// ==========================
+// FIN DEL ARCHIVO
+// ==========================
