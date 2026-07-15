@@ -1,49 +1,41 @@
 // ==========================
-// MÉTODO PACO v1.0
+// MÉTODO PACO v1.2
 // PRECIOS - FINNHUB
 // ==========================
 
-// ⚠️ Cuando terminemos las pruebas,
-// cambia esta API Key por una nueva.
-
-const API_KEY = "d9bq8mpr01ql2jmt25v0d9bq8mpr01ql2jmt25vg";
+const API_KEY = "d9bqjjpr01ql2jmt3bugd9bqjjpr01ql2jmt3bv0"
 
 // ==========================
 // OBTENER PRECIO
 // ==========================
 
-async function obtenerPrecio(ticker){
+async function obtenerPrecio(ticker) {
 
-    try{
+    try {
 
         const url =
-        `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${API_KEY}`;
+            `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(ticker)}&token=${API_KEY}`;
 
         const respuesta = await fetch(url);
 
-        if(!respuesta.ok){
-
-            throw new Error("Error al conectar con Finnhub");
-
+        if (!respuesta.ok) {
+            throw new Error("Error HTTP " + respuesta.status);
         }
 
         const datos = await respuesta.json();
 
-        // Precio actual
+        // Finnhub devuelve:
+        // c = precio actual
 
-        if(datos.c && datos.c > 0){
-
-            return Number(datos.c);
-
+        if (typeof datos.c === "number" && datos.c > 0) {
+            return datos.c;
         }
 
         return null;
 
-    }
+    } catch (error) {
 
-    catch(error){
-
-        console.error("Error API:",error);
+        console.error("Error obteniendo precio de", ticker, error);
 
         return null;
 
@@ -52,41 +44,35 @@ async function obtenerPrecio(ticker){
 }
 
 // ==========================
-// ACTUALIZAR UN ACTIVO
+// ACTUALIZAR CARTERA
 // ==========================
 
-async function actualizarPrecioActivo(activo){
+async function actualizarTodaLaCartera() {
 
-    if(!activo.ticker) return;
+    if (!Array.isArray(cartera)) return;
 
-    const precio = await obtenerPrecio(activo.ticker);
+    let cambios = false;
 
-    if(precio){
+    for (const activo of cartera) {
 
-        activo.actual = precio;
+        if (!activo.ticker) continue;
+
+        const precio = await obtenerPrecio(activo.ticker);
+
+        if (precio !== null) {
+
+            activo.actual = precio;
+
+            cambios = true;
+
+        }
 
     }
 
-}
-
-// ==========================
-// ACTUALIZAR TODA LA CARTERA
-// ==========================
-
-async function actualizarTodaLaCartera(){
-
-    if(typeof cartera==="undefined") return;
-
-    for(const activo of cartera){
-
-        await actualizarPrecioActivo(activo);
-
+    if (cambios) {
+        guardarDatos();
     }
-
-    guardarDatos();
 
     pintarCartera();
-
-    console.log("✔ Precios actualizados");
 
 }
