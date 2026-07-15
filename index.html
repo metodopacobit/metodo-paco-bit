@@ -4,9 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Método Paco v2.1</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Método Paco v3.0</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -84,7 +86,9 @@
 <!-- MÉTODO PACO -->
 <!-- ===================== -->
 
-<section id="cartera" class="pantalla oculto">
+<section
+id="cartera"
+class="pantalla oculto">
 
 <button onclick="volver()">
 
@@ -192,93 +196,95 @@ placeholder="Participaciones">
 <h2>₿ Método Paco Bit</h2>
 
 <p style="margin-bottom:20px;">
-Análisis en tiempo real de Bitcoin y metales preciosos.
+Precios en tiempo real de Bitcoin y metales preciosos.
 </p>
 
-<!-- ===================== -->
-<!-- BITCOIN -->
-<!-- ===================== -->
+<div class="bit-grid">
 
-<h2>₿ Bitcoin</h2>
+<!-- ========================= -->
+<!-- MERCADO -->
+<!-- ========================= -->
 
-<div class="bitDashboard">
-
-<div class="bitCard">
+<div class="activo">
 
 <h3>📊 Mercado</h3>
 
-<p><b>💶 Precio actual</b><br>
+<p><b>Precio actual:</b>
 <span id="bitcoinPrecio">--</span></p>
 
-<p><b>📈 Cambio 24 h</b><br>
+<p><b>Cambio 24 h:</b>
 <span id="bitcoinVariacion">--</span></p>
 
-<p><b>🏆 Máximo histórico</b><br>
+<p><b>Máximo histórico:</b>
 <span id="bitcoinATH">--</span></p>
 
-<p><b>📉 Caída desde ATH</b><br>
+<p><b>Caída desde ATH:</b>
 <span id="bitcoinCaidaATH">--</span></p>
 
-<p><b>😨 Fear & Greed</b><br>
+<p><b>Fear & Greed:</b>
 <span id="bitcoinFearGreed">--</span></p>
 
-<p><b>🎯 Índice Método Paco Bit</b><br>
+<p><b>Índice Método Paco Bit:</b>
 <span id="bitcoinIndice">--</span></p>
 
-<p><b>📌 Estado</b><br>
+<p><b>Estado:</b>
 <span id="bitcoinEstado">--</span></p>
 
 </div>
 
-<div class="bitCard">
+<!-- ========================= -->
+<!-- TU POSICIÓN -->
+<!-- ========================= -->
+
+<div class="activo">
 
 <h3>💼 Tu posición</h3>
 
-<p><b>💰 Precio compra</b><br>
-<span id="bitcoinCompra">--</span></p>
+<p><b>Precio compra</b></p>
 
-<p><b>₿ Cantidad BTC</b><br>
-<span id="bitcoinCantidad">--</span></p>
+<input
+id="bitcoinPrecioCompra"
+type="number"
+step="0.01"
+placeholder="Precio de compra">
 
-<p><b>💵 Invertido</b><br>
-<span id="bitcoinInvertido">--</span></p>
+<p><b>Cantidad BTC</b></p>
 
-<p><b>💎 Valor actual</b><br>
-<span id="bitcoinValorActual">--</span></p>
+<input
+id="bitcoinCantidad"
+type="number"
+step="0.00000001"
+placeholder="Cantidad de BTC">
 
-<p><b>📊 Ganancia / Pérdida</b><br>
-<span id="bitcoinGanancia">--</span></p>
+<p><b>Invertido:</b>
+<span id="bitcoinInvertido">0 €</span></p>
 
-<p><b>📈 Rentabilidad</b><br>
-<span id="bitcoinRentabilidad">--</span></p>
+<p><b>Valor actual:</b>
+<span id="bitcoinValorActual">0 €</span></p>
 
-</div>
+<p><b>Ganancia:</b>
+<span id="bitcoinGanancia">0 €</span></p>
 
-</div>
+<p><b>Rentabilidad:</b>
+<span id="bitcoinRentabilidad">0 %</span></p>
 
-<div style="text-align:center;margin-top:20px;">
-
-<button onclick="actualizarBit()">
-
-🔄 Actualizar
-
+<button onclick="guardarPosicionBitcoin()">
+💾 Guardar posición
 </button>
 
 </div>
 
-<p style="text-align:center;margin-top:15px;">
+</div>
 
-<b>Última actualización:</b>
+<br>
 
-<span id="bitcoinRevision">--</span>
-
-</p>
+<button onclick="actualizarBit()">
+🔄 Actualizar Método Paco Bit
+</button>
 
 <hr style="margin:30px 0;">
 
-<!-- ===================== -->
-<!-- METALES -->
-<!-- ===================== -->
+<h3>🥇 Metales preciosos</h3>
 
 <div id="bitLista">
 
@@ -286,15 +292,20 @@ Análisis en tiempo real de Bitcoin y metales preciosos.
 
 <h3>🥇 Oro</h3>
 
-<p><b>Precio:</b> <span id="oroPrecio">--</span></p>
+<p><b>Precio:</b>
+<span id="oroPrecio">--</span></p>
 
-<p><b>Variación:</b> <span id="oroVariacion">--</span></p>
+<p><b>Variación:</b>
+<span id="oroVariacion">--</span></p>
 
-<p><b>Índice:</b> <span id="oroIndice">--</span></p>
+<p><b>Índice:</b>
+<span id="oroIndice">--</span></p>
 
-<p><b>Estado:</b> <span id="oroEstado">--</span></p>
+<p><b>Estado:</b>
+<span id="oroEstado">--</span></p>
 
-<p><b>Acción:</b> <span id="oroAccion">--</span></p>
+<p><b>Acción:</b>
+<span id="oroAccion">--</span></p>
 
 </div>
 
@@ -302,15 +313,20 @@ Análisis en tiempo real de Bitcoin y metales preciosos.
 
 <h3>🥈 Plata</h3>
 
-<p><b>Precio:</b> <span id="plataPrecio">--</span></p>
+<p><b>Precio:</b>
+<span id="plataPrecio">--</span></p>
 
-<p><b>Variación:</b> <span id="plataVariacion">--</span></p>
+<p><b>Variación:</b>
+<span id="plataVariacion">--</span></p>
 
-<p><b>Índice:</b> <span id="plataIndice">--</span></p>
+<p><b>Índice:</b>
+<span id="plataIndice">--</span></p>
 
-<p><b>Estado:</b> <span id="plataEstado">--</span></p>
+<p><b>Estado:</b>
+<span id="plataEstado">--</span></p>
 
-<p><b>Acción:</b> <span id="plataAccion">--</span></p>
+<p><b>Acción:</b>
+<span id="plataAccion">--</span></p>
 
 </div>
 
@@ -318,15 +334,20 @@ Análisis en tiempo real de Bitcoin y metales preciosos.
 
 <h3>⚪ Platino</h3>
 
-<p><b>Precio:</b> <span id="platinoPrecio">--</span></p>
+<p><b>Precio:</b>
+<span id="platinoPrecio">--</span></p>
 
-<p><b>Variación:</b> <span id="platinoVariacion">--</span></p>
+<p><b>Variación:</b>
+<span id="platinoVariacion">--</span></p>
 
-<p><b>Índice:</b> <span id="platinoIndice">--</span></p>
+<p><b>Índice:</b>
+<span id="platinoIndice">--</span></p>
 
-<p><b>Estado:</b> <span id="platinoEstado">--</span></p>
+<p><b>Estado:</b>
+<span id="platinoEstado">--</span></p>
 
-<p><b>Acción:</b> <span id="platinoAccion">--</span></p>
+<p><b>Acción:</b>
+<span id="platinoAccion">--</span></p>
 
 </div>
 
@@ -334,15 +355,20 @@ Análisis en tiempo real de Bitcoin y metales preciosos.
 
 <h3>🟠 Paladio</h3>
 
-<p><b>Precio:</b> <span id="paladioPrecio">--</span></p>
+<p><b>Precio:</b>
+<span id="paladioPrecio">--</span></p>
 
-<p><b>Variación:</b> <span id="paladioVariacion">--</span></p>
+<p><b>Variación:</b>
+<span id="paladioVariacion">--</span></p>
 
-<p><b>Índice:</b> <span id="paladioIndice">--</span></p>
+<p><b>Índice:</b>
+<span id="paladioIndice">--</span></p>
 
-<p><b>Estado:</b> <span id="paladioEstado">--</span></p>
+<p><b>Estado:</b>
+<span id="paladioEstado">--</span></p>
 
-<p><b>Acción:</b> <span id="paladioAccion">--</span></p>
+<p><b>Acción:</b>
+<span id="paladioAccion">--</span></p>
 
 </div>
 
@@ -369,7 +395,9 @@ Análisis en tiempo real de Bitcoin y metales preciosos.
 <section id="nere" class="pantalla oculto">
 
 <button onclick="volver()">
+
 ⬅ Volver
+
 </button>
 
 <h2>👧 Método Nere</h2>
@@ -404,7 +432,9 @@ Independencia financiera a largo plazo.</p>
 <section id="radar" class="pantalla oculto">
 
 <button onclick="volver()">
+
 ⬅ Volver
+
 </button>
 
 <h2>🌍 Radar de Gangas</h2>
@@ -424,7 +454,9 @@ Independencia financiera a largo plazo.</p>
 <h3>Esperando análisis...</h3>
 
 <p>
+
 El Radar de Gangas analizará automáticamente tu Watchlist.
+
 </p>
 
 </div>
@@ -440,7 +472,9 @@ El Radar de Gangas analizará automáticamente tu Watchlist.
 <section id="watchlist" class="pantalla oculto">
 
 <button onclick="volver()">
+
 ⬅ Volver
+
 </button>
 
 <h2>⭐ Watchlist</h2>
@@ -452,14 +486,23 @@ El Radar de Gangas analizará automáticamente tu Watchlist.
 <ul>
 
 <li>Broadcom</li>
+
 <li>Microsoft</li>
+
 <li>Alphabet</li>
+
 <li>Amazon</li>
+
 <li>Meta</li>
+
 <li>ASML</li>
+
 <li>TSMC</li>
+
 <li>Novo Nordisk</li>
+
 <li>Nike</li>
+
 <li>Vanguard FTSE All World (VWCE)</li>
 
 </ul>
@@ -477,20 +520,20 @@ El Radar de Gangas analizará automáticamente tu Watchlist.
 <section id="ajustes" class="pantalla oculto">
 
 <button onclick="volver()">
+
 ⬅ Volver
+
 </button>
 
 <h2>⚙️ Ajustes</h2>
 
 <div class="activo">
 
-<p><b>Versión:</b> 2.1</p>
+<p>Versión 3.0</p>
 
-<p><b>Proyecto:</b> Método Paco</p>
+<p>Método Paco</p>
 
-<p><b>Estado:</b> En desarrollo</p>
-
-<p><b>Última mejora:</b> Dashboard Bitcoin</p>
+<p>Desarrollado por Paco + ChatGPT</p>
 
 </div>
 
@@ -503,14 +546,20 @@ El Radar de Gangas analizará automáticamente tu Watchlist.
 <!-- ===================== -->
 
 <script src="script.js"></script>
+
 <script src="precios.js"></script>
+
 <script src="cartera.js"></script>
 
+<!-- Método Paco Bit -->
 <script src="bit.js"></script>
 <script src="apiBit.js"></script>
 
+<!-- Resto de módulos -->
 <script src="nere.js"></script>
+
 <script src="radar.js"></script>
+
 <script src="watchlist.js"></script>
 
 </body>
