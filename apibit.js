@@ -1,10 +1,7 @@
 // ==========================
 // MÉTODO PACO BIT
-// API GOLD-API
-// v2.0
+// apiBit.js
 // ==========================
-
-// URL base
 
 const GOLD_API = "https://api.gold-api.com";
 
@@ -17,34 +14,18 @@ async function obtenerPrecioBit(simbolo){
     try{
 
         const respuesta = await fetch(
-            `${GOLD_API}/${simbolo}`
+            GOLD_API + "/symbols"
         );
 
-        if(!respuesta.ok){
+        const texto = await respuesta.text();
 
-            throw new Error(
-                "Error al conectar con Gold API"
-            );
+        alert(texto);
 
-        }
+        return null;
 
-        const datos = await respuesta.json();
+    }catch(error){
 
-        return {
-
-            precio: datos.price || 0,
-
-            variacion: datos.chg_percent || 0,
-
-            moneda: datos.currency || "USD"
-
-        };
-
-    }
-
-    catch(error){
-
-        console.error(error);
+        alert("ERROR: " + error);
 
         return null;
 
@@ -62,19 +43,7 @@ async function actualizarActivoAPI(nombre){
 
     if(!activo) return;
 
-    const datos = await obtenerPrecioBit(
-        activo.ticker
-    );
-
-    if(!datos) return;
-
-    actualizarActivoBit(nombre,{
-
-        precio: datos.precio,
-
-        variacion: datos.variacion
-
-    });
+    await obtenerPrecioBit(activo.ticker);
 
 }
 
@@ -98,41 +67,13 @@ async function actualizarMetodoPacoBitAPI(){
 
     }
 
-    if(typeof actualizarTodosBit==="function"){
-
-        actualizarTodosBit();
-
-    }
-
     if(typeof mostrarMetodoPacoBit==="function"){
 
         mostrarMetodoPacoBit();
 
     }
 
-    console.log("✅ Método Paco Bit actualizado");
-
 }
-
-// ==========================
-// ACTUALIZACIÓN AUTOMÁTICA
-// ==========================
-
-document.addEventListener("DOMContentLoaded",function(){
-
-    actualizarMetodoPacoBitAPI();
-
-});
-
-// ==========================
-// ACTUALIZAR CADA 5 MINUTOS
-// ==========================
-
-setInterval(function(){
-
-    actualizarMetodoPacoBitAPI();
-
-},300000);
 
 // ==========================
 // BOTÓN ACTUALIZAR
@@ -143,3 +84,13 @@ function actualizarBit(){
     actualizarMetodoPacoBitAPI();
 
 }
+
+// ==========================
+// CARGA AUTOMÁTICA
+// ==========================
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    actualizarMetodoPacoBitAPI();
+
+});
