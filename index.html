@@ -4,9 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Método Paco v1.0</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Método Paco v2.0</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -25,7 +27,7 @@
 <main class="container">
 
 <!-- ===================== -->
-<!-- MENU PRINCIPAL -->
+<!-- MENÚ PRINCIPAL -->
 <!-- ===================== -->
 
 <section id="inicio">
@@ -50,7 +52,7 @@
 
 <h2>👧 Método Nere</h2>
 
-<p>Plan de inversión para Nere</p>
+<p>Plan de inversión</p>
 
 </div>
 
@@ -58,7 +60,7 @@
 
 <h2>🌍 Radar de Gangas</h2>
 
-<p>Empresas infravaloradas</p>
+<p>Oportunidades de compra</p>
 
 </div>
 
@@ -66,7 +68,7 @@
 
 <h2>⭐ Watchlist</h2>
 
-<p>Lista de seguimiento</p>
+<p>Empresas favoritas</p>
 
 </div>
 
@@ -84,7 +86,9 @@
 <!-- MÉTODO PACO -->
 <!-- ===================== -->
 
-<section id="cartera" class="pantalla oculto">
+<section
+id="cartera"
+class="pantalla oculto">
 
 <button onclick="volver()">
 
@@ -127,6 +131,16 @@
 <p id="rentabilidad">0 €</p>
 
 </div>
+
+</div>
+
+<div style="margin:20px 0;">
+
+<button onclick="actualizarTodaLaCartera()">
+
+🔄 Actualizar precios
+
+</button>
 
 </div>
 
@@ -176,32 +190,38 @@ placeholder="Participaciones">
 <section id="bit" class="pantalla oculto">
 
 <button onclick="volver()">
-
 ⬅ Volver
-
 </button>
 
 <h2>₿ Método Paco Bit</h2>
 
 <p style="margin-bottom:20px;">
-Análisis de Bitcoin y metales preciosos.
+Precios en tiempo real de Bitcoin y metales preciosos.
 </p>
+
+<button onclick="actualizarBit()">
+🔄 Actualizar Método Paco Bit
+</button>
+
+<br><br>
+
+<div id="bitLista">
 
 <div class="activo">
 
 <h3>₿ Bitcoin</h3>
 
-<p><b>Precio actual:</b> --</p>
+<p><b>Precio:</b> <span id="bitcoinPrecio">--</span></p>
 
-<p><b>Última revisión:</b> --</p>
+<p><b>Variación:</b> <span id="bitcoinVariacion">--</span></p>
 
-<p><b>Variación:</b> --</p>
+<p><b>Índice:</b> <span id="bitcoinIndice">--</span></p>
 
-<p><b>Índice Método Paco Bit:</b> --</p>
+<p><b>Estado:</b> <span id="bitcoinEstado">--</span></p>
 
-<p><b>Estado:</b> --</p>
+<p><b>Acción:</b> <span id="bitcoinAccion">--</span></p>
 
-<p><b>Acción:</b> --</p>
+<p><b>Última revisión:</b> <span id="bitcoinRevision">--</span></p>
 
 </div>
 
@@ -209,17 +229,17 @@ Análisis de Bitcoin y metales preciosos.
 
 <h3>🥇 Oro</h3>
 
-<p><b>Precio actual:</b> --</p>
+<p><b>Precio:</b> <span id="oroPrecio">--</span></p>
 
-<p><b>Última revisión:</b> --</p>
+<p><b>Variación:</b> <span id="oroVariacion">--</span></p>
 
-<p><b>Variación:</b> --</p>
+<p><b>Índice:</b> <span id="oroIndice">--</span></p>
 
-<p><b>Índice Método Paco Bit:</b> --</p>
+<p><b>Estado:</b> <span id="oroEstado">--</span></p>
 
-<p><b>Estado:</b> --</p>
+<p><b>Acción:</b> <span id="oroAccion">--</span></p>
 
-<p><b>Acción:</b> --</p>
+<p><b>Última revisión:</b> <span id="oroRevision">--</span></p>
 
 </div>
 
@@ -227,17 +247,17 @@ Análisis de Bitcoin y metales preciosos.
 
 <h3>🥈 Plata</h3>
 
-<p><b>Precio actual:</b> --</p>
+<p><b>Precio:</b> <span id="plataPrecio">--</span></p>
 
-<p><b>Última revisión:</b> --</p>
+<p><b>Variación:</b> <span id="plataVariacion">--</span></p>
 
-<p><b>Variación:</b> --</p>
+<p><b>Índice:</b> <span id="plataIndice">--</span></p>
 
-<p><b>Índice Método Paco Bit:</b> --</p>
+<p><b>Estado:</b> <span id="plataEstado">--</span></p>
 
-<p><b>Estado:</b> --</p>
+<p><b>Acción:</b> <span id="plataAccion">--</span></p>
 
-<p><b>Acción:</b> --</p>
+<p><b>Última revisión:</b> <span id="plataRevision">--</span></p>
 
 </div>
 
@@ -245,17 +265,17 @@ Análisis de Bitcoin y metales preciosos.
 
 <h3>⚪ Platino</h3>
 
-<p><b>Precio actual:</b> --</p>
+<p><b>Precio:</b> <span id="platinoPrecio">--</span></p>
 
-<p><b>Última revisión:</b> --</p>
+<p><b>Variación:</b> <span id="platinoVariacion">--</span></p>
 
-<p><b>Variación:</b> --</p>
+<p><b>Índice:</b> <span id="platinoIndice">--</span></p>
 
-<p><b>Índice Método Paco Bit:</b> --</p>
+<p><b>Estado:</b> <span id="platinoEstado">--</span></p>
 
-<p><b>Estado:</b> --</p>
+<p><b>Acción:</b> <span id="platinoAccion">--</span></p>
 
-<p><b>Acción:</b> --</p>
+<p><b>Última revisión:</b> <span id="platinoRevision">--</span></p>
 
 </div>
 
@@ -263,35 +283,19 @@ Análisis de Bitcoin y metales preciosos.
 
 <h3>🟠 Paladio</h3>
 
-<p><b>Precio actual:</b> --</p>
+<p><b>Precio:</b> <span id="paladioPrecio">--</span></p>
 
-<p><b>Última revisión:</b> --</p>
+<p><b>Variación:</b> <span id="paladioVariacion">--</span></p>
 
-<p><b>Variación:</b> --</p>
+<p><b>Índice:</b> <span id="paladioIndice">--</span></p>
 
-<p><b>Índice Método Paco Bit:</b> --</p>
+<p><b>Estado:</b> <span id="paladioEstado">--</span></p>
 
-<p><b>Estado:</b> --</p>
+<p><b>Acción:</b> <span id="paladioAccion">--</span></p>
 
-<p><b>Acción:</b> --</p>
+<p><b>Última revisión:</b> <span id="paladioRevision">--</span></p>
 
 </div>
-
-<div class="activo">
-
-<h3>🔘 Rodio</h3>
-
-<p><b>Precio actual:</b> --</p>
-
-<p><b>Última revisión:</b> --</p>
-
-<p><b>Variación:</b> --</p>
-
-<p><b>Índice Método Paco Bit:</b> --</p>
-
-<p><b>Estado:</b> --</p>
-
-<p><b>Acción:</b> --</p>
 
 </div>
 
@@ -304,7 +308,6 @@ Análisis de Bitcoin y metales preciosos.
 <li>🥈 Plata</li>
 <li>⚪ Platino</li>
 <li>🟠 Paladio</li>
-<li>🔘 Rodio</li>
 
 </ul>
 
@@ -316,9 +319,7 @@ Análisis de Bitcoin y metales preciosos.
 
 <section id="nere" class="pantalla oculto">
 
-<button onclick="volver()">
-⬅ Volver
-</button>
+<button onclick="volver()">⬅ Volver</button>
 
 <h2>👧 Método Nere</h2>
 
@@ -326,23 +327,15 @@ Análisis de Bitcoin y metales preciosos.
 
 <h3>Plan de inversión</h3>
 
-<p>Esta sección estará dedicada al seguimiento del Método Nere.</p>
+<p>Capital invertido: <span id="nereCapital">0 €</span></p>
 
-<p>Próximamente incluirá:</p>
+<p>Valor actual: <span id="nereValor">0 €</span></p>
 
-<ul>
+<p>Rentabilidad: <span id="nereRentabilidad">0 %</span></p>
 
-<li>💰 Capital invertido</li>
+<p>Aportación mensual: <span id="nereMensual">100 €</span></p>
 
-<li>📈 Rentabilidad acumulada</li>
-
-<li>📅 Aportaciones mensuales</li>
-
-<li>🎯 Objetivo a largo plazo</li>
-
-<li>📊 Simulación de crecimiento</li>
-
-</ul>
+<p>Objetivo: Independencia financiera a largo plazo.</p>
 
 </div>
 
@@ -354,31 +347,27 @@ Análisis de Bitcoin y metales preciosos.
 
 <section id="radar" class="pantalla oculto">
 
-<button onclick="volver()">
-⬅ Volver
-</button>
+<button onclick="volver()">⬅ Volver</button>
 
 <h2>🌍 Radar de Gangas</h2>
 
+<button onclick="actualizarRadar()">
+
+🔄 Analizar mercado
+
+</button>
+
+<br><br>
+
+<div id="radarLista">
+
 <div class="activo">
 
-<h3>Radar Global</h3>
+<h3>Esperando análisis...</h3>
 
-<p>Aquí aparecerán automáticamente las empresas que el Método Paco considere infravaloradas.</p>
+<p>El Radar de Gangas analizará automáticamente tu Watchlist.</p>
 
-<p>Próximamente:</p>
-
-<ul>
-
-<li>🔥 Ganga de la semana</li>
-
-<li>📉 Empresas cerca de mínimos</li>
-
-<li>💎 Alta calidad + precio atractivo</li>
-
-<li>⭐ Oportunidades por sectores</li>
-
-</ul>
+</div>
 
 </div>
 
@@ -390,39 +379,30 @@ Análisis de Bitcoin y metales preciosos.
 
 <section id="watchlist" class="pantalla oculto">
 
-<button onclick="volver()">
-⬅ Volver
-</button>
+<button onclick="volver()">⬅ Volver</button>
 
 <h2>⭐ Watchlist</h2>
 
-<div class="activo">
+<div id="watchlistLista">
 
-<h3>Empresas favoritas</h3>
+<div class="activo">
 
 <ul>
 
 <li>Broadcom</li>
-
-<li>Novo Nordisk</li>
-
-<li>Nike</li>
-
-<li>TSMC</li>
-
-<li>ASML</li>
-
 <li>Microsoft</li>
-
 <li>Alphabet</li>
-
 <li>Amazon</li>
-
 <li>Meta</li>
-
+<li>ASML</li>
+<li>TSMC</li>
+<li>Novo Nordisk</li>
+<li>Nike</li>
 <li>Vanguard FTSE All World (VWCE)</li>
 
 </ul>
+
+</div>
 
 </div>
 
@@ -434,35 +414,17 @@ Análisis de Bitcoin y metales preciosos.
 
 <section id="ajustes" class="pantalla oculto">
 
-<button onclick="volver()">
-⬅ Volver
-</button>
+<button onclick="volver()">⬅ Volver</button>
 
 <h2>⚙️ Ajustes</h2>
 
 <div class="activo">
 
-<h3>Configuración</h3>
+<p>Versión 2.0</p>
 
-<p>Esta sección estará destinada a las futuras opciones de la aplicación.</p>
+<p>Método Paco</p>
 
-<ul>
-
-<li>🌙 Modo oscuro / claro</li>
-
-<li>💾 Copia de seguridad</li>
-
-<li>📂 Importar cartera</li>
-
-<li>📤 Exportar cartera</li>
-
-<li>🔔 Alertas personalizadas</li>
-
-<li>🌍 Idioma</li>
-
-<li>ℹ️ Información de la aplicación</li>
-
-</ul>
+<p>Desarrollado por Paco + ChatGPT</p>
 
 </div>
 
@@ -475,12 +437,21 @@ Análisis de Bitcoin y metales preciosos.
 <!-- ===================== -->
 
 <script src="script.js"></script>
+
 <script src="precios.js"></script>
+
 <script src="cartera.js"></script>
+
+<script src="apiBit.js"></script>
+
 <script src="bit.js"></script>
+
 <script src="nere.js"></script>
+
 <script src="radar.js"></script>
+
 <script src="watchlist.js"></script>
 
 </body>
+
 </html>
