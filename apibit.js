@@ -3,8 +3,6 @@
 // apiBit.js
 // ==========================
 
-alert("apiBit.js cargado");
-
 const GOLD_API = "https://api.gold-api.com";
 
 // ==========================
