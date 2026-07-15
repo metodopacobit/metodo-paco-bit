@@ -1,96 +1,53 @@
 // ==========================
-// MÉTODO PACO BIT
-// apiBit.js
+// API BITCOIN - COINGECKO
+// Método Paco v2.0
 // ==========================
 
-const GOLD_API = "https://api.gold-api.com";
+const COINGECKO_API =
+"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur&include_24hr_change=true";
 
-// ==========================
-// OBTENER PRECIO
-// ==========================
-
-async function obtenerPrecioBit(simbolo){
+async function actualizarBitcoin(){
 
     try{
 
-        const respuesta = await fetch(
-            GOLD_API + "/symbols"
-        );
+        const respuesta = await fetch(COINGECKO_API);
 
-        const texto = await respuesta.text();
+        if(!respuesta.ok){
 
-        alert(texto);
+            throw new Error("Error al obtener Bitcoin");
 
-        return null;
+        }
 
-    }catch(error){
+        const datos = await respuesta.json();
 
-        alert("ERROR: " + error);
+        actualizarActivoBit("bitcoin",{
 
-        return null;
+            precio: datos.bitcoin.eur,
 
-    }
+            variacion: datos.bitcoin.eur_24h_change
 
-}
-
-// ==========================
-// ACTUALIZAR UN ACTIVO
-// ==========================
-
-async function actualizarActivoAPI(nombre){
-
-    const activo = metodoPacoBit[nombre];
-
-    if(!activo) return;
-
-    await obtenerPrecioBit(activo.ticker);
-
-}
-
-// ==========================
-// ACTUALIZAR TODOS
-// ==========================
-
-async function actualizarMetodoPacoBitAPI(){
-
-    const activos = [
-        "bitcoin",
-        "oro",
-        "plata",
-        "platino",
-        "paladio"
-    ];
-
-    for(const nombre of activos){
-
-        await actualizarActivoAPI(nombre);
-
-    }
-
-    if(typeof mostrarMetodoPacoBit==="function"){
+        });
 
         mostrarMetodoPacoBit();
 
     }
 
-}
+    catch(error){
 
-// ==========================
-// BOTÓN ACTUALIZAR
-// ==========================
+        console.error(error);
+
+    }
+
+}
 
 function actualizarBit(){
 
-    actualizarMetodoPacoBitAPI();
+    actualizarBitcoin();
 
 }
 
-// ==========================
-// CARGA AUTOMÁTICA
-// ==========================
-
 document.addEventListener("DOMContentLoaded",function(){
 
-    actualizarMetodoPacoBitAPI();
+    actualizarBitcoin();
 
 });
