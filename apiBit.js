@@ -1,7 +1,9 @@
 // ==========================
-// API BITCOIN
-// Método Paco v2.1
+// apiBit.js
+// Método Paco v2.2
 // ==========================
+
+// ---------- APIs ----------
 
 const COINGECKO_API =
 "https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
@@ -17,25 +19,56 @@ async function actualizarBitcoin(){
 
     try{
 
-        const respuesta=await fetch(COINGECKO_API);
+        const respuesta = await fetch(COINGECKO_API,{
+            cache:"no-cache"
+        });
 
         if(!respuesta.ok){
 
-            throw new Error("Error obteniendo Bitcoin");
+            throw new Error(
+                "CoinGecko: "+respuesta.status
+            );
 
         }
 
-        const datos=await respuesta.json();
+        const datos = await respuesta.json();
+
+        // Guardar datos de mercado
 
         actualizarActivoBit("bitcoin",{
 
-            precio:datos.market_data.current_price.eur,
+            precio:
+                datos.market_data.current_price.eur || 0,
 
-            variacion:datos.market_data.price_change_percentage_24h,
+            variacion:
+                datos.market_data.price_change_percentage_24h || 0,
 
-            ath:datos.market_data.ath.eur
+            ath:
+                datos.market_data.ath.eur || 0
 
         });
+
+        // Calcular caída desde ATH
+
+        if(
+            metodoPacoBit.bitcoin.ath>0
+        ){
+
+            metodoPacoBit.bitcoin.caidaATH=
+
+            (
+                (
+                    metodoPacoBit.bitcoin.precio-
+                    metodoPacoBit.bitcoin.ath
+                )
+                /
+                metodoPacoBit.bitcoin.ath
+            )*100;
+
+        }
+
+        // Fear & Greed NO debe romper
+        // toda la actualización
 
         await actualizarFearGreed();
 
@@ -45,77 +78,71 @@ async function actualizarBitcoin(){
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Bitcoin:",
+            error
+        );
 
     }
 
 }
 
 // ==========================
-// FEAR & GREED
+// ACTUALIZAR PANTALLA
 // ==========================
 
-async function actualizarFearGreed(){
+function mostrarMetodoPacoBit(){
 
-    try{
+    const btc = metodoPacoBit.bitcoin;
 
-        const respuesta=await fetch(FEAR_GREED_API);
-
-        if(!respuesta.ok){
-
-            return;
-
-        }
-
-        const datos=await respuesta.json();
-
-        metodoPacoBit.bitcoin.fearGreed=
-        datos.data[0].value;
-
+    if(document.getElementById("btcPrecio")){
+        document.getElementById("btcPrecio").textContent =
+            btc.precio.toLocaleString("es-ES",{
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }) + " €";
     }
 
-    catch(error){
+    if(document.getElementById("btcCambio")){
+        document.getElementById("btcCambio").textContent =
+            btc.variacion.toFixed(2) + " %";
+    }
 
-        console.error(error);
+    if(document.getElementById("btcIndice")){
+        document.getElementById("btcIndice").textContent =
+            btc.indice;
+    }
 
+    if(document.getElementById("btcEstado")){
+        document.getElementById("btcEstado").textContent =
+            btc.estado;
+    }
+
+    if(document.getElementById("btcRevision")){
+        document.getElementById("btcRevision").textContent =
+            btc.ultimaRevision || "--";
     }
 
 }
 
 // ==========================
-// ACTUALIZAR TODO
+// OBTENER DATOS
 // ==========================
 
-async function actualizarBit(){
+function obtenerActivoBit(nombre){
+    return metodoPacoBit[nombre];
+}
 
-    await actualizarBitcoin();
-
+function obtenerTodosBit(){
+    return metodoPacoBit;
 }
 
 // ==========================
-// REFRESCO AUTOMÁTICO
+// INFORME
 // ==========================
 
-function iniciarActualizacionAutomatica(){
-
-    actualizarBit();
-
-    setInterval(function(){
-
-        actualizarBit();
-
-    },300000);
-
-}
-
-// ==========================
-// BOTÓN ACTUALIZAR
-// ==========================
-
-function refrescarMetodoPacoBit(){
-
-    actualizarBit();
-
+function generarInformeMetodoPacoBit(){
+    console.table(metodoPacoBit);
 }
 
 // ==========================
@@ -124,6 +151,6 @@ function refrescarMetodoPacoBit(){
 
 document.addEventListener("DOMContentLoaded",function(){
 
-    iniciarActualizacionAutomatica();
+    mostrarMetodoPacoBit();
 
 });
