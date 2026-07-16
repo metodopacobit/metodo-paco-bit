@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco v3.1</title>
-<link rel="stylesheet" href="style.css?v=3.2">
+<title>Método Paco v4.0</title>
+<link rel="stylesheet" href="style.css?v=4.0">
 </head>
 
 <body>
@@ -25,7 +25,7 @@
 
     <div class="card" onclick="mostrar('bit')">
         <h2>₿ Método Paco Bit</h2>
-        <p>Bitcoin y Metales</p>
+        <p>Bitcoin y metales</p>
     </div>
 
     <div class="card" onclick="mostrar('nere')">
@@ -57,27 +57,10 @@
     <h2>💼 Método Paco</h2>
 
     <div class="dashboard">
-
-        <div class="resumen">
-            <h4>Activos</h4>
-            <p id="numActivos">0</p>
-        </div>
-
-        <div class="resumen">
-            <h4>Invertido</h4>
-            <p id="totalInvertido">0 €</p>
-        </div>
-
-        <div class="resumen">
-            <h4>Valor actual</h4>
-            <p id="valorActual">0 €</p>
-        </div>
-
-        <div class="resumen">
-            <h4>Rentabilidad</h4>
-            <p id="rentabilidad">0 €</p>
-        </div>
-
+        <div class="resumen"><h4>Activos</h4><p id="numActivos">0</p></div>
+        <div class="resumen"><h4>Invertido</h4><p id="totalInvertido">0 €</p></div>
+        <div class="resumen"><h4>Valor actual</h4><p id="valorActual">0 €</p></div>
+        <div class="resumen"><h4>Rentabilidad</h4><p id="rentabilidad">0 €</p></div>
     </div>
 
     <div style="margin:20px 0;">
@@ -104,146 +87,52 @@
     <button onclick="volver()">⬅ Volver</button>
 
     <h2>₿ Método Paco Bit</h2>
+    <p class="bit-intro">Bitcoin y metales en tiempo real. Metales expresados en euros por kilogramo.</p>
 
-    <p class="bit-intro">Análisis en tiempo real de Bitcoin y metales preciosos.</p>
-
-    <h2 class="bitcoin-title">₿ Bitcoin</h2>
-
-    <div class="bitDashboard">
-
-        <div class="bitCard">
-
-            <h3>📊 Mercado</h3>
-
-            <div class="bitRow">
-                <span class="bitLabel">💶 Precio actual</span>
-                <strong id="bitcoinPrecio">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">📈 Cambio 24 h</span>
-                <strong id="bitcoinVariacion">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">🏆 Máximo histórico</span>
-                <strong id="bitcoinATH">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">📉 Caída desde ATH</span>
-                <strong id="bitcoinCaidaATH">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">😨 Fear &amp; Greed</span>
-                <strong id="bitcoinFearGreed">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">🎯 Índice Método Paco Bit</span>
-                <strong id="bitcoinIndice">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">📌 Estado</span>
-                <strong id="bitcoinEstado">--</strong>
-            </div>
-
-        </div>
-
-        <div class="bitCard">
-
-            <h3>💼 Tu posición</h3>
-
-            <div class="bitRow">
-                <span class="bitLabel">💰 Precio compra</span>
-                <strong id="bitcoinCompra">--</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">₿ Cantidad BTC</span>
-                <strong id="bitcoinCantidadTexto">0.00000000</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">💵 Invertido</span>
-                <strong id="bitcoinInvertido">0,00 €</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">💎 Valor actual</span>
-                <strong id="bitcoinValorActual">0,00 €</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">📊 Ganancia / Pérdida</span>
-                <strong id="bitcoinGanancia">0,00 €</strong>
-            </div>
-
-            <div class="bitRow">
-                <span class="bitLabel">📈 Rentabilidad</span>
-                <strong id="bitcoinRentabilidad">0,00 %</strong>
-            </div>
-
-        </div>
-
+    <div class="bit-actions">
+        <button id="botonActualizarBit" onclick="actualizarBit()">🔄 Actualizar todo</button>
     </div>
-
-    <button type="button" class="bitSecondaryButton" onclick="abrirEditorPosicion()">✏️ Editar posición</button>
-
-    <button onclick="actualizarBit()">🔄 Actualizar Método Paco Bit</button>
 
     <p class="ultima-actualizacion">
         <strong>Última actualización:</strong>
-        <span id="bitcoinUltimaActualizacion">--</span>
+        <span id="bitUltimaActualizacion">--</span>
     </p>
 
-    <hr>
+    <section class="resumen-bit">
+        <h3>📊 Resumen Método Paco Bit</h3>
 
-    <h3>🥇 Metales preciosos</h3>
-
-    <div id="bitLista">
-
-        <div class="activo">
-            <h3>🥇 Oro</h3>
-            <p><b>Precio:</b> <span id="oroPrecio">--</span></p>
-            <p><b>Variación:</b> <span id="oroVariacion">--</span></p>
-            <p><b>Índice:</b> <span id="oroIndice">--</span></p>
-            <p><b>Estado:</b> <span id="oroEstado">--</span></p>
-            <p><b>Acción:</b> <span id="oroAccion">--</span></p>
+        <div class="resumen-bit-grid">
+            <div><span>Total invertido</span><strong id="bitResumenInvertido">0,00 €</strong></div>
+            <div><span>Valor actual</span><strong id="bitResumenValor">0,00 €</strong></div>
+            <div><span>Ganancia / Pérdida</span><strong id="bitResumenGanancia">0,00 €</strong></div>
+            <div><span>Rentabilidad</span><strong id="bitResumenRentabilidad">0,00 %</strong></div>
         </div>
+    </section>
 
-        <div class="activo">
-            <h3>🥈 Plata</h3>
-            <p><b>Precio:</b> <span id="plataPrecio">--</span></p>
-            <p><b>Variación:</b> <span id="plataVariacion">--</span></p>
-            <p><b>Índice:</b> <span id="plataIndice">--</span></p>
-            <p><b>Estado:</b> <span id="plataEstado">--</span></p>
-            <p><b>Acción:</b> <span id="plataAccion">--</span></p>
-        </div>
+    <div id="activosBit"></div>
 
-        <div class="activo">
-            <h3>⚪ Platino</h3>
-            <p><b>Precio:</b> <span id="platinoPrecio">--</span></p>
-            <p><b>Variación:</b> <span id="platinoVariacion">--</span></p>
-            <p><b>Índice:</b> <span id="platinoIndice">--</span></p>
-            <p><b>Estado:</b> <span id="platinoEstado">--</span></p>
-            <p><b>Acción:</b> <span id="platinoAccion">--</span></p>
-        </div>
+</section>
 
-        <div class="activo">
-            <h3>🟠 Paladio</h3>
-            <p><b>Precio:</b> <span id="paladioPrecio">--</span></p>
-            <p><b>Variación:</b> <span id="paladioVariacion">--</span></p>
-            <p><b>Índice:</b> <span id="paladioIndice">--</span></p>
-            <p><b>Estado:</b> <span id="paladioEstado">--</span></p>
-            <p><b>Acción:</b> <span id="paladioAccion">--</span></p>
-        </div>
+<div id="modalPosicionActivo" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalActivo">
+
+    <div class="modalContenido">
+
+        <h3 id="tituloModalActivo">💼 Editar posición</h3>
+
+        <label for="posicionPrecioCompra">Precio medio de compra</label>
+        <input id="posicionPrecioCompra" type="number" min="0" step="0.00000001" placeholder="Precio de compra">
+
+        <label for="posicionCantidad">Cantidad</label>
+        <input id="posicionCantidad" type="number" min="0" step="0.00000001" placeholder="Cantidad">
+
+        <p id="ayudaUnidadPosicion" class="ayuda-input"></p>
+
+        <button type="button" onclick="guardarPosicionActivo()">💾 Guardar posición</button>
+        <button type="button" class="botonCancelar" onclick="cerrarEditorPosicionActivo()">Cancelar</button>
 
     </div>
 
-</section>
+</div>
 
 <section id="nere" class="pantalla oculto">
 
@@ -288,9 +177,7 @@
     <h2>⭐ Watchlist</h2>
 
     <div id="watchlistLista">
-
         <div class="activo">
-
             <ul>
                 <li>Broadcom</li>
                 <li>Microsoft</li>
@@ -303,9 +190,7 @@
                 <li>Nike</li>
                 <li>Vanguard FTSE All World (VWCE)</li>
             </ul>
-
         </div>
-
     </div>
 
 </section>
@@ -317,7 +202,7 @@
     <h2>⚙️ Ajustes</h2>
 
     <div class="activo">
-        <p>Versión 3.1</p>
+        <p>Versión 4.0</p>
         <p>Método Paco</p>
         <p>Desarrollado por Paco + ChatGPT</p>
     </div>
@@ -326,33 +211,14 @@
 
 </main>
 
-<div id="modalPosicionBitcoin" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalBitcoin">
-
-    <div class="modalContenido">
-
-        <h3 id="tituloModalBitcoin">💼 Editar posición Bitcoin</h3>
-
-        <label for="bitcoinPrecioCompraInput">Precio medio de compra (€)</label>
-        <input id="bitcoinPrecioCompraInput" type="number" min="0" step="0.01" placeholder="Ej. 60798">
-
-        <label for="bitcoinCantidadInput">Cantidad de BTC</label>
-        <input id="bitcoinCantidadInput" type="number" min="0" step="0.00000001" placeholder="Ej. 0.004112">
-
-        <button type="button" onclick="guardarPosicionBitcoin()">💾 Guardar posición</button>
-        <button type="button" class="botonCancelar" onclick="cerrarEditorPosicion()">Cancelar</button>
-
-    </div>
-
-</div>
-
-<script src="script.js?v=3.2"></script>
-<script src="precios.js?v=3.2"></script>
-<script src="cartera.js?v=3.2"></script>
-<script src="bit.js?v=3.2"></script>
-<script src="apiBit.js?v=3.2"></script>
-<script src="nere.js?v=3.2"></script>
-<script src="radar.js?v=3.2"></script>
-<script src="watchlist.js?v=3.2"></script>
+<script src="script.js?v=4.0"></script>
+<script src="precios.js?v=4.0"></script>
+<script src="cartera.js?v=4.0"></script>
+<script src="bit.js?v=4.0"></script>
+<script src="apiBit.js?v=4.0"></script>
+<script src="nere.js?v=4.0"></script>
+<script src="radar.js?v=4.0"></script>
+<script src="watchlist.js?v=4.0"></script>
 
 </body>
 </html>
