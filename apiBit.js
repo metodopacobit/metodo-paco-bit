@@ -1,299 +1,91 @@
 // ==========================
 // apiBit.js v3.1
-// Método Paco Bit
-// ==========================
-
-
-// ==========================
-// API COINGECKO
+// CoinGecko + Fear & Greed
 // ==========================
 
 const COINGECKO_API =
-"https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
-
-
-// ==========================
-// API FEAR & GREED
-// ==========================
+    "https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
 
 const FEAR_GREED_API =
-"https://api.alternative.me/fng/?limit=1";
+    "https://api.alternative.me/fng/?limit=1";
 
+let actualizandoBit = false;
 
-// ==========================
-// ACTUALIZAR BITCOIN
-// ==========================
+async function obtenerFearGreed() {
+    try {
+        const respuesta = await fetch(FEAR_GREED_API, { cache: "no-store" });
 
-async function actualizarBitcoin(){
+        if (!respuesta.ok) return null;
 
-    try{
+        const datos = await respuesta.json();
+        const item = datos?.data?.[0];
 
-        const respuesta =
-        await fetch(
+        if (!item) return null;
 
-            COINGECKO_API,
-
-            {
-                cache:"no-cache"
-            }
-
-        );
-
-
-        if(!respuesta.ok){
-
-            throw new Error(
-
-                "Error CoinGecko: "
-                + respuesta.status
-
-            );
-
-        }
-
-
-        const datos =
-        await respuesta.json();
-
-
-        const marketData =
-        datos.market_data;
-
-
-        if(
-
-            !marketData ||
-            !marketData.current_price ||
-            !marketData.current_price.eur
-
-        ){
-
-            throw new Error(
-
-                "Datos de Bitcoin incompletos"
-
-            );
-
-        }
-
-
-        // ==========================
-        // ACTUALIZAR DATOS DE MERCADO
-        // ==========================
-
-        actualizarActivoBit(
-
-            "bitcoin",
-
-            {
-
-                precio:
-
-                marketData.current_price.eur,
-
-
-                variacion:
-
-                marketData.price_change_percentage_24h
-                || 0,
-
-
-                ath:
-
-                marketData.ath.eur
-                || 0
-
-            }
-
-        );
-
-
-        // ==========================
-        // FEAR & GREED
-        // ==========================
-
-        await actualizarFearGreed();
-
-
-        // ==========================
-        // RECALCULAR POSICIÓN
-        // ==========================
-
-        actualizarPosicionBitcoin();
-
-
-        // ==========================
-        // MOSTRAR TODO
-        // ==========================
-
-        mostrarMetodoPacoBit();
-
-
-        // ==========================
-        // FECHA Y HORA
-        // ==========================
-
-        const fecha =
-        new Date().toLocaleString(
-
-            "es-ES",
-
-            {
-
-                dateStyle:"short",
-
-                timeStyle:"medium"
-
-            }
-
-        );
-
-
-        const elemento =
-        document.getElementById(
-
-            "bitcoinUltimaActualizacion"
-
-        );
-
-
-        if(elemento){
-
-            elemento.textContent =
-            fecha;
-
-        }
-
-
-        console.log(
-
-            "Bitcoin actualizado:",
-            fecha
-
-        );
-
+        return {
+            valor: item.value ?? "--",
+            clasificacion: item.value_classification ?? ""
+        };
+    } catch (error) {
+        console.warn("Fear & Greed no disponible:", error);
+        return null;
     }
-
-
-    catch(error){
-
-        console.error(
-
-            "Error actualizando Bitcoin:",
-
-            error
-
-        );
-
-    }
-
 }
 
+async function actualizarBitcoin() {
+    const respuesta = await fetch(COINGECKO_API, { cache: "no-store" });
 
-// ==========================
-// FEAR & GREED
-// ==========================
-
-async function actualizarFearGreed(){
-
-    try{
-
-        const respuesta =
-        await fetch(
-
-            FEAR_GREED_API,
-
-            {
-
-                cache:"no-cache"
-
-            }
-
-        );
-
-
-        if(!respuesta.ok){
-
-            console.warn(
-
-                "Fear & Greed no disponible"
-
-            );
-
-            return;
-
-        }
-
-
-        const datos =
-        await respuesta.json();
-
-
-        if(
-
-            datos.data &&
-            datos.data.length > 0
-
-        ){
-
-            metodoPacoBit.bitcoin.fearGreed =
-
-                datos.data[0].value;
-
-        }
-
+    if (!respuesta.ok) {
+        throw new Error("CoinGecko respondió con estado " + respuesta.status);
     }
 
+    const datos = await respuesta.json();
+    const mercado = datos?.market_data;
 
-    catch(error){
-
-        console.warn(
-
-            "Fear & Greed no disponible"
-
-        );
-
+    if (!mercado?.current_price?.eur) {
+        throw new Error("CoinGecko no devolvió el precio de Bitcoin en EUR");
     }
 
+    const fearGreed = await obtenerFearGreed();
+
+    actualizarActivoBit("bitcoin", {
+        precio: Number(mercado.current_price.eur) || 0,
+        variacion: Number(mercado.price_change_percentage_24h) || 0,
+        ath: Number(mercado.ath?.eur) || 0,
+        fearGreed: fearGreed
+            ? `${fearGreed.valor}${fearGreed.clasificacion ? " · " + fearGreed.clasificacion : ""}`
+            : metodoPacoBit.bitcoin.fearGreed
+    });
+
+    // El precio nuevo recalcula automáticamente valor actual,
+    // ganancia y rentabilidad usando la posición guardada.
+    actualizarPosicionBitcoin();
+    mostrarMetodoPacoBit();
+
+    const fecha = new Date().toLocaleString("es-ES");
+    metodoPacoBit.bitcoin.ultimaRevision = fecha;
+    escribir("bitcoinUltimaActualizacion", fecha);
 }
 
+async function actualizarBit() {
+    if (actualizandoBit) return;
 
-// ==========================
-// ACTUALIZAR MÉTODO PACO BIT
-// ==========================
+    actualizandoBit = true;
 
-async function actualizarBit(){
-
-    await actualizarBitcoin();
-
+    try {
+        await actualizarBitcoin();
+    } catch (error) {
+        console.error("Error actualizando Método Paco Bit:", error);
+        alert("No se pudo actualizar Bitcoin. Inténtalo de nuevo en unos segundos.");
+    } finally {
+        actualizandoBit = false;
+    }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    actualizarBit();
 
-// ==========================
-// ACTUALIZACIÓN AUTOMÁTICA
-// ==========================
-
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    function(){
-
+    setInterval(function() {
         actualizarBit();
-
-
-        setInterval(
-
-            function(){
-
-                actualizarBit();
-
-            },
-
-            300000
-
-        );
-
-    }
-
-);
+    }, 300000);
+});
