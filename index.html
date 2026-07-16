@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Método Paco v3.1</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3.2">
 </head>
 
 <body>
@@ -190,7 +190,7 @@
 
     </div>
 
-    <button class="bitSecondaryButton" onclick="abrirEditorPosicion()">✏️ Editar posición</button>
+    <button type="button" class="bitSecondaryButton" onclick="abrirEditorPosicion()">✏️ Editar posición</button>
 
     <button onclick="actualizarBit()">🔄 Actualizar Método Paco Bit</button>
 
@@ -244,25 +244,6 @@
     </div>
 
 </section>
-
-<div id="modalPosicionBitcoin" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalBitcoin">
-
-    <div class="modalContenido">
-
-        <h3 id="tituloModalBitcoin">💼 Editar posición Bitcoin</h3>
-
-        <label for="bitcoinPrecioCompraInput">Precio medio de compra (€)</label>
-        <input id="bitcoinPrecioCompraInput" type="number" min="0" step="0.01" placeholder="Ej. 60798">
-
-        <label for="bitcoinCantidadInput">Cantidad de BTC</label>
-        <input id="bitcoinCantidadInput" type="number" min="0" step="0.00000001" placeholder="Ej. 0.004112">
-
-        <button onclick="guardarPosicionBitcoin()">💾 Guardar posición</button>
-        <button class="botonCancelar" onclick="cerrarEditorPosicion()">Cancelar</button>
-
-    </div>
-
-</div>
 
 <section id="nere" class="pantalla oculto">
 
@@ -345,14 +326,33 @@
 
 </main>
 
-<script src="script.js"></script>
-<script src="precios.js"></script>
-<script src="cartera.js"></script>
-<script src="bit.js"></script>
-<script src="apiBit.js"></script>
-<script src="nere.js"></script>
-<script src="radar.js"></script>
-<script src="watchlist.js"></script>
+<div id="modalPosicionBitcoin" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalBitcoin">
+
+    <div class="modalContenido">
+
+        <h3 id="tituloModalBitcoin">💼 Editar posición Bitcoin</h3>
+
+        <label for="bitcoinPrecioCompraInput">Precio medio de compra (€)</label>
+        <input id="bitcoinPrecioCompraInput" type="number" min="0" step="0.01" placeholder="Ej. 60798">
+
+        <label for="bitcoinCantidadInput">Cantidad de BTC</label>
+        <input id="bitcoinCantidadInput" type="number" min="0" step="0.00000001" placeholder="Ej. 0.004112">
+
+        <button type="button" onclick="guardarPosicionBitcoin()">💾 Guardar posición</button>
+        <button type="button" class="botonCancelar" onclick="cerrarEditorPosicion()">Cancelar</button>
+
+    </div>
+
+</div>
+
+<script src="script.js?v=3.2"></script>
+<script src="precios.js?v=3.2"></script>
+<script src="cartera.js?v=3.2"></script>
+<script src="bit.js?v=3.2"></script>
+<script src="apiBit.js?v=3.2"></script>
+<script src="nere.js?v=3.2"></script>
+<script src="radar.js?v=3.2"></script>
+<script src="watchlist.js?v=3.2"></script>
 
 </body>
 </html>
