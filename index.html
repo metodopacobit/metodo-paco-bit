@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco v4.0</title>
-<link rel="stylesheet" href="style.css?v=4.0">
+<title>Método Paco v4.1</title>
+<link rel="stylesheet" href="style.css?v=4.1">
 </head>
 
 <body>
@@ -55,32 +55,82 @@
     <button onclick="volver()">⬅ Volver</button>
 
     <h2>💼 Método Paco</h2>
+    <p class="cartera-intro">Acciones y ETF con precios de mercado, objetivos y seguimiento de tu posición.</p>
 
-    <div class="dashboard">
-        <div class="resumen"><h4>Activos</h4><p id="numActivos">0</p></div>
-        <div class="resumen"><h4>Invertido</h4><p id="totalInvertido">0 €</p></div>
-        <div class="resumen"><h4>Valor actual</h4><p id="valorActual">0 €</p></div>
-        <div class="resumen"><h4>Rentabilidad</h4><p id="rentabilidad">0 €</p></div>
+    <div class="cartera-actions">
+        <button id="botonActualizarCartera" onclick="actualizarTodaLaCartera()">🔄 Actualizar toda la cartera</button>
+        <button class="boton-secundario" onclick="abrirEditorActivo()">➕ Añadir activo</button>
     </div>
 
-    <div style="margin:20px 0;">
-        <button onclick="actualizarTodaLaCartera()">🔄 Actualizar precios</button>
-    </div>
+    <p class="ultima-actualizacion">
+        <strong>Última actualización:</strong>
+        <span id="carteraUltimaActualizacion">--</span>
+    </p>
 
-    <h3>📈 Mi cartera</h3>
+    <section class="resumen-cartera">
+        <h3>📊 Resumen de cartera</h3>
+
+        <div class="resumen-cartera-grid">
+            <div><span>Activos</span><strong id="numActivos">0</strong></div>
+            <div><span>Total invertido</span><strong id="totalInvertido">0,00 €</strong></div>
+            <div><span>Valor actual</span><strong id="valorActual">0,00 €</strong></div>
+            <div><span>Ganancia / Pérdida</span><strong id="beneficioCartera">0,00 €</strong></div>
+            <div><span>Rentabilidad</span><strong id="rentabilidad">0,00 %</strong></div>
+            <div><span>Mayor peso</span><strong id="mayorPesoCartera">--</strong></div>
+        </div>
+    </section>
+
     <div id="lista"></div>
 
-    <h3>➕ Añadir activo</h3>
-
-    <input id="nombre" type="text" placeholder="Nombre">
-    <input id="ticker" type="text" placeholder="Ticker">
-    <input id="precio" type="number" placeholder="Precio compra">
-    <input id="actual" type="number" placeholder="Precio actual">
-    <input id="cantidad" type="number" placeholder="Participaciones">
-
-    <button onclick="guardarActivo()">💾 Guardar activo</button>
+    <div id="carteraVacia" class="activo cartera-vacia">
+        <h3>📈 Todavía no hay activos</h3>
+        <p>Añade una acción o ETF para comenzar a seguir la cartera.</p>
+        <button onclick="abrirEditorActivo()">➕ Añadir primer activo</button>
+    </div>
 
 </section>
+
+<div id="modalActivoCartera" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalActivoCartera">
+
+    <div class="modalContenido modal-cartera">
+
+        <h3 id="tituloModalActivoCartera">➕ Añadir activo</h3>
+
+        <label for="activoNombreInput">Nombre</label>
+        <input id="activoNombreInput" type="text" placeholder="Ej. Microsoft">
+
+        <label for="activoTickerInput">Ticker</label>
+        <input id="activoTickerInput" type="text" placeholder="Ej. MSFT">
+
+        <label for="activoExchangeInput">Bolsa o mercado (opcional)</label>
+        <input id="activoExchangeInput" type="text" placeholder="Ej. NASDAQ, XETR o LSE">
+
+        <div class="form-grid-cartera">
+            <div>
+                <label for="activoPrecioCompraInput">Precio medio de compra</label>
+                <input id="activoPrecioCompraInput" type="number" min="0" step="0.0001" placeholder="0,00">
+            </div>
+
+            <div>
+                <label for="activoCantidadInput">Participaciones</label>
+                <input id="activoCantidadInput" type="number" min="0" step="0.000001" placeholder="0">
+            </div>
+        </div>
+
+        <label for="activoObjetivoInput">Precio objetivo</label>
+        <input id="activoObjetivoInput" type="number" min="0" step="0.0001" placeholder="Objetivo personal o de consenso">
+
+        <p class="ayuda-input">
+            Para ETF europeos puede ser necesario indicar el mercado. Ejemplos: VWCE con XETR, EQQQ con LSE.
+        </p>
+
+        <button type="button" onclick="guardarActivo()">💾 Guardar activo</button>
+        <button type="button" class="botonEliminarModal oculto" id="botonEliminarActivoModal" onclick="eliminarActivoDesdeModal()">🗑 Eliminar activo</button>
+        <button type="button" class="botonCancelar" onclick="cerrarEditorActivo()">Cancelar</button>
+
+    </div>
+
+</div>
 
 <section id="bit" class="pantalla oculto">
 
@@ -202,7 +252,7 @@
     <h2>⚙️ Ajustes</h2>
 
     <div class="activo">
-        <p>Versión 4.0</p>
+        <p>Versión 4.1</p>
         <p>Método Paco</p>
         <p>Desarrollado por Paco + ChatGPT</p>
     </div>
@@ -211,14 +261,14 @@
 
 </main>
 
-<script src="script.js?v=4.0"></script>
-<script src="precios.js?v=4.0"></script>
-<script src="cartera.js?v=4.0"></script>
-<script src="bit.js?v=4.0"></script>
-<script src="apiBit.js?v=4.0"></script>
-<script src="nere.js?v=4.0"></script>
-<script src="radar.js?v=4.0"></script>
-<script src="watchlist.js?v=4.0"></script>
+<script src="script.js?v=4.1"></script>
+<script src="precios.js?v=4.1"></script>
+<script src="cartera.js?v=4.1"></script>
+<script src="bit.js?v=4.1"></script>
+<script src="apiBit.js?v=4.1"></script>
+<script src="nere.js?v=4.1"></script>
+<script src="radar.js?v=4.1"></script>
+<script src="watchlist.js?v=4.1"></script>
 
 </body>
 </html>
