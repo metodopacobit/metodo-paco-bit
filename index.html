@@ -1,825 +1,358 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Método Paco v3.0</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método Paco v3.1</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <header class="header">
-
-<h1>📈 Método Paco</h1>
-
-<p>Centro personal de inversión</p>
-
+    <h1>📈 Método Paco</h1>
+    <p>Centro personal de inversión</p>
 </header>
 
 <main class="container">
 
-<!-- ===================== -->
-<!-- MENÚ PRINCIPAL -->
-<!-- ===================== -->
-
 <section id="inicio">
 
-<div class="card" onclick="mostrar('cartera')">
+    <div class="card" onclick="mostrar('cartera')">
+        <h2>💼 Método Paco</h2>
+        <p>Gestiona tu cartera</p>
+    </div>
 
-<h2>💼 Método Paco</h2>
+    <div class="card" onclick="mostrar('bit')">
+        <h2>₿ Método Paco Bit</h2>
+        <p>Bitcoin y Metales</p>
+    </div>
 
-<p>Gestiona tu cartera</p>
+    <div class="card" onclick="mostrar('nere')">
+        <h2>👧 Método Nere</h2>
+        <p>Plan de inversión</p>
+    </div>
 
-</div>
+    <div class="card" onclick="mostrar('radar')">
+        <h2>🌍 Radar de Gangas</h2>
+        <p>Oportunidades de compra</p>
+    </div>
 
-<div class="card" onclick="mostrar('bit')">
+    <div class="card" onclick="mostrar('watchlist')">
+        <h2>⭐ Watchlist</h2>
+        <p>Empresas favoritas</p>
+    </div>
 
-<h2>₿ Método Paco Bit</h2>
-
-<p>Bitcoin y Metales</p>
-
-</div>
-
-<div class="card" onclick="mostrar('nere')">
-
-<h2>👧 Método Nere</h2>
-
-<p>Plan de inversión</p>
-
-</div>
-
-<div class="card" onclick="mostrar('radar')">
-
-<h2>🌍 Radar de Gangas</h2>
-
-<p>Oportunidades de compra</p>
-
-</div>
-
-<div class="card" onclick="mostrar('watchlist')">
-
-<h2>⭐ Watchlist</h2>
-
-<p>Empresas favoritas</p>
-
-</div>
-
-<div class="card" onclick="mostrar('ajustes')">
-
-<h2>⚙️ Ajustes</h2>
-
-<p>Configuración</p>
-
-</div>
+    <div class="card" onclick="mostrar('ajustes')">
+        <h2>⚙️ Ajustes</h2>
+        <p>Configuración</p>
+    </div>
 
 </section>
 
+<section id="cartera" class="pantalla oculto">
 
-<!-- ===================== -->
-<!-- MÉTODO PACO -->
-<!-- ===================== -->
+    <button onclick="volver()">⬅ Volver</button>
 
-<section
-id="cartera"
-class="pantalla oculto">
+    <h2>💼 Método Paco</h2>
 
-<button onclick="volver()">
+    <div class="dashboard">
 
-⬅ Volver
+        <div class="resumen">
+            <h4>Activos</h4>
+            <p id="numActivos">0</p>
+        </div>
 
-</button>
+        <div class="resumen">
+            <h4>Invertido</h4>
+            <p id="totalInvertido">0 €</p>
+        </div>
 
-<h2>💼 Método Paco</h2>
+        <div class="resumen">
+            <h4>Valor actual</h4>
+            <p id="valorActual">0 €</p>
+        </div>
 
-<div class="dashboard">
+        <div class="resumen">
+            <h4>Rentabilidad</h4>
+            <p id="rentabilidad">0 €</p>
+        </div>
 
-<div class="resumen">
+    </div>
 
-<h4>Activos</h4>
+    <div style="margin:20px 0;">
+        <button onclick="actualizarTodaLaCartera()">🔄 Actualizar precios</button>
+    </div>
 
-<p id="numActivos">0</p>
+    <h3>📈 Mi cartera</h3>
+    <div id="lista"></div>
 
-</div>
+    <h3>➕ Añadir activo</h3>
 
-<div class="resumen">
+    <input id="nombre" type="text" placeholder="Nombre">
+    <input id="ticker" type="text" placeholder="Ticker">
+    <input id="precio" type="number" placeholder="Precio compra">
+    <input id="actual" type="number" placeholder="Precio actual">
+    <input id="cantidad" type="number" placeholder="Participaciones">
 
-<h4>Invertido</h4>
-
-<p id="totalInvertido">0 €</p>
-
-</div>
-
-<div class="resumen">
-
-<h4>Valor actual</h4>
-
-<p id="valorActual">0 €</p>
-
-</div>
-
-<div class="resumen">
-
-<h4>Rentabilidad</h4>
-
-<p id="rentabilidad">0 €</p>
-
-</div>
-
-</div>
-
-<div style="margin:20px 0;">
-
-<button onclick="actualizarTodaLaCartera()">
-
-🔄 Actualizar precios
-
-</button>
-
-</div>
-
-<h3>📈 Mi cartera</h3>
-
-<div id="lista"></div>
-
-<h3>➕ Añadir activo</h3>
-
-<input
-id="nombre"
-type="text"
-placeholder="Nombre">
-
-<input
-id="ticker"
-type="text"
-placeholder="Ticker">
-
-<input
-id="precio"
-type="number"
-placeholder="Precio compra">
-
-<input
-id="actual"
-type="number"
-placeholder="Precio actual">
-
-<input
-id="cantidad"
-type="number"
-placeholder="Participaciones">
-
-<button onclick="guardarActivo()">
-
-💾 Guardar activo
-
-</button>
+    <button onclick="guardarActivo()">💾 Guardar activo</button>
 
 </section>
 
+<section id="bit" class="pantalla oculto">
 
-<!-- ===================== -->
-<!-- MÉTODO PACO BIT -->
-<!-- ===================== -->
+    <button onclick="volver()">⬅ Volver</button>
 
-<section
-id="bit"
-class="pantalla oculto">
+    <h2>₿ Método Paco Bit</h2>
 
-<button onclick="volver()">
+    <p class="bit-intro">Análisis en tiempo real de Bitcoin y metales preciosos.</p>
 
-⬅ Volver
+    <h2 class="bitcoin-title">₿ Bitcoin</h2>
 
-</button>
+    <div class="bitDashboard">
 
-<h2>₿ Método Paco Bit</h2>
+        <div class="bitCard">
 
-<p style="margin-bottom:20px;">
+            <h3>📊 Mercado</h3>
 
-Precios en tiempo real de Bitcoin y metales preciosos.
+            <div class="bitRow">
+                <span class="bitLabel">💶 Precio actual</span>
+                <strong id="bitcoinPrecio">--</strong>
+            </div>
 
-</p>
+            <div class="bitRow">
+                <span class="bitLabel">📈 Cambio 24 h</span>
+                <strong id="bitcoinVariacion">--</strong>
+            </div>
 
+            <div class="bitRow">
+                <span class="bitLabel">🏆 Máximo histórico</span>
+                <strong id="bitcoinATH">--</strong>
+            </div>
 
-<!-- ========================= -->
-<!-- MERCADO + POSICIÓN -->
-<!-- ========================= -->
+            <div class="bitRow">
+                <span class="bitLabel">📉 Caída desde ATH</span>
+                <strong id="bitcoinCaidaATH">--</strong>
+            </div>
 
-<div class="bit-grid">
+            <div class="bitRow">
+                <span class="bitLabel">😨 Fear &amp; Greed</span>
+                <strong id="bitcoinFearGreed">--</strong>
+            </div>
 
+            <div class="bitRow">
+                <span class="bitLabel">🎯 Índice Método Paco Bit</span>
+                <strong id="bitcoinIndice">--</strong>
+            </div>
 
-<!-- ========================= -->
-<!-- MERCADO -->
-<!-- ========================= -->
+            <div class="bitRow">
+                <span class="bitLabel">📌 Estado</span>
+                <strong id="bitcoinEstado">--</strong>
+            </div>
 
-<div class="activo">
+        </div>
 
-<h3>📊 Mercado</h3>
+        <div class="bitCard">
 
-<p>
+            <h3>💼 Tu posición</h3>
 
-<b>💶 Precio actual</b>
+            <div class="bitRow">
+                <span class="bitLabel">💰 Precio compra</span>
+                <strong id="bitcoinCompra">--</strong>
+            </div>
 
-<span id="bitcoinPrecio">--</span>
+            <div class="bitRow">
+                <span class="bitLabel">₿ Cantidad BTC</span>
+                <strong id="bitcoinCantidadTexto">0.00000000</strong>
+            </div>
 
-</p>
+            <div class="bitRow">
+                <span class="bitLabel">💵 Invertido</span>
+                <strong id="bitcoinInvertido">0,00 €</strong>
+            </div>
 
-<p>
+            <div class="bitRow">
+                <span class="bitLabel">💎 Valor actual</span>
+                <strong id="bitcoinValorActual">0,00 €</strong>
+            </div>
 
-<b>📈 Cambio 24 h</b>
+            <div class="bitRow">
+                <span class="bitLabel">📊 Ganancia / Pérdida</span>
+                <strong id="bitcoinGanancia">0,00 €</strong>
+            </div>
 
-<span id="bitcoinVariacion">--</span>
+            <div class="bitRow">
+                <span class="bitLabel">📈 Rentabilidad</span>
+                <strong id="bitcoinRentabilidad">0,00 %</strong>
+            </div>
 
-</p>
+        </div>
 
-<p>
+    </div>
 
-<b>🏆 Máximo histórico</b>
+    <button class="bitSecondaryButton" onclick="abrirEditorPosicion()">✏️ Editar posición</button>
 
-<span id="bitcoinATH">--</span>
+    <button onclick="actualizarBit()">🔄 Actualizar Método Paco Bit</button>
 
-</p>
+    <p class="ultima-actualizacion">
+        <strong>Última actualización:</strong>
+        <span id="bitcoinUltimaActualizacion">--</span>
+    </p>
 
-<p>
-
-<b>📉 Caída desde ATH</b>
-
-<span id="bitcoinCaidaATH">--</span>
-
-</p>
-
-<p>
-
-<b>😨 Fear & Greed</b>
-
-<span id="bitcoinFearGreed">--</span>
-
-</p>
-
-<p>
-
-<b>🎯 Índice Método Paco Bit</b>
-
-<span id="bitcoinIndice">--</span>
-
-</p>
-
-<p>
-
-<b>📌 Estado</b>
-
-<span id="bitcoinEstado">--</span>
-
-</p>
-
-</div>
-
-
-<!-- ========================= -->
-<!-- TU POSICIÓN -->
-<!-- ========================= -->
-
-<div class="activo">
-
-<h3>💼 Tu posición</h3>
-
-
-<p>
-
-<b>💰 Precio compra</b>
-
-</p>
-
-<input
-id="bitcoinPrecioCompra"
-type="number"
-step="0.01"
-placeholder="Precio de compra en €">
-
-
-<p>
-
-<b>₿ Cantidad BTC</b>
-
-</p>
-
-<input
-id="bitcoinCantidad"
-type="number"
-step="0.00000001"
-placeholder="Cantidad de Bitcoin">
-
-
-<p>
-
-<b>💵 Invertido</b>
-
-<span id="bitcoinInvertido">0 €</span>
-
-</p>
-
-<p>
-
-<b>💎 Valor actual</b>
-
-<span id="bitcoinValorActual">0 €</span>
-
-</p>
-
-<p>
-
-<b>📊 Ganancia / Pérdida</b>
-
-<span id="bitcoinGanancia">0 €</span>
-
-</p>
-
-<p>
-
-<b>📈 Rentabilidad</b>
-
-<span id="bitcoinRentabilidad">0 %</span>
-
-</p>
-
-
-<button
-onclick="guardarPosicionBitcoin()">
-
-💾 Guardar posición
-
-</button>
-
-</div>
-
-</div>
-
-
-<!-- ========================= -->
-<!-- ACTUALIZAR -->
-<!-- ========================= -->
-
-<br>
-
-<button onclick="actualizarBit()">
-
-🔄 Actualizar Método Paco Bit
-
-</button>
-
-
-<p class="ultima-actualizacion">
-
-Última actualización:
-
-<span id="bitcoinUltimaActualizacion">--</span>
-
-</p>
-
-
-<hr style="margin:30px 0;">
-
-
-<!-- ========================= -->
-<!-- METALES -->
-<!-- ========================= -->
-
-<h3>🥇 Metales preciosos</h3>
-
-
-<div id="bitLista">
-
-
-<div class="activo">
-
-<h3>🥇 Oro</h3>
-
-<p>
-
-<b>Precio:</b>
-
-<span id="oroPrecio">--</span>
-
-</p>
-
-<p>
-
-<b>Variación:</b>
-
-<span id="oroVariacion">--</span>
-
-</p>
-
-<p>
-
-<b>Índice:</b>
-
-<span id="oroIndice">--</span>
-
-</p>
-
-<p>
-
-<b>Estado:</b>
-
-<span id="oroEstado">--</span>
-
-</p>
-
-<p>
-
-<b>Acción:</b>
-
-<span id="oroAccion">--</span>
-
-</p>
-
-</div>
-
-
-<div class="activo">
-
-<h3>🥈 Plata</h3>
-
-<p>
-
-<b>Precio:</b>
-
-<span id="plataPrecio">--</span>
-
-</p>
-
-<p>
-
-<b>Variación:</b>
-
-<span id="plataVariacion">--</span>
-
-</p>
-
-<p>
-
-<b>Índice:</b>
-
-<span id="plataIndice">--</span>
-
-</p>
-
-<p>
-
-<b>Estado:</b>
-
-<span id="plataEstado">--</span>
-
-</p>
-
-<p>
-
-<b>Acción:</b>
-
-<span id="plataAccion">--</span>
-
-</p>
-
-</div>
-
-
-<div class="activo">
-
-<h3>⚪ Platino</h3>
-
-<p>
-
-<b>Precio:</b>
-
-<span id="platinoPrecio">--</span>
-
-</p>
-
-<p>
-
-<b>Variación:</b>
-
-<span id="platinoVariacion">--</span>
-
-</p>
-
-<p>
-
-<b>Índice:</b>
-
-<span id="platinoIndice">--</span>
-
-</p>
-
-<p>
-
-<b>Estado:</b>
-
-<span id="platinoEstado">--</span>
-
-</p>
-
-<p>
-
-<b>Acción:</b>
-
-<span id="platinoAccion">--</span>
-
-</p>
-
-</div>
-
-
-<div class="activo">
-
-<h3>🟠 Paladio</h3>
-
-<p>
-
-<b>Precio:</b>
-
-<span id="paladioPrecio">--</span>
-
-</p>
-
-<p>
-
-<b>Variación:</b>
-
-<span id="paladioVariacion">--</span>
-
-</p>
-
-<p>
-
-<b>Índice:</b>
-
-<span id="paladioIndice">--</span>
-
-</p>
-
-<p>
-
-<b>Estado:</b>
-
-<span id="paladioEstado">--</span>
-
-</p>
-
-<p>
-
-<b>Acción:</b>
-
-<span id="paladioAccion">--</span>
-
-</p>
-
-</div>
-
-</div>
-
-
-<!-- ========================= -->
-<!-- LISTA DE VIGILANCIA -->
-<!-- ========================= -->
-
-<h3>⭐ Lista de vigilancia</h3>
-
-<ul>
-
-<li>₿ Bitcoin</li>
-
-<li>🥇 Oro</li>
-
-<li>🥈 Plata</li>
-
-<li>⚪ Platino</li>
-
-<li>🟠 Paladio</li>
-
-</ul>
+    <hr>
+
+    <h3>🥇 Metales preciosos</h3>
+
+    <div id="bitLista">
+
+        <div class="activo">
+            <h3>🥇 Oro</h3>
+            <p><b>Precio:</b> <span id="oroPrecio">--</span></p>
+            <p><b>Variación:</b> <span id="oroVariacion">--</span></p>
+            <p><b>Índice:</b> <span id="oroIndice">--</span></p>
+            <p><b>Estado:</b> <span id="oroEstado">--</span></p>
+            <p><b>Acción:</b> <span id="oroAccion">--</span></p>
+        </div>
+
+        <div class="activo">
+            <h3>🥈 Plata</h3>
+            <p><b>Precio:</b> <span id="plataPrecio">--</span></p>
+            <p><b>Variación:</b> <span id="plataVariacion">--</span></p>
+            <p><b>Índice:</b> <span id="plataIndice">--</span></p>
+            <p><b>Estado:</b> <span id="plataEstado">--</span></p>
+            <p><b>Acción:</b> <span id="plataAccion">--</span></p>
+        </div>
+
+        <div class="activo">
+            <h3>⚪ Platino</h3>
+            <p><b>Precio:</b> <span id="platinoPrecio">--</span></p>
+            <p><b>Variación:</b> <span id="platinoVariacion">--</span></p>
+            <p><b>Índice:</b> <span id="platinoIndice">--</span></p>
+            <p><b>Estado:</b> <span id="platinoEstado">--</span></p>
+            <p><b>Acción:</b> <span id="platinoAccion">--</span></p>
+        </div>
+
+        <div class="activo">
+            <h3>🟠 Paladio</h3>
+            <p><b>Precio:</b> <span id="paladioPrecio">--</span></p>
+            <p><b>Variación:</b> <span id="paladioVariacion">--</span></p>
+            <p><b>Índice:</b> <span id="paladioIndice">--</span></p>
+            <p><b>Estado:</b> <span id="paladioEstado">--</span></p>
+            <p><b>Acción:</b> <span id="paladioAccion">--</span></p>
+        </div>
+
+    </div>
 
 </section>
 
+<div id="modalPosicionBitcoin" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalBitcoin">
 
-<!-- ===================== -->
-<!-- MÉTODO NERE -->
-<!-- ===================== -->
+    <div class="modalContenido">
 
-<section
-id="nere"
-class="pantalla oculto">
+        <h3 id="tituloModalBitcoin">💼 Editar posición Bitcoin</h3>
 
-<button onclick="volver()">
+        <label for="bitcoinPrecioCompraInput">Precio medio de compra (€)</label>
+        <input id="bitcoinPrecioCompraInput" type="number" min="0" step="0.01" placeholder="Ej. 60798">
 
-⬅ Volver
+        <label for="bitcoinCantidadInput">Cantidad de BTC</label>
+        <input id="bitcoinCantidadInput" type="number" min="0" step="0.00000001" placeholder="Ej. 0.004112">
 
-</button>
+        <button onclick="guardarPosicionBitcoin()">💾 Guardar posición</button>
+        <button class="botonCancelar" onclick="cerrarEditorPosicion()">Cancelar</button>
 
-<h2>👧 Método Nere</h2>
-
-<div class="activo">
-
-<h3>Plan de inversión</h3>
-
-<p>
-
-Capital invertido:
-
-<span id="nereCapital">0 €</span>
-
-</p>
-
-<p>
-
-Valor actual:
-
-<span id="nereValor">0 €</span>
-
-</p>
-
-<p>
-
-Rentabilidad:
-
-<span id="nereRentabilidad">0 %</span>
-
-</p>
-
-<p>
-
-Aportación mensual:
-
-<span id="nereMensual">100 €</span>
-
-</p>
-
-<p>
-
-Objetivo:
-
-Independencia financiera a largo plazo.
-
-</p>
+    </div>
 
 </div>
+
+<section id="nere" class="pantalla oculto">
+
+    <button onclick="volver()">⬅ Volver</button>
+
+    <h2>👧 Método Nere</h2>
+
+    <div class="activo">
+        <h3>Plan de inversión</h3>
+        <p>Capital invertido: <span id="nereCapital">0 €</span></p>
+        <p>Valor actual: <span id="nereValor">0 €</span></p>
+        <p>Rentabilidad: <span id="nereRentabilidad">0 %</span></p>
+        <p>Aportación mensual: <span id="nereMensual">100 €</span></p>
+        <p>Objetivo: Independencia financiera a largo plazo.</p>
+    </div>
 
 </section>
 
+<section id="radar" class="pantalla oculto">
 
-<!-- ===================== -->
-<!-- RADAR DE GANGAS -->
-<!-- ===================== -->
+    <button onclick="volver()">⬅ Volver</button>
 
-<section
-id="radar"
-class="pantalla oculto">
+    <h2>🌍 Radar de Gangas</h2>
 
-<button onclick="volver()">
+    <button onclick="actualizarRadar()">🔄 Analizar mercado</button>
 
-⬅ Volver
+    <br><br>
 
-</button>
-
-<h2>🌍 Radar de Gangas</h2>
-
-<button onclick="actualizarRadar()">
-
-🔄 Analizar mercado
-
-</button>
-
-<br><br>
-
-<div id="radarLista">
-
-<div class="activo">
-
-<h3>Esperando análisis...</h3>
-
-<p>
-
-El Radar de Gangas analizará automáticamente tu Watchlist.
-
-</p>
-
-</div>
-
-</div>
+    <div id="radarLista">
+        <div class="activo">
+            <h3>Esperando análisis...</h3>
+            <p>El Radar de Gangas analizará automáticamente tu Watchlist.</p>
+        </div>
+    </div>
 
 </section>
 
+<section id="watchlist" class="pantalla oculto">
 
-<!-- ===================== -->
-<!-- WATCHLIST -->
-<!-- ===================== -->
+    <button onclick="volver()">⬅ Volver</button>
 
-<section
-id="watchlist"
-class="pantalla oculto">
+    <h2>⭐ Watchlist</h2>
 
-<button onclick="volver()">
+    <div id="watchlistLista">
 
-⬅ Volver
+        <div class="activo">
 
-</button>
+            <ul>
+                <li>Broadcom</li>
+                <li>Microsoft</li>
+                <li>Alphabet</li>
+                <li>Amazon</li>
+                <li>Meta</li>
+                <li>ASML</li>
+                <li>TSMC</li>
+                <li>Novo Nordisk</li>
+                <li>Nike</li>
+                <li>Vanguard FTSE All World (VWCE)</li>
+            </ul>
 
-<h2>⭐ Watchlist</h2>
+        </div>
 
-<div id="watchlistLista">
-
-<div class="activo">
-
-<ul>
-
-<li>Broadcom</li>
-
-<li>Microsoft</li>
-
-<li>Alphabet</li>
-
-<li>Amazon</li>
-
-<li>Meta</li>
-
-<li>ASML</li>
-
-<li>TSMC</li>
-
-<li>Novo Nordisk</li>
-
-<li>Nike</li>
-
-<li>Vanguard FTSE All World (VWCE)</li>
-
-</ul>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
+<section id="ajustes" class="pantalla oculto">
 
-<!-- ===================== -->
-<!-- AJUSTES -->
-<!-- ===================== -->
+    <button onclick="volver()">⬅ Volver</button>
 
-<section
-id="ajustes"
-class="pantalla oculto">
+    <h2>⚙️ Ajustes</h2>
 
-<button onclick="volver()">
-
-⬅ Volver
-
-</button>
-
-<h2>⚙️ Ajustes</h2>
-
-<div class="activo">
-
-<p>Versión 3.0</p>
-
-<p>Método Paco</p>
-
-<p>Desarrollado por Paco + ChatGPT</p>
-
-</div>
+    <div class="activo">
+        <p>Versión 3.1</p>
+        <p>Método Paco</p>
+        <p>Desarrollado por Paco + ChatGPT</p>
+    </div>
 
 </section>
 
 </main>
 
-
-<!-- ===================== -->
-<!-- SCRIPTS -->
-<!-- ===================== -->
-
 <script src="script.js"></script>
-
 <script src="precios.js"></script>
-
 <script src="cartera.js"></script>
-
 <script src="bit.js"></script>
-
 <script src="apiBit.js"></script>
-
 <script src="nere.js"></script>
-
 <script src="radar.js"></script>
-
 <script src="watchlist.js"></script>
 
 </body>
-
 </html>
