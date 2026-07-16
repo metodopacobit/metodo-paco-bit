@@ -1,5 +1,5 @@
 /* ==========================
-   MÉTODO PACO v3.0
+   MÉTODO PACO v3.1
 ========================== */
 
 *{
@@ -36,489 +36,334 @@ body{
     padding:20px;
 }
 
-/* ==========================
-   MENÚ PRINCIPAL
-========================== */
-
 .card{
-
     background:#1e293b;
-
     border-radius:18px;
-
     padding:22px;
-
     margin-bottom:18px;
-
     cursor:pointer;
-
     transition:.25s;
-
     border:1px solid #334155;
-
     box-shadow:0 5px 15px rgba(0,0,0,.25);
-
 }
 
 .card:hover{
-
     transform:translateY(-4px);
-
     border-color:#3b82f6;
-
 }
 
 .card h2{
-
     margin-bottom:10px;
-
 }
 
 .card p{
-
     color:#cbd5e1;
-
 }
 
-/* ==========================
-   PANTALLAS
-========================== */
-
 .oculto{
-
-    display:none;
-
+    display:none !important;
 }
 
 .pantalla{
-
     animation:fade .25s;
-
 }
 
 @keyframes fade{
-
     from{
-
         opacity:0;
-
         transform:translateY(12px);
-
     }
-
     to{
-
         opacity:1;
-
         transform:translateY(0);
-
     }
-
 }
 
-/* ==========================
-   DASHBOARD CARTERA
-========================== */
-
 .dashboard{
-
     display:grid;
-
     grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-
     gap:15px;
-
     margin-bottom:25px;
-
 }
 
 .resumen{
-
     background:#1e293b;
-
     border-radius:18px;
-
     padding:20px;
-
     text-align:center;
-
     border-top:4px solid #3b82f6;
-
     box-shadow:0 5px 15px rgba(0,0,0,.25);
-
 }
 
 .resumen h4{
-
     color:#93c5fd;
-
     margin-bottom:12px;
-
 }
 
 .resumen p{
-
     font-size:22px;
-
     font-weight:bold;
-
 }
 
-/* ==========================
-   DASHBOARD BITCOIN
-========================== */
-
-/*
-   IMPORTANTE:
-   El HTML utiliza .bit-grid.
-   Por eso el CSS debe utilizar exactamente
-   .bit-grid y no .bitDashboard.
-*/
-
-.bit-grid{
-
+/* Bitcoin: dos columnas permanentes como en la imagen de referencia */
+.bitDashboard{
     display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:18px;
+    margin:22px 0;
+    align-items:stretch;
+}
 
-    grid-template-columns:1fr 1fr;
+.bitCard{
+    min-width:0;
+    background:#1e293b;
+    padding:22px;
+    border-radius:28px;
+    border:1px solid #334155;
+    box-shadow:0 5px 15px rgba(0,0,0,.30);
+}
 
-    gap:20px;
+.bitCard h3{
+    margin:8px 0 22px;
+    color:#60a5fa;
+    text-align:center;
+    font-size:22px;
+}
 
-    margin-top:20px;
+.bitRow{
+    padding:12px 0;
+    border-bottom:1px solid #334155;
+}
 
+.bitRow:last-child{
+    border-bottom:none;
+}
+
+.bitLabel{
+    display:block;
+    font-size:15px;
+    font-weight:700;
+    line-height:1.35;
+    margin-bottom:7px;
+}
+
+.bitRow strong{
+    display:block;
+    font-size:20px;
+    line-height:1.25;
+    overflow-wrap:anywhere;
+}
+
+.bit-intro{
     margin-bottom:20px;
-
 }
 
-.bit-grid > .activo{
-
-    margin-bottom:0;
-
+.bitcoin-title{
+    font-size:31px;
 }
 
-/* ==========================
-   TARJETAS DE ACTIVOS
-========================== */
+.bitSecondaryButton{
+    background:#334155;
+}
+
+.ultima-actualizacion{
+    text-align:center;
+    margin:18px 0 8px;
+    color:#e2e8f0;
+}
 
 .activo{
-
     background:#1e293b;
-
     border-radius:18px;
-
     padding:20px;
-
     margin-bottom:20px;
-
     border-left:5px solid #3b82f6;
-
     box-shadow:0 5px 15px rgba(0,0,0,.25);
-
 }
 
 .activo h3{
-
     color:#60a5fa;
-
     margin-bottom:15px;
-
 }
 
 .activo p{
-
     margin:8px 0;
-
     color:#e5e7eb;
-
 }
 
-/* ==========================
-   FORMULARIOS
-========================== */
-
 input{
-
     width:100%;
-
     padding:14px;
-
     margin:10px 0;
-
     border:none;
-
     border-radius:12px;
-
     background:#334155;
-
     color:#ffffff;
-
     font-size:16px;
-
 }
 
 input::placeholder{
-
     color:#94a3b8;
-
 }
 
 input:focus{
-
     outline:2px solid #3b82f6;
-
 }
 
-/* ==========================
-   BOTONES
-========================== */
-
 button{
-
     width:100%;
-
     padding:14px;
-
     margin-top:12px;
-
     border:none;
-
     border-radius:12px;
-
     background:#2563eb;
-
     color:#ffffff;
-
     font-size:16px;
-
     cursor:pointer;
-
     transition:.25s;
-
 }
 
 button:hover{
-
     background:#1d4ed8;
-
 }
 
-/* ==========================
-   BOTONES CARTERA
-========================== */
-
 #lista button{
-
     width:48%;
-
 }
 
 #lista button:last-child{
-
     margin-left:4%;
-
     background:#dc2626;
-
 }
 
 #lista button:last-child:hover{
-
     background:#b91c1c;
-
 }
 
-/* ==========================
-   TÍTULOS
-========================== */
-
 h2{
-
     margin:20px 0 15px;
-
 }
 
 h3{
-
     margin:20px 0 10px;
-
 }
 
-/* ==========================
-   LISTAS
-========================== */
-
 ul{
-
     margin-left:20px;
-
 }
 
 li{
-
     margin-bottom:10px;
-
 }
-
-/* ==========================
-   DATOS BITCOIN
-========================== */
-
-#bitcoinPrecio,
-#bitcoinVariacion,
-#bitcoinATH,
-#bitcoinCaidaATH,
-#bitcoinFearGreed,
-#bitcoinIndice,
-#bitcoinEstado,
-#bitcoinAccion,
-#bitcoinRevision,
-#bitcoinCompra,
-#bitcoinPrecioCompra,
-#bitcoinCantidad,
-#bitcoinInvertido,
-#bitcoinValorActual,
-#bitcoinGanancia,
-#bitcoinRentabilidad{
-
-    font-size:17px;
-
-    font-weight:bold;
-
-}
-
-/* ==========================
-   METALES
-========================== */
-
-#oroPrecio,
-#oroVariacion,
-#oroIndice,
-#oroEstado,
-#oroAccion,
-#oroRevision,
-#plataPrecio,
-#plataVariacion,
-#plataIndice,
-#plataEstado,
-#plataAccion,
-#plataRevision,
-#platinoPrecio,
-#platinoVariacion,
-#platinoIndice,
-#platinoEstado,
-#platinoAccion,
-#platinoRevision,
-#paladioPrecio,
-#paladioVariacion,
-#paladioIndice,
-#paladioEstado,
-#paladioAccion,
-#paladioRevision{
-
-    font-weight:bold;
-
-}
-
-/* ==========================
-   SEPARADORES
-========================== */
 
 hr{
-
     border:none;
-
     border-top:1px solid #334155;
-
+    margin:30px 0;
 }
 
-/* ==========================
-   RESPONSIVE
-========================== */
+/* Modal para editar la posición sin cambiar la apariencia principal */
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(2,6,23,.78);
+}
 
-/*
-   En tablet y móvil mantenemos las dos
-   columnas para ver Mercado y Posición
-   de un vistazo.
-*/
+.modalContenido{
+    width:min(440px,100%);
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+
+.modalContenido h3{
+    color:#60a5fa;
+    margin-top:0;
+}
+
+.modalContenido label{
+    display:block;
+    margin-top:12px;
+    font-weight:700;
+}
+
+.botonCancelar{
+    background:#475569;
+}
 
 @media (max-width:700px){
 
     .dashboard{
-
         grid-template-columns:1fr 1fr;
-
-    }
-
-    .bit-grid{
-
-        grid-template-columns:1fr 1fr;
-
-        gap:10px;
-
     }
 
     #lista button{
-
         width:100%;
-
         margin-left:0;
-
     }
 
-}
+    .bitDashboard{
+        gap:10px;
+    }
 
-/* ==========================
-   MÓVILES PEQUEÑOS
-========================== */
+    .bitCard{
+        padding:16px;
+        border-radius:24px;
+    }
+
+    .bitCard h3{
+        font-size:18px;
+        margin-bottom:16px;
+    }
+
+    .bitLabel{
+        font-size:13px;
+    }
+
+    .bitRow strong{
+        font-size:17px;
+    }
+}
 
 @media (max-width:500px){
 
     .container{
-
         padding:12px;
-
     }
 
-    .bit-grid{
-
-        grid-template-columns:1fr 1fr;
-
-        gap:8px;
-
+    .dashboard{
+        grid-template-columns:1fr;
     }
 
-    .bit-grid .activo{
-
-        padding:12px;
-
+    .bitDashboard{
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+        gap:10px;
     }
 
-    .bit-grid .activo h3{
+    .bitCard{
+        padding:14px;
+    }
 
+    .bitCard h3{
         font-size:16px;
-
     }
 
-    .bit-grid .activo p{
-
+    .bitLabel{
         font-size:12px;
-
-        line-height:1.4;
-
     }
 
-    .bit-grid .activo input{
-
-        font-size:13px;
-
-        padding:10px;
-
+    .bitRow strong{
+        font-size:15px;
     }
 
-    .bit-grid .activo button{
-
-        font-size:13px;
-
-        padding:10px;
-
+    .bitcoin-title{
+        font-size:30px;
     }
-
 }
