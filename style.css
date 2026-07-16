@@ -1,5 +1,5 @@
 /* ==========================
-   MÉTODO PACO v4.0
+   MÉTODO PACO v4.1
 ========================== */
 
 *{
@@ -442,5 +442,241 @@ hr{
 
     .resumen-bit-grid strong{
         font-size:15px;
+    }
+}
+
+
+/* ==========================
+   MÉTODO PACO CARTERA v4.1
+========================== */
+
+.cartera-intro{
+    color:#cbd5e1;
+    margin-bottom:16px;
+}
+
+.cartera-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:12px 0 4px;
+}
+
+.boton-secundario{
+    background:#334155;
+}
+
+.resumen-cartera{
+    background:#1e293b;
+    border-radius:20px;
+    border:1px solid #334155;
+    padding:18px;
+    margin-bottom:28px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.resumen-cartera h3{
+    color:#60a5fa;
+    margin-top:0;
+}
+
+.resumen-cartera-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+}
+
+.resumen-cartera-grid div{
+    background:#0f172a;
+    border-radius:14px;
+    padding:13px;
+    min-width:0;
+}
+
+.resumen-cartera-grid span,
+.resumen-cartera-grid strong{
+    display:block;
+}
+
+.resumen-cartera-grid span{
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.resumen-cartera-grid strong{
+    font-size:17px;
+    overflow-wrap:anywhere;
+}
+
+.cartera-activo{
+    margin-bottom:34px;
+}
+
+.cartera-activo-cabecera{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.cartera-activo-titulo{
+    font-size:27px;
+    margin:0;
+}
+
+.cartera-activo-subtitulo{
+    color:#94a3b8;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.cartera-badge{
+    flex:0 0 auto;
+    background:#334155;
+    border-radius:999px;
+    padding:7px 10px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.carteraDashboard{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:18px;
+    align-items:stretch;
+}
+
+.carteraCard{
+    min-width:0;
+    background:#1e293b;
+    padding:20px;
+    border-radius:26px;
+    border:1px solid #334155;
+    box-shadow:0 5px 15px rgba(0,0,0,.30);
+}
+
+.carteraCard h3{
+    margin:4px 0 18px;
+    color:#60a5fa;
+    text-align:center;
+    font-size:21px;
+}
+
+.carteraRow{
+    padding:11px 0;
+    border-bottom:1px solid #334155;
+}
+
+.carteraRow:last-child{
+    border-bottom:none;
+}
+
+.carteraLabel{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.35;
+    margin-bottom:6px;
+}
+
+.carteraRow strong{
+    display:block;
+    font-size:18px;
+    line-height:1.25;
+    overflow-wrap:anywhere;
+}
+
+.cartera-editar{
+    margin-top:12px;
+    background:#334155;
+}
+
+.cartera-error{
+    min-height:20px;
+    margin-top:10px;
+    color:#fbbf24;
+    font-size:13px;
+    text-align:center;
+}
+
+.cartera-vacia{
+    text-align:center;
+}
+
+.form-grid-cartera{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.botonEliminarModal{
+    background:#dc2626;
+}
+
+.botonEliminarModal:hover{
+    background:#b91c1c;
+}
+
+.modal-cartera{
+    max-height:90vh;
+    overflow-y:auto;
+}
+
+@media (max-width:700px){
+
+    .resumen-cartera-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .carteraDashboard{
+        gap:10px;
+    }
+
+    .carteraCard{
+        padding:15px;
+        border-radius:22px;
+    }
+
+    .carteraCard h3{
+        font-size:17px;
+    }
+
+    .carteraLabel{
+        font-size:12px;
+    }
+
+    .carteraRow strong{
+        font-size:15px;
+    }
+}
+
+@media (max-width:500px){
+
+    .cartera-actions{
+        grid-template-columns:1fr;
+    }
+
+    .carteraDashboard{
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+        gap:8px;
+    }
+
+    .carteraCard{
+        padding:12px;
+    }
+
+    .cartera-activo-titulo{
+        font-size:24px;
+    }
+
+    .resumen-cartera-grid strong{
+        font-size:15px;
+    }
+
+    .form-grid-cartera{
+        grid-template-columns:1fr;
+        gap:0;
     }
 }
