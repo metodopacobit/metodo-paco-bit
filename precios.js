@@ -376,64 +376,83 @@ async function obtenerCotizacionTwelve(
 // ETF Y ACTIVOS EUROPEOS
 // ==========================
 
-async function obtenerCotizacionYahoo(
-    activo
-) {
+async function obtenerCotizacionYahoo(activo) {
 
     const url = new URL(
         YAHOO_WORKER_URL
     );
 
-
     url.searchParams.set(
-
         "ticker",
-
-        String(
-            activo.ticker || ""
-        )
-        .trim()
-        .toUpperCase()
-
+        String(activo.ticker || "")
+            .trim()
+            .toUpperCase()
     );
-
 
     url.searchParams.set(
-
         "exchange",
-
-        String(
-            activo.exchange || ""
-        )
-        .trim()
-        .toUpperCase()
-
+        String(activo.exchange || "")
+            .trim()
+            .toUpperCase()
     );
-
 
     const datos = await fetchJson(
         url.toString()
     );
 
+    // Compatible con claves inglesas y españolas
 
     const precio = Number(
-        datos?.price
+        datos?.price ??
+        datos?.precio ??
+        0
     ) || 0;
-
 
     let variacion = Number(
-        datos?.percent_change
+        datos?.percent_change ??
+        datos?.cambio_porcentual ??
+        0
     ) || 0;
 
+    const max52 = Number(
+        datos?.high52 ??
+        datos?.maximo52 ??
+        0
+    ) || 0;
+
+    const moneda = String(
+        datos?.currency ??
+        datos?.moneda ??
+        "EUR"
+    ).toUpperCase();
+
+    const exchange = String(
+        datos?.exchange ??
+        datos?.intercambio ??
+        activo.exchange ??
+        ""
+    ).toUpperCase();
+
+    const nombre =
+        datos?.name ??
+        datos?.nombre ??
+        activo.nombre ??
+        "";
+
+    if (!(precio > 0)) {
+
+        throw new Error(
+            datos?.error ||
+            "Yahoo Finance no devolvió un precio válido"
+        );
+
+    }
 
     /*
-    El Worker actual puede devolver una
-    variación incorrecta si Yahoo utiliza
-    como referencia un cierre antiguo.
-
-    Para evitar mostrar cifras absurdas,
-    descartamos cambios diarios superiores
-    al 15 %.
+    El Worker está calculando una variación
+    diaria anormal de aproximadamente 35 %.
+    Hasta corregir su cierre anterior,
+    descartamos valores superiores al 15 %.
     */
 
     if (Math.abs(variacion) > 15) {
@@ -442,49 +461,21 @@ async function obtenerCotizacionYahoo(
 
     }
 
-
-    const max52 = Number(
-        datos?.high52
-    ) || 0;
-
-
-    const moneda = String(
-
-        datos?.currency || "EUR"
-
-    ).toUpperCase();
-
-
-    if (!(precio > 0)) {
-
-        throw new Error(
-
-            datos?.error ||
-            "Yahoo Finance no devolvió un precio válido"
-
-        );
-
-    }
-
-
     return {
 
-        precio,
+        precio: precio,
 
-        variacion,
+        variacion: variacion,
 
-        moneda,
+        moneda: moneda,
 
-        max52,
+        max52: max52,
 
-        nombre:
-            datos?.name || "",
+        nombre: nombre,
 
-        exchange:
-            datos?.exchange || "",
+        exchange: exchange,
 
-        tipo:
-            "ETF"
+        tipo: "ETF"
 
     };
 
