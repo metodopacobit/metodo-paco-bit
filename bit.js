@@ -1,704 +1,397 @@
 // ==========================
-// bit.js v3.1
+// bit.js v4.0
 // Método Paco Bit
 // ==========================
 
-const POSICION_BTC_KEY = "metodoPacoBitPosicionBTC";
+const BIT_STORAGE_KEY = "metodoPacoBitV4";
+const BIT_OZ_TROY_POR_KG = 32.1507465686;
 
-const metodoPacoBit = {
-
-    bitcoin:{
-
-        nombre:"Bitcoin",
-        simbolo:"₿",
-
-        // Mercado
-
-        precio:0,
-        variacion:0,
-        ath:0,
-        caidaATH:0,
-        fearGreed:"--",
-
-        // Método Paco Bit
-
-        indice:50,
-        estado:"Sin datos",
-        accion:"Esperar",
-
-        // Tu posición
-
-        precioCompra:0,
-        cantidad:0,
-        invertido:0,
-        valorActual:0,
-        ganancia:0,
-        rentabilidad:0,
-
-        ultimaRevision:"--"
-
+const DEFINICIONES_BIT = {
+    bitcoin: {
+        nombre: "Bitcoin",
+        simbolo: "₿",
+        ticker: "BTC",
+        unidadPrecio: "EUR/BTC",
+        etiquetaCantidad: "Cantidad de BTC",
+        unidadCantidad: "BTC",
+        decimalesCantidad: 8
     },
-
-    oro:{
-        nombre:"Oro",
-        precio:0,
-        variacion:0,
-        indice:50,
-        estado:"Sin datos",
-        accion:"Esperar",
-        ultimaRevision:"--"
+    oro: {
+        nombre: "Oro",
+        simbolo: "🥇",
+        ticker: "XAU",
+        unidadPrecio: "EUR/kg",
+        etiquetaCantidad: "Cantidad en kilogramos",
+        unidadCantidad: "kg",
+        decimalesCantidad: 6
     },
-
-    plata:{
-        nombre:"Plata",
-        precio:0,
-        variacion:0,
-        indice:50,
-        estado:"Sin datos",
-        accion:"Esperar",
-        ultimaRevision:"--"
+    plata: {
+        nombre: "Plata",
+        simbolo: "🥈",
+        ticker: "XAG",
+        unidadPrecio: "EUR/kg",
+        etiquetaCantidad: "Cantidad en kilogramos",
+        unidadCantidad: "kg",
+        decimalesCantidad: 6
     },
-
-    platino:{
-        nombre:"Platino",
-        precio:0,
-        variacion:0,
-        indice:50,
-        estado:"Sin datos",
-        accion:"Esperar",
-        ultimaRevision:"--"
+    platino: {
+        nombre: "Platino",
+        simbolo: "⚪",
+        ticker: "XPT",
+        unidadPrecio: "EUR/kg",
+        etiquetaCantidad: "Cantidad en kilogramos",
+        unidadCantidad: "kg",
+        decimalesCantidad: 6
     },
-
-    paladio:{
-        nombre:"Paladio",
-        precio:0,
-        variacion:0,
-        indice:50,
-        estado:"Sin datos",
-        accion:"Esperar",
-        ultimaRevision:"--"
+    paladio: {
+        nombre: "Paladio",
+        simbolo: "🟠",
+        ticker: "XPD",
+        unidadPrecio: "EUR/kg",
+        etiquetaCantidad: "Cantidad en kilogramos",
+        unidadCantidad: "kg",
+        decimalesCantidad: 6
     }
-
 };
 
-// ==========================
-// ESCRIBIR EN PANTALLA
-// ==========================
+const metodoPacoBit = {};
 
-function escribir(id,valor){
+Object.keys(DEFINICIONES_BIT).forEach(function(clave) {
+    metodoPacoBit[clave] = {
+        ...DEFINICIONES_BIT[clave],
+        precio: 0,
+        variacion: 0,
+        maximoRegistrado: 0,
+        caidaMaximo: 0,
+        fearGreed: clave === "bitcoin" ? "--" : null,
+        indice: 50,
+        estado: "Sin datos",
+        accion: "Esperar",
+        precioCompra: 0,
+        cantidad: 0,
+        invertido: 0,
+        valorActual: 0,
+        ganancia: 0,
+        rentabilidad: 0,
+        ultimaRevision: "--",
+        error: ""
+    };
+});
 
-    const elemento=document.getElementById(id);
+let activoEditando = null;
 
-    if(elemento){
-
-        elemento.textContent=valor;
-
-    }
-
+function escribir(id, valor) {
+    const elemento = document.getElementById(id);
+    if (elemento) elemento.textContent = valor;
 }
 
-// ==========================
-// FORMATO €
-//
-// ==========================
+function formatoEuro(valor) {
+    const numero = Number(valor);
+    if (!Number.isFinite(numero)) return "--";
 
-function formatoEuro(valor){
-
-    return Number(valor).toLocaleString(
-
-        "es-ES",
-
-        {
-
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-
-        }
-
-    )+" €";
-
+    return numero.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }) + " €";
 }
 
-// ==========================
-// ACTUALIZAR ACTIVO
-// ==========================
-
-function actualizarActivoBit(nombre,datos){
-
-    if(!metodoPacoBit[nombre]) return;
-
-    Object.assign(
-
-        metodoPacoBit[nombre],
-
-        datos
-
-    );
-
-    metodoPacoBit[nombre].ultimaRevision=
-
-        new Date().toLocaleString("es-ES");
-
-    actualizarIndicadoresBit(nombre);
-
+function formatoPorcentaje(valor) {
+    const numero = Number(valor);
+    if (!Number.isFinite(numero)) return "--";
+    return numero.toFixed(2) + " %";
 }
 
-// ==========================
-// ÍNDICE MÉTODO PACO BIT
-// ==========================
+function formatoCantidad(activo) {
+    return Number(activo.cantidad).toLocaleString("es-ES", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: activo.decimalesCantidad
+    }) + " " + activo.unidadCantidad;
+}
 
-function calcularIndiceBit(nombre){
-
-    const activo = metodoPacoBit[nombre];
-
-    if(!activo) return;
-
+function calcularIndiceBit(clave) {
+    const activo = metodoPacoBit[clave];
+    const variacion = Number(activo.variacion) || 0;
     let indice = 50;
 
-    if(activo.variacion <= -10){
-
-        indice = 90;
-
-    }else if(activo.variacion <= -5){
-
-        indice = 80;
-
-    }else if(activo.variacion <= -2){
-
-        indice = 70;
-
-    }else if(activo.variacion >= 10){
-
-        indice = 30;
-
-    }else if(activo.variacion >= 5){
-
-        indice = 40;
-
-    }
+    if (variacion <= -10) indice = 90;
+    else if (variacion <= -5) indice = 80;
+    else if (variacion <= -2) indice = 70;
+    else if (variacion >= 10) indice = 30;
+    else if (variacion >= 5) indice = 40;
 
     activo.indice = indice;
-
 }
 
-// ==========================
-// ESTADO
-// ==========================
+function actualizarEstadoBit(clave) {
+    const activo = metodoPacoBit[clave];
 
-function actualizarEstadoBit(nombre){
-
-    const activo = metodoPacoBit[nombre];
-
-    if(!activo) return;
-
-    if(activo.indice >= 80){
-
+    if (activo.indice >= 80) {
         activo.estado = "🟢 Comprar";
         activo.accion = "Comprar";
-
-    }else if(activo.indice >= 60){
-
+    } else if (activo.indice >= 60) {
         activo.estado = "🟡 Mantener";
         activo.accion = "Mantener";
-
-    }else if(activo.indice >= 40){
-
+    } else if (activo.indice >= 40) {
         activo.estado = "🟠 Esperar";
         activo.accion = "Esperar";
-
-    }else{
-
+    } else {
         activo.estado = "🔴 No comprar";
         activo.accion = "No comprar";
-
     }
-
 }
 
-// ==========================
-// POSICIÓN BITCOIN
-// ==========================
+function recalcularActivo(clave) {
+    const activo = metodoPacoBit[clave];
 
-function actualizarPosicionBitcoin(){
+    activo.invertido = activo.precioCompra * activo.cantidad;
+    activo.valorActual = activo.precio * activo.cantidad;
+    activo.ganancia = activo.valorActual - activo.invertido;
+    activo.rentabilidad = activo.invertido > 0
+        ? (activo.ganancia / activo.invertido) * 100
+        : 0;
 
-    const btc = metodoPacoBit.bitcoin;
-
-    btc.invertido =
-        btc.precioCompra * btc.cantidad;
-
-    btc.valorActual =
-        btc.precio * btc.cantidad;
-
-    btc.ganancia =
-        btc.valorActual - btc.invertido;
-
-    if(btc.invertido > 0){
-
-        btc.rentabilidad =
-            (btc.ganancia / btc.invertido) * 100;
-
-    }else{
-
-        btc.rentabilidad = 0;
-
+    if (activo.precio > activo.maximoRegistrado) {
+        activo.maximoRegistrado = activo.precio;
     }
 
-    if(btc.ath > 0){
+    activo.caidaMaximo = activo.maximoRegistrado > 0
+        ? ((activo.precio - activo.maximoRegistrado) / activo.maximoRegistrado) * 100
+        : 0;
 
-        btc.caidaATH =
-            ((btc.precio - btc.ath) / btc.ath) * 100;
-
-    }else{
-
-        btc.caidaATH = 0;
-
-    }
-
+    calcularIndiceBit(clave);
+    actualizarEstadoBit(clave);
 }
 
-// ==========================
-// ACTUALIZAR INDICADORES
-// ==========================
+function actualizarActivoBit(clave, datos) {
+    const activo = metodoPacoBit[clave];
+    if (!activo) return;
 
-function actualizarIndicadoresBit(nombre){
+    Object.assign(activo, datos);
+    activo.ultimaRevision = new Date().toLocaleString("es-ES");
+    activo.error = "";
 
-    calcularIndiceBit(nombre);
-
-    actualizarEstadoBit(nombre);
-
-    if(nombre === "bitcoin"){
-
-        actualizarPosicionBitcoin();
-
-    }
-
+    recalcularActivo(clave);
 }
 
-// ==========================
-// MOSTRAR BITCOIN
-// ==========================
+function guardarDatosBit() {
+    const datos = {
+        ultimaActualizacion: document.getElementById("bitUltimaActualizacion")?.textContent || "--",
+        activos: {}
+    };
 
-function mostrarBitcoin(){
+    Object.keys(metodoPacoBit).forEach(function(clave) {
+        const activo = metodoPacoBit[clave];
 
-    const btc = metodoPacoBit.bitcoin;
-
-    escribir(
-        "bitcoinPrecio",
-        btc.precio > 0 ? formatoEuro(btc.precio) : "--"
-    );
-
-    escribir(
-        "bitcoinVariacion",
-        Number(btc.variacion).toFixed(2) + " %"
-    );
-
-    escribir(
-        "bitcoinATH",
-        btc.ath > 0 ? formatoEuro(btc.ath) : "--"
-    );
-
-    escribir(
-        "bitcoinCaidaATH",
-        Number(btc.caidaATH).toFixed(2) + " %"
-    );
-
-    escribir(
-        "bitcoinFearGreed",
-        btc.fearGreed || "--"
-    );
-
-    escribir(
-        "bitcoinIndice",
-        btc.indice
-    );
-
-    escribir(
-        "bitcoinEstado",
-        btc.estado
-    );
-
-    escribir(
-        "bitcoinCompra",
-        btc.precioCompra > 0
-            ? formatoEuro(btc.precioCompra)
-            : "--"
-    );
-
-    escribir(
-        "bitcoinCantidadTexto",
-        Number(btc.cantidad).toFixed(8)
-    );
-
-    escribir(
-        "bitcoinInvertido",
-        formatoEuro(btc.invertido)
-    );
-
-    escribir(
-        "bitcoinValorActual",
-        formatoEuro(btc.valorActual)
-    );
-
-    escribir(
-        "bitcoinGanancia",
-        formatoEuro(btc.ganancia)
-    );
-
-    escribir(
-        "bitcoinRentabilidad",
-        Number(btc.rentabilidad).toFixed(2) + " %"
-    );
-
-}
-
-// ==========================
-// MOSTRAR METALES
-// ==========================
-
-function mostrarMetales(){
-
-    ["oro","plata","platino","paladio"].forEach(function(nombre){
-
-        const activo = metodoPacoBit[nombre];
-
-        escribir(
-            nombre + "Precio",
-            activo.precio > 0
-                ? formatoEuro(activo.precio)
-                : "--"
-        );
-
-        escribir(
-            nombre + "Variacion",
-            Number(activo.variacion).toFixed(2) + " %"
-        );
-
-        escribir(
-            nombre + "Indice",
-            activo.indice
-        );
-
-        escribir(
-            nombre + "Estado",
-            activo.estado
-        );
-
-        escribir(
-            nombre + "Accion",
-            activo.accion
-        );
-
+        datos.activos[clave] = {
+            precioCompra: activo.precioCompra,
+            cantidad: activo.cantidad,
+            maximoRegistrado: activo.maximoRegistrado
+        };
     });
 
+    localStorage.setItem(BIT_STORAGE_KEY, JSON.stringify(datos));
 }
 
-// ==========================
-// MOSTRAR TODO
-// ==========================
+function cargarDatosBit() {
+    try {
+        const datos = JSON.parse(localStorage.getItem(BIT_STORAGE_KEY));
+        if (!datos?.activos) return;
 
-function mostrarMetodoPacoBit(){
+        Object.keys(metodoPacoBit).forEach(function(clave) {
+            const guardado = datos.activos[clave];
+            if (!guardado) return;
 
-    mostrarBitcoin();
+            metodoPacoBit[clave].precioCompra = Number(guardado.precioCompra) || 0;
+            metodoPacoBit[clave].cantidad = Number(guardado.cantidad) || 0;
+            metodoPacoBit[clave].maximoRegistrado = Number(guardado.maximoRegistrado) || 0;
 
-    mostrarMetales();
+            recalcularActivo(clave);
+        });
 
-}
-
-// ==========================
-// GUARDAR POSICIÓN
-// ==========================
-
-function guardarPosicionLocal(){
-
-    const btc = metodoPacoBit.bitcoin;
-
-    localStorage.setItem(
-
-        POSICION_BTC_KEY,
-
-        JSON.stringify({
-
-            precioCompra:btc.precioCompra,
-
-            cantidad:btc.cantidad
-
-        })
-
-    );
-
-}
-
-
-// ==========================
-// CARGAR POSICIÓN
-// ==========================
-
-function cargarPosicionBitcoin(){
-
-    try{
-
-        const datosGuardados =
-
-        JSON.parse(
-
-            localStorage.getItem(
-
-                POSICION_BTC_KEY
-
-            )
-
-        );
-
-
-        if(datosGuardados){
-
-            metodoPacoBit.bitcoin.precioCompra =
-
-                Number(
-
-                    datosGuardados.precioCompra
-
-                ) || 0;
-
-
-            metodoPacoBit.bitcoin.cantidad =
-
-                Number(
-
-                    datosGuardados.cantidad
-
-                ) || 0;
-
+        if (datos.ultimaActualizacion) {
+            escribir("bitUltimaActualizacion", datos.ultimaActualizacion);
         }
-
-    }catch(error){
-
-        console.error(
-
-            "Error cargando posición Bitcoin:",
-
-            error
-
-        );
-
+    } catch (error) {
+        console.warn("No se pudieron cargar los datos de Método Paco Bit:", error);
     }
-
-
-    actualizarPosicionBitcoin();
-
 }
 
-
-// ==========================
-// ABRIR EDITOR
-// ==========================
-
-function abrirEditorPosicion(){
-
-    const btc = metodoPacoBit.bitcoin;
-
-    const modal =
-
-        document.getElementById(
-
-            "modalPosicionBitcoin"
-
-        );
-
-    const inputCompra =
-
-        document.getElementById(
-
-            "bitcoinPrecioCompraInput"
-
-        );
-
-    const inputCantidad =
-
-        document.getElementById(
-
-            "bitcoinCantidadInput"
-
-        );
-
-
-    if(inputCompra){
-
-        inputCompra.value =
-
-            btc.precioCompra > 0
-
-            ? btc.precioCompra
-
-            : "";
-
-    }
-
-
-    if(inputCantidad){
-
-        inputCantidad.value =
-
-            btc.cantidad > 0
-
-            ? btc.cantidad
-
-            : "";
-
-    }
-
-
-    if(modal){
-
-        modal.classList.remove("oculto");
-
-    }
-
+function crearFilaBit(etiqueta, id) {
+    return `
+        <div class="bitRow">
+            <span class="bitLabel">${etiqueta}</span>
+            <strong id="${id}">--</strong>
+        </div>
+    `;
 }
 
+function crearPanelActivo(clave) {
+    const activo = metodoPacoBit[clave];
+    const esBitcoin = clave === "bitcoin";
 
-// ==========================
-// CERRAR EDITOR
-// ==========================
+    return `
+        <section class="bit-activo" id="panel-${clave}">
 
-function cerrarEditorPosicion(){
+            <h2 class="bit-activo-titulo">
+                ${activo.simbolo} ${activo.nombre}
+                <span class="bit-activo-unidad">${activo.unidadPrecio}</span>
+            </h2>
 
-    const modal =
+            <div class="bitDashboard">
 
-        document.getElementById(
+                <div class="bitCard">
 
-            "modalPosicionBitcoin"
+                    <h3>📊 Mercado</h3>
 
-        );
+                    ${crearFilaBit("💶 Precio actual", `${clave}Precio`)}
+                    ${crearFilaBit("📈 Cambio 24 h", `${clave}Variacion`)}
+                    ${crearFilaBit(esBitcoin ? "🏆 Máximo histórico" : "🏆 Máximo registrado", `${clave}Maximo`)}
+                    ${crearFilaBit("📉 Caída desde máximo", `${clave}CaidaMaximo`)}
+                    ${esBitcoin ? crearFilaBit("😨 Fear & Greed", `${clave}FearGreed`) : ""}
+                    ${crearFilaBit("🎯 Índice Método Paco Bit", `${clave}Indice`)}
+                    ${crearFilaBit("📌 Estado", `${clave}Estado`)}
 
+                </div>
 
-    if(modal){
+                <div class="bitCard">
 
-        modal.classList.add("oculto");
+                    <h3>💼 Tu posición</h3>
 
-    }
+                    ${crearFilaBit("💰 Precio compra", `${clave}Compra`)}
+                    ${crearFilaBit(esBitcoin ? "₿ Cantidad BTC" : `⚖️ Cantidad (${activo.unidadCantidad})`, `${clave}Cantidad`)}
+                    ${crearFilaBit("💵 Invertido", `${clave}Invertido`)}
+                    ${crearFilaBit("💎 Valor actual", `${clave}ValorActual`)}
+                    ${crearFilaBit("📊 Ganancia / Pérdida", `${clave}Ganancia`)}
+                    ${crearFilaBit("📈 Rentabilidad", `${clave}Rentabilidad`)}
 
+                </div>
+
+            </div>
+
+            <button class="bit-editar" onclick="abrirEditorPosicionActivo('${clave}')">
+                ✏️ Editar posición
+            </button>
+
+            <p class="estado-api" id="${clave}Error"></p>
+
+        </section>
+    `;
 }
 
+function pintarPanelesBit() {
+    const contenedor = document.getElementById("activosBit");
+    if (!contenedor) return;
 
-// ==========================
-// GUARDAR POSICIÓN BITCOIN
-// ==========================
-
-function guardarPosicionBitcoin(){
-
-    const inputCompra =
-
-        document.getElementById(
-
-            "bitcoinPrecioCompraInput"
-
-        );
-
-    const inputCantidad =
-
-        document.getElementById(
-
-            "bitcoinCantidadInput"
-
-        );
-
-
-    if(!inputCompra || !inputCantidad){
-
-        alert(
-
-            "No se encuentran los campos de la posición."
-
-        );
-
-        return;
-
-    }
-
-
-    const precioCompra =
-
-        Number(inputCompra.value);
-
-
-    const cantidadBTC =
-
-        Number(inputCantidad.value);
-
-
-    if(
-
-        precioCompra <= 0 ||
-
-        cantidadBTC <= 0
-
-    ){
-
-        alert(
-
-            "Introduce un precio de compra y una cantidad válidos."
-
-        );
-
-        return;
-
-    }
-
-
-    metodoPacoBit.bitcoin.precioCompra =
-
-        precioCompra;
-
-
-    metodoPacoBit.bitcoin.cantidad =
-
-        cantidadBTC;
-
-
-    actualizarPosicionBitcoin();
-
-    guardarPosicionLocal();
+    contenedor.innerHTML = Object.keys(metodoPacoBit)
+        .map(crearPanelActivo)
+        .join("");
 
     mostrarMetodoPacoBit();
-
-    cerrarEditorPosicion();
-
 }
 
+function mostrarActivoBit(clave) {
+    const activo = metodoPacoBit[clave];
 
-// ==========================
-// GETTERS
-// ==========================
+    escribir(`${clave}Precio`, activo.precio > 0 ? formatoEuro(activo.precio) : "--");
+    escribir(`${clave}Variacion`, formatoPorcentaje(activo.variacion));
+    escribir(`${clave}Maximo`, activo.maximoRegistrado > 0 ? formatoEuro(activo.maximoRegistrado) : "--");
+    escribir(`${clave}CaidaMaximo`, formatoPorcentaje(activo.caidaMaximo));
+    escribir(`${clave}FearGreed`, activo.fearGreed || "--");
+    escribir(`${clave}Indice`, activo.indice);
+    escribir(`${clave}Estado`, activo.estado);
 
-function obtenerActivoBit(nombre){
-
-    return metodoPacoBit[nombre];
-
+    escribir(`${clave}Compra`, activo.precioCompra > 0 ? formatoEuro(activo.precioCompra) : "--");
+    escribir(`${clave}Cantidad`, formatoCantidad(activo));
+    escribir(`${clave}Invertido`, formatoEuro(activo.invertido));
+    escribir(`${clave}ValorActual`, formatoEuro(activo.valorActual));
+    escribir(`${clave}Ganancia`, formatoEuro(activo.ganancia));
+    escribir(`${clave}Rentabilidad`, formatoPorcentaje(activo.rentabilidad));
+    escribir(`${clave}Error`, activo.error || "");
 }
 
+function actualizarResumenBit() {
+    const activos = Object.values(metodoPacoBit);
 
-function obtenerTodosBit(){
+    const invertido = activos.reduce((total, activo) => total + activo.invertido, 0);
+    const valor = activos.reduce((total, activo) => total + activo.valorActual, 0);
+    const ganancia = valor - invertido;
+    const rentabilidad = invertido > 0 ? (ganancia / invertido) * 100 : 0;
 
-    return metodoPacoBit;
-
+    escribir("bitResumenInvertido", formatoEuro(invertido));
+    escribir("bitResumenValor", formatoEuro(valor));
+    escribir("bitResumenGanancia", formatoEuro(ganancia));
+    escribir("bitResumenRentabilidad", formatoPorcentaje(rentabilidad));
 }
 
+function mostrarMetodoPacoBit() {
+    Object.keys(metodoPacoBit).forEach(mostrarActivoBit);
+    actualizarResumenBit();
+}
 
-// ==========================
-// INICIO
-// ==========================
+function abrirEditorPosicionActivo(clave) {
+    const activo = metodoPacoBit[clave];
+    if (!activo) return;
 
-document.addEventListener(
+    activoEditando = clave;
 
-    "DOMContentLoaded",
+    escribir("tituloModalActivo", `💼 Editar posición: ${activo.simbolo} ${activo.nombre}`);
 
-    function(){
+    const compra = document.getElementById("posicionPrecioCompra");
+    const cantidad = document.getElementById("posicionCantidad");
+    const ayuda = document.getElementById("ayudaUnidadPosicion");
+    const modal = document.getElementById("modalPosicionActivo");
 
-        cargarPosicionBitcoin();
+    if (compra) compra.value = activo.precioCompra > 0 ? activo.precioCompra : "";
+    if (cantidad) cantidad.value = activo.cantidad > 0 ? activo.cantidad : "";
+    if (ayuda) {
+        ayuda.textContent = `Precio en ${activo.unidadPrecio}. Introduce la cantidad en ${activo.unidadCantidad}.`;
+    }
+    if (modal) modal.classList.remove("oculto");
+}
 
-        mostrarMetodoPacoBit();
+function cerrarEditorPosicionActivo() {
+    activoEditando = null;
+    document.getElementById("modalPosicionActivo")?.classList.add("oculto");
+}
 
+function guardarPosicionActivo() {
+    if (!activoEditando) return;
+
+    const precioCompra = Number(document.getElementById("posicionPrecioCompra")?.value);
+    const cantidad = Number(document.getElementById("posicionCantidad")?.value);
+
+    if (!(precioCompra > 0) || !(cantidad > 0)) {
+        alert("Introduce un precio de compra y una cantidad válidos.");
+        return;
     }
 
-);
+    const activo = metodoPacoBit[activoEditando];
+    activo.precioCompra = precioCompra;
+    activo.cantidad = cantidad;
+
+    recalcularActivo(activoEditando);
+    guardarDatosBit();
+    mostrarMetodoPacoBit();
+    cerrarEditorPosicionActivo();
+}
+
+function marcarErrorBit(clave, mensaje) {
+    const activo = metodoPacoBit[clave];
+    if (!activo) return;
+
+    activo.error = mensaje;
+    mostrarActivoBit(clave);
+}
+
+function obtenerActivoBit(clave) {
+    return metodoPacoBit[clave];
+}
+
+function obtenerTodosBit() {
+    return metodoPacoBit;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    cargarDatosBit();
+    pintarPanelesBit();
+});
