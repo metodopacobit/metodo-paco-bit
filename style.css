@@ -1,5 +1,5 @@
 /* ==========================
-   MÉTODO PACO v3.1
+   MÉTODO PACO v4.0
 ========================== */
 
 *{
@@ -69,14 +69,8 @@ body{
 }
 
 @keyframes fade{
-    from{
-        opacity:0;
-        transform:translateY(12px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+    from{opacity:0;transform:translateY(12px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
 .dashboard{
@@ -103,73 +97,6 @@ body{
 .resumen p{
     font-size:22px;
     font-weight:bold;
-}
-
-/* Bitcoin: dos columnas permanentes como en la imagen de referencia */
-.bitDashboard{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:18px;
-    margin:22px 0;
-    align-items:stretch;
-}
-
-.bitCard{
-    min-width:0;
-    background:#1e293b;
-    padding:22px;
-    border-radius:28px;
-    border:1px solid #334155;
-    box-shadow:0 5px 15px rgba(0,0,0,.30);
-}
-
-.bitCard h3{
-    margin:8px 0 22px;
-    color:#60a5fa;
-    text-align:center;
-    font-size:22px;
-}
-
-.bitRow{
-    padding:12px 0;
-    border-bottom:1px solid #334155;
-}
-
-.bitRow:last-child{
-    border-bottom:none;
-}
-
-.bitLabel{
-    display:block;
-    font-size:15px;
-    font-weight:700;
-    line-height:1.35;
-    margin-bottom:7px;
-}
-
-.bitRow strong{
-    display:block;
-    font-size:20px;
-    line-height:1.25;
-    overflow-wrap:anywhere;
-}
-
-.bit-intro{
-    margin-bottom:20px;
-}
-
-.bitcoin-title{
-    font-size:31px;
-}
-
-.bitSecondaryButton{
-    background:#334155;
-}
-
-.ultima-actualizacion{
-    text-align:center;
-    margin:18px 0 8px;
-    color:#e2e8f0;
 }
 
 .activo{
@@ -227,6 +154,11 @@ button:hover{
     background:#1d4ed8;
 }
 
+button:disabled{
+    opacity:.65;
+    cursor:wait;
+}
+
 #lista button{
     width:48%;
 }
@@ -262,7 +194,151 @@ hr{
     margin:30px 0;
 }
 
-/* Modal para editar la posición sin cambiar la apariencia principal */
+/* ==========================
+   MÉTODO PACO BIT
+========================== */
+
+.bit-intro{
+    color:#cbd5e1;
+    margin-bottom:16px;
+}
+
+.bit-actions{
+    margin:12px 0 4px;
+}
+
+.ultima-actualizacion{
+    text-align:center;
+    margin:14px 0 20px;
+    color:#e2e8f0;
+    font-size:14px;
+}
+
+.resumen-bit{
+    background:#1e293b;
+    border-radius:20px;
+    border:1px solid #334155;
+    padding:18px;
+    margin-bottom:28px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.resumen-bit h3{
+    color:#60a5fa;
+    margin-top:0;
+}
+
+.resumen-bit-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+}
+
+.resumen-bit-grid div{
+    background:#0f172a;
+    border-radius:14px;
+    padding:13px;
+    min-width:0;
+}
+
+.resumen-bit-grid span,
+.resumen-bit-grid strong{
+    display:block;
+}
+
+.resumen-bit-grid span{
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.resumen-bit-grid strong{
+    font-size:17px;
+    overflow-wrap:anywhere;
+}
+
+.bit-activo{
+    margin-bottom:34px;
+}
+
+.bit-activo-titulo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:28px;
+    margin-bottom:14px;
+}
+
+.bit-activo-unidad{
+    color:#94a3b8;
+    font-size:13px;
+    font-weight:normal;
+}
+
+.bitDashboard{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:18px;
+    align-items:stretch;
+}
+
+.bitCard{
+    min-width:0;
+    background:#1e293b;
+    padding:20px;
+    border-radius:26px;
+    border:1px solid #334155;
+    box-shadow:0 5px 15px rgba(0,0,0,.30);
+}
+
+.bitCard h3{
+    margin:4px 0 18px;
+    color:#60a5fa;
+    text-align:center;
+    font-size:21px;
+}
+
+.bitRow{
+    padding:11px 0;
+    border-bottom:1px solid #334155;
+}
+
+.bitRow:last-child{
+    border-bottom:none;
+}
+
+.bitLabel{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.35;
+    margin-bottom:6px;
+}
+
+.bitRow strong{
+    display:block;
+    font-size:18px;
+    line-height:1.25;
+    overflow-wrap:anywhere;
+}
+
+.bit-editar{
+    margin-top:12px;
+    background:#334155;
+}
+
+.estado-api{
+    min-height:20px;
+    margin-top:10px;
+    color:#fbbf24;
+    font-size:13px;
+    text-align:center;
+}
+
+/* ==========================
+   MODAL REUTILIZABLE
+========================== */
+
 .modal{
     position:fixed;
     inset:0;
@@ -271,7 +347,7 @@ hr{
     align-items:center;
     justify-content:center;
     padding:20px;
-    background:rgba(2,6,23,.78);
+    background:rgba(2,6,23,.80);
 }
 
 .modalContenido{
@@ -294,6 +370,12 @@ hr{
     font-weight:700;
 }
 
+.ayuda-input{
+    color:#94a3b8;
+    font-size:13px;
+    line-height:1.4;
+}
+
 .botonCancelar{
     background:#475569;
 }
@@ -309,26 +391,29 @@ hr{
         margin-left:0;
     }
 
+    .resumen-bit-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
     .bitDashboard{
         gap:10px;
     }
 
     .bitCard{
-        padding:16px;
-        border-radius:24px;
+        padding:15px;
+        border-radius:22px;
     }
 
     .bitCard h3{
-        font-size:18px;
-        margin-bottom:16px;
+        font-size:17px;
     }
 
     .bitLabel{
-        font-size:13px;
+        font-size:12px;
     }
 
     .bitRow strong{
-        font-size:17px;
+        font-size:15px;
     }
 }
 
@@ -344,26 +429,18 @@ hr{
 
     .bitDashboard{
         grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-        gap:10px;
+        gap:8px;
     }
 
     .bitCard{
-        padding:14px;
+        padding:12px;
     }
 
-    .bitCard h3{
-        font-size:16px;
+    .bit-activo-titulo{
+        font-size:25px;
     }
 
-    .bitLabel{
-        font-size:12px;
-    }
-
-    .bitRow strong{
+    .resumen-bit-grid strong{
         font-size:15px;
-    }
-
-    .bitcoin-title{
-        font-size:30px;
     }
 }
