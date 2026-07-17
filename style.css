@@ -680,3 +680,308 @@ hr{
         gap:0;
     }
 }
+
+
+/* ==========================
+   MÉTODO NERE v1.0
+========================== */
+
+.nere-hero{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:12px;
+}
+
+.nere-hero h2{
+    margin-bottom:6px;
+}
+
+.nere-hero p,
+.nere-plan-mensual > p{
+    color:#cbd5e1;
+}
+
+.nere-boton-ajustes{
+    width:auto;
+    min-width:170px;
+    background:#334155;
+}
+
+.nere-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.nere-resumen,
+.nere-plan-mensual,
+.nere-metas,
+.nere-proyeccion{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:24px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.nere-resumen h3,
+.nere-plan-mensual h3,
+.nere-metas h3,
+.nere-proyeccion h3{
+    color:#60a5fa;
+    margin-top:0;
+}
+
+.nere-resumen-grid,
+.nere-proyeccion-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+}
+
+.nere-resumen-grid div,
+.nere-proyeccion-grid div{
+    background:#0f172a;
+    border-radius:14px;
+    padding:13px;
+    min-width:0;
+}
+
+.nere-resumen-grid span,
+.nere-resumen-grid strong,
+.nere-proyeccion-grid span,
+.nere-proyeccion-grid strong{
+    display:block;
+}
+
+.nere-resumen-grid span,
+.nere-proyeccion-grid span{
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.nere-resumen-grid strong,
+.nere-proyeccion-grid strong{
+    font-size:17px;
+    overflow-wrap:anywhere;
+}
+
+.nere-plan-lista{
+    display:grid;
+    gap:10px;
+    margin-top:14px;
+}
+
+.nere-plan-fila{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    gap:12px;
+    background:#0f172a;
+    border-radius:14px;
+    padding:13px;
+}
+
+.nere-plan-fila small{
+    display:block;
+    color:#94a3b8;
+    margin-top:4px;
+}
+
+.nere-meta{
+    margin-bottom:15px;
+}
+
+.nere-meta-cabecera{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:7px;
+}
+
+.nere-barra{
+    height:13px;
+    background:#0f172a;
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid #334155;
+}
+
+.nere-barra > span{
+    display:block;
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#2563eb,#60a5fa);
+    border-radius:999px;
+}
+
+#nereGrafico{
+    display:block;
+    width:100%;
+    height:auto;
+    margin-top:18px;
+    background:#0f172a;
+    border-radius:16px;
+    border:1px solid #334155;
+}
+
+.nere-activo{
+    margin-bottom:30px;
+}
+
+.nere-activo-cabecera{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:13px;
+}
+
+.nere-activo-cabecera h2{
+    margin:0;
+    font-size:26px;
+}
+
+.nere-activo-cabecera p{
+    color:#94a3b8;
+    margin-top:5px;
+}
+
+.nere-peso-badge{
+    flex:0 0 auto;
+    background:#334155;
+    border-radius:999px;
+    padding:7px 10px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.nereDashboard{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:12px;
+}
+
+.nereCard{
+    min-width:0;
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:24px;
+    padding:17px;
+    box-shadow:0 5px 15px rgba(0,0,0,.28);
+}
+
+.nereCard h3{
+    margin:3px 0 15px;
+    color:#60a5fa;
+    text-align:center;
+}
+
+.nereRow{
+    padding:10px 0;
+    border-bottom:1px solid #334155;
+}
+
+.nereRow:last-child{
+    border-bottom:none;
+}
+
+.nereLabel{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.nereRow strong{
+    display:block;
+    font-size:17px;
+    overflow-wrap:anywhere;
+}
+
+.nere-editar{
+    margin-top:12px;
+    background:#334155;
+}
+
+.nere-error{
+    min-height:20px;
+    color:#fbbf24;
+    text-align:center;
+    margin-top:9px;
+    font-size:13px;
+}
+
+.nere-vacia{
+    text-align:center;
+}
+
+.nere-form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.modal-nere{
+    max-height:90vh;
+    overflow-y:auto;
+}
+
+@media(max-width:700px){
+    .nere-resumen-grid,
+    .nere-proyeccion-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .nereCard{
+        padding:13px;
+    }
+
+    .nereCard h3{
+        font-size:17px;
+    }
+
+    .nereLabel{
+        font-size:12px;
+    }
+
+    .nereRow strong{
+        font-size:15px;
+    }
+}
+
+@media(max-width:500px){
+    .nere-hero{
+        display:block;
+    }
+
+    .nere-boton-ajustes{
+        width:100%;
+    }
+
+    .nere-actions{
+        grid-template-columns:1fr;
+    }
+
+    .nereDashboard{
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+        gap:8px;
+    }
+
+    .nereCard{
+        padding:11px;
+    }
+
+    .nere-activo-cabecera h2{
+        font-size:23px;
+    }
+
+    .nere-form-grid{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+}
