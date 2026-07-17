@@ -1,5 +1,5 @@
 // ==========================
-// nere.js v1.2
+// nere.js v1.3
 // Método Nere
 // ==========================
 
@@ -81,33 +81,29 @@ function diferenciaExactaNere(desde, hasta) {
     }
 
     let anos = fin.getFullYear() - inicio.getFullYear();
-    let cursor = new Date(inicio);
-    cursor.setFullYear(cursor.getFullYear() + anos);
+    let meses = fin.getMonth() - inicio.getMonth();
+    let dias = fin.getDate() - inicio.getDate();
 
-    if (cursor > fin) {
+    if (dias < 0) {
+        meses -= 1;
+        const ultimoDiaMesAnterior = new Date(
+            fin.getFullYear(),
+            fin.getMonth(),
+            0
+        ).getDate();
+        dias += ultimoDiaMesAnterior;
+    }
+
+    if (meses < 0) {
         anos -= 1;
-        cursor = new Date(inicio);
-        cursor.setFullYear(cursor.getFullYear() + anos);
+        meses += 12;
     }
 
-    let meses = 0;
-
-    while (meses < 11) {
-        const siguiente = new Date(cursor);
-        siguiente.setMonth(siguiente.getMonth() + 1);
-
-        if (siguiente > fin) break;
-
-        cursor = siguiente;
-        meses += 1;
-    }
-
-    const dias = Math.max(
-        0,
-        Math.round((fin.getTime() - cursor.getTime()) / 86400000)
-    );
-
-    return { anos, meses, dias };
+    return {
+        anos: Math.max(0, anos),
+        meses: Math.max(0, meses),
+        dias: Math.max(0, dias)
+    };
 }
 
 function mesesCompletosHastaNere(fechaObjetivo) {
@@ -490,13 +486,13 @@ function pintarProyeccionesNere() {
 }
 
 function pintarContadoresNere() {
-    const config = metodoNere.configuracion;
-    const nacimiento = fechaLocalNere(config.fechaNacimiento);
+    const config = metodoNere.configuracion || {};
+    const nacimiento = fechaLocalNere(config.fechaNacimiento || "2016-05-06");
     const hoy = hoyNere();
 
     const proximoCumple = siguienteCumpleanosNere(nacimiento);
     const mayoria = sumarAnosNere(nacimiento, 18);
-    const objetivo = sumarAnosNere(nacimiento, config.edadObjetivo);
+    const objetivo = sumarAnosNere(nacimiento, 25);
 
     const faltaCumple = diferenciaExactaNere(hoy, proximoCumple);
     const faltaMayoria = diferenciaExactaNere(hoy, mayoria);
@@ -504,54 +500,27 @@ function pintarContadoresNere() {
 
     escribirNere("nereFechaNacimientoTexto", formatearFechaNere(nacimiento));
 
-    escribirNere("nereProximoCumpleFecha", formatearFechaNere(proximoCumple));
+    escribirNere("nereProximoCumpleFecha", `· ${formatearFechaNere(proximoCumple)}`);
     escribirNere("nereCumpleMeses", faltaCumple.meses);
     escribirNere("nereCumpleDias", faltaCumple.dias);
-    escribirNere(
-        "nereCumpleMesesLabel",
-        palabraNere(faltaCumple.meses, "mes", "meses")
-    );
-    escribirNere(
-        "nereCumpleDiasLabel",
-        palabraNere(faltaCumple.dias, "día", "días")
-    );
+    escribirNere("nereCumpleMesesLabel", palabraNere(faltaCumple.meses, "mes", "meses"));
+    escribirNere("nereCumpleDiasLabel", palabraNere(faltaCumple.dias, "día", "días"));
 
-    escribirNere("nereMayoriaFecha", formatearFechaNere(mayoria));
+    escribirNere("nereMayoriaFecha", `· ${formatearFechaNere(mayoria)}`);
     escribirNere("nereMayoriaAnos", faltaMayoria.anos);
     escribirNere("nereMayoriaMeses", faltaMayoria.meses);
     escribirNere("nereMayoriaDias", faltaMayoria.dias);
-    escribirNere(
-        "nereMayoriaAnosLabel",
-        palabraNere(faltaMayoria.anos, "año", "años")
-    );
-    escribirNere(
-        "nereMayoriaMesesLabel",
-        palabraNere(faltaMayoria.meses, "mes", "meses")
-    );
-    escribirNere(
-        "nereMayoriaDiasLabel",
-        palabraNere(faltaMayoria.dias, "día", "días")
-    );
+    escribirNere("nereMayoriaAnosLabel", palabraNere(faltaMayoria.anos, "año", "años"));
+    escribirNere("nereMayoriaMesesLabel", palabraNere(faltaMayoria.meses, "mes", "meses"));
+    escribirNere("nereMayoriaDiasLabel", palabraNere(faltaMayoria.dias, "día", "días"));
 
-    escribirNere(
-        "nereObjetivoFecha",
-        `${formatearFechaNere(objetivo)} (${config.edadObjetivo} años)`
-    );
+    escribirNere("nereObjetivoFecha", `· ${formatearFechaNere(objetivo)}`);
     escribirNere("nereObjetivoAnos", faltaObjetivo.anos);
     escribirNere("nereObjetivoMeses", faltaObjetivo.meses);
     escribirNere("nereObjetivoDias", faltaObjetivo.dias);
-    escribirNere(
-        "nereObjetivoAnosLabel",
-        palabraNere(faltaObjetivo.anos, "año", "años")
-    );
-    escribirNere(
-        "nereObjetivoMesesLabel",
-        palabraNere(faltaObjetivo.meses, "mes", "meses")
-    );
-    escribirNere(
-        "nereObjetivoDiasLabel",
-        palabraNere(faltaObjetivo.dias, "día", "días")
-    );
+    escribirNere("nereObjetivoAnosLabel", palabraNere(faltaObjetivo.anos, "año", "años"));
+    escribirNere("nereObjetivoMesesLabel", palabraNere(faltaObjetivo.meses, "mes", "meses"));
+    escribirNere("nereObjetivoDiasLabel", palabraNere(faltaObjetivo.dias, "día", "días"));
 }
 
 function pintarMetodoNere() {
@@ -793,3 +762,14 @@ document.addEventListener("DOMContentLoaded", function() {
     cargarMetodoNere();
     pintarMetodoNere();
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    pintarContadoresNere();
+    setInterval(pintarContadoresNere, 60 * 60 * 1000);
+});
+
+
+window.abrirAjustesNere = abrirAjustesNere;
+window.cerrarAjustesNere = cerrarAjustesNere;
+window.guardarAjustesNere = guardarAjustesNere;
