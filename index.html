@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco v4.1</title>
-<link rel="stylesheet" href="style.css?v=4.1">
+<title>Método Paco · Método Nere v1.0</title>
+<link rel="stylesheet" href="style.css?v=nere1.0">
 </head>
 
 <body>
@@ -188,18 +188,145 @@
 
     <button onclick="volver()">⬅ Volver</button>
 
-    <h2>👧 Método Nere</h2>
+    <div class="nere-hero">
+        <div>
+            <h2>👧 Método Nere</h2>
+            <p>Construyendo el patrimonio de una vida.</p>
+        </div>
 
-    <div class="activo">
-        <h3>Plan de inversión</h3>
-        <p>Capital invertido: <span id="nereCapital">0 €</span></p>
-        <p>Valor actual: <span id="nereValor">0 €</span></p>
-        <p>Rentabilidad: <span id="nereRentabilidad">0 %</span></p>
-        <p>Aportación mensual: <span id="nereMensual">100 €</span></p>
-        <p>Objetivo: Independencia financiera a largo plazo.</p>
+        <button class="nere-boton-ajustes" onclick="abrirAjustesNere()">⚙️ Configurar plan</button>
     </div>
 
+    <div class="nere-actions">
+        <button id="botonActualizarNere" onclick="actualizarMetodoNere()">🔄 Actualizar ETF</button>
+        <button class="boton-secundario" onclick="abrirEditorActivoNere()">➕ Añadir ETF</button>
+    </div>
+
+    <p class="ultima-actualizacion">
+        <strong>Última actualización:</strong>
+        <span id="nereUltimaActualizacion">--</span>
+    </p>
+
+    <section class="nere-resumen">
+        <h3>📊 Resumen del plan</h3>
+
+        <div class="nere-resumen-grid">
+            <div><span>Edad actual</span><strong id="nereEdadActual">10 años</strong></div>
+            <div><span>Capital invertido</span><strong id="nereCapital">0,00 €</strong></div>
+            <div><span>Valor actual</span><strong id="nereValor">0,00 €</strong></div>
+            <div><span>Ganancia / Pérdida</span><strong id="nereGanancia">0,00 €</strong></div>
+            <div><span>Rentabilidad</span><strong id="nereRentabilidad">0,00 %</strong></div>
+            <div><span>Aportación mensual</span><strong id="nereMensual">100,00 €</strong></div>
+        </div>
+    </section>
+
+    <section class="nere-plan-mensual">
+        <h3>💶 Plan de aportación de este mes</h3>
+        <p id="nerePlanExplicacion">La aportación se dirige a los ETF más alejados de su peso objetivo.</p>
+        <div id="nerePlanAportacion" class="nere-plan-lista"></div>
+    </section>
+
+    <section class="nere-metas">
+        <h3>🎯 Progreso hacia las metas</h3>
+        <div id="nereMetasLista"></div>
+    </section>
+
+    <section class="nere-proyeccion">
+        <h3>🚀 Proyección de futuro</h3>
+
+        <div class="nere-proyeccion-grid">
+            <div><span>A los 18 años</span><strong id="nereProyeccion18">0,00 €</strong></div>
+            <div><span>A los 25 años</span><strong id="nereProyeccion25">0,00 €</strong></div>
+            <div><span>A los 30 años</span><strong id="nereProyeccion30">0,00 €</strong></div>
+            <div><span>Edad objetivo</span><strong id="nereProyeccionObjetivo">0,00 €</strong></div>
+        </div>
+
+        <canvas id="nereGrafico" width="900" height="420" aria-label="Proyección del Método Nere"></canvas>
+    </section>
+
+    <section>
+        <h3>📦 Cartera Método Nere</h3>
+        <div id="nereListaActivos"></div>
+
+        <div id="nereCarteraVacia" class="activo nere-vacia">
+            <h3>🌍 Añade el primer ETF</h3>
+            <p>Ejemplo recomendado: Vanguard FTSE All-World y un porcentaje reducido de Nasdaq 100.</p>
+            <button onclick="abrirEditorActivoNere()">➕ Añadir ETF</button>
+        </div>
+    </section>
+
 </section>
+
+<div id="modalAjustesNere" class="modal oculto" role="dialog" aria-modal="true">
+
+    <div class="modalContenido modal-nere">
+
+        <h3>⚙️ Configurar Método Nere</h3>
+
+        <div class="nere-form-grid">
+            <div>
+                <label for="nereEdadInput">Edad actual</label>
+                <input id="nereEdadInput" type="number" min="0" max="30" step="1">
+            </div>
+
+            <div>
+                <label for="nereEdadObjetivoInput">Edad objetivo</label>
+                <input id="nereEdadObjetivoInput" type="number" min="1" max="60" step="1">
+            </div>
+        </div>
+
+        <label for="nereAportacionInput">Aportación mensual (€)</label>
+        <input id="nereAportacionInput" type="number" min="0" step="1">
+
+        <label for="nereRentabilidadEsperadaInput">Rentabilidad esperada anual (%)</label>
+        <input id="nereRentabilidadEsperadaInput" type="number" min="0" max="20" step="0.1">
+
+        <button type="button" onclick="guardarAjustesNere()">💾 Guardar configuración</button>
+        <button type="button" class="botonCancelar" onclick="cerrarAjustesNere()">Cancelar</button>
+
+    </div>
+
+</div>
+
+<div id="modalActivoNere" class="modal oculto" role="dialog" aria-modal="true">
+
+    <div class="modalContenido modal-nere">
+
+        <h3 id="tituloModalActivoNere">➕ Añadir ETF</h3>
+
+        <label for="nereNombreActivoInput">Nombre</label>
+        <input id="nereNombreActivoInput" type="text" placeholder="Ej. Vanguard FTSE All-World">
+
+        <label for="nereTickerActivoInput">Ticker</label>
+        <input id="nereTickerActivoInput" type="text" placeholder="Ej. VWCE">
+
+        <label for="nereExchangeActivoInput">Bolsa o mercado</label>
+        <input id="nereExchangeActivoInput" type="text" placeholder="Ej. XETR">
+
+        <div class="nere-form-grid">
+            <div>
+                <label for="nerePrecioCompraInput">Precio medio de compra</label>
+                <input id="nerePrecioCompraInput" type="number" min="0" step="0.0001">
+            </div>
+
+            <div>
+                <label for="nereCantidadInput">Participaciones</label>
+                <input id="nereCantidadInput" type="number" min="0" step="0.000001">
+            </div>
+        </div>
+
+        <label for="nerePesoObjetivoInput">Peso objetivo (%)</label>
+        <input id="nerePesoObjetivoInput" type="number" min="0" max="100" step="1">
+
+        <p class="ayuda-input">Los pesos objetivo de todos los ETF deberían sumar aproximadamente el 100 %.</p>
+
+        <button type="button" onclick="guardarActivoNere()">💾 Guardar ETF</button>
+        <button type="button" id="botonEliminarNere" class="botonEliminarModal oculto" onclick="eliminarActivoNereDesdeModal()">🗑 Eliminar ETF</button>
+        <button type="button" class="botonCancelar" onclick="cerrarEditorActivoNere()">Cancelar</button>
+
+    </div>
+
+</div>
 
 <section id="radar" class="pantalla oculto">
 
@@ -252,7 +379,7 @@
     <h2>⚙️ Ajustes</h2>
 
     <div class="activo">
-        <p>Versión 4.1</p>
+        <p>Versión 4.1 · Método Nere 1.0</p>
         <p>Método Paco</p>
         <p>Desarrollado por Paco + ChatGPT</p>
     </div>
@@ -266,7 +393,7 @@
 <script src="cartera.js?v=4.1"></script>
 <script src="bit.js?v=4.1"></script>
 <script src="apiBit.js?v=4.1"></script>
-<script src="nere.js?v=4.1"></script>
+<script src="nere.js?v=1.0"></script>
 <script src="radar.js?v=4.1"></script>
 <script src="watchlist.js?v=4.1"></script>
 
