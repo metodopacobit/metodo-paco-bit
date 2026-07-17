@@ -819,15 +819,6 @@ hr{
     border-radius:999px;
 }
 
-#nereGrafico{
-    display:block;
-    width:100%;
-    height:auto;
-    margin-top:18px;
-    background:#0f172a;
-    border-radius:16px;
-    border:1px solid #334155;
-}
 
 .nere-activo{
     margin-bottom:30px;
@@ -983,5 +974,119 @@ hr{
     .nere-form-grid{
         grid-template-columns:1fr;
         gap:0;
+    }
+}
+
+
+/* ==========================
+   MÉTODO NERE v1.2 · FECHAS
+========================== */
+
+.nere-tiempo{
+    background:#1e293b;
+    border-radius:20px;
+    border:1px solid #334155;
+    padding:18px;
+    margin-bottom:28px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.nere-tiempo > h3{
+    margin-top:0;
+    color:#60a5fa;
+}
+
+.nere-fecha-nacimiento{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    background:#0f172a;
+    border-radius:14px;
+    padding:14px;
+    margin-bottom:16px;
+}
+
+.nere-fecha-nacimiento span{
+    color:#94a3b8;
+}
+
+.nere-hitos-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+}
+
+.nere-hito{
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:18px;
+    padding:17px;
+    min-width:0;
+}
+
+.nere-hito-objetivo{
+    border-color:#3b82f6;
+}
+
+.nere-hito h4{
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+.nere-hito-fecha{
+    font-size:19px;
+    font-weight:800;
+    color:#ffffff;
+    margin-bottom:14px;
+}
+
+.nere-hito-faltan{
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.nere-contador{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+}
+
+.nere-contador-dos{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.nere-contador div{
+    background:#1e293b;
+    border-radius:12px;
+    padding:11px 6px;
+    text-align:center;
+}
+
+.nere-contador strong,
+.nere-contador span{
+    display:block;
+}
+
+.nere-contador strong{
+    font-size:22px;
+    color:#60a5fa;
+    margin-bottom:3px;
+}
+
+.nere-contador span{
+    color:#cbd5e1;
+    font-size:12px;
+}
+
+@media(max-width:760px){
+    .nere-hitos-grid{
+        grid-template-columns:1fr;
+    }
+
+    .nere-fecha-nacimiento{
+        align-items:flex-start;
+        flex-direction:column;
     }
 }
