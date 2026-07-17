@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco · Método Nere v1.2</title>
-<link rel="stylesheet" href="style.css?v=nere1.2">
+<title>Método Paco · Método Nere v1.3</title>
+<link rel="stylesheet" href="style.css?v=nere1.3">
 </head>
 
 <body>
@@ -242,60 +242,66 @@
         <div class="nere-hitos-grid">
 
             <article class="nere-hito">
-                <h4>🎉 Próximo cumpleaños</h4>
-                <p class="nere-hito-fecha" id="nereProximoCumpleFecha">--</p>
+                <h4>
+                    🎉 Próximo cumpleaños
+                    <span class="nere-fecha-inline" id="nereProximoCumpleFecha"></span>
+                </h4>
                 <p class="nere-hito-faltan">Faltan exactamente:</p>
 
                 <div class="nere-contador nere-contador-dos">
                     <div>
-                        <strong id="nereCumpleMeses">0</strong>
-                        <span id="nereCumpleMesesLabel">meses</span>
+                        <strong id="nereCumpleMeses"></strong>
+                        <span id="nereCumpleMesesLabel"></span>
                     </div>
                     <div>
-                        <strong id="nereCumpleDias">0</strong>
-                        <span id="nereCumpleDiasLabel">días</span>
+                        <strong id="nereCumpleDias"></strong>
+                        <span id="nereCumpleDiasLabel"></span>
                     </div>
                 </div>
             </article>
 
             <article class="nere-hito">
-                <h4>🔞 Mayoría de edad</h4>
-                <p class="nere-hito-fecha" id="nereMayoriaFecha">--</p>
+                <h4>
+                    🔞 Mayoría de edad
+                    <span class="nere-fecha-inline" id="nereMayoriaFecha"></span>
+                </h4>
                 <p class="nere-hito-faltan">Faltan exactamente:</p>
 
                 <div class="nere-contador">
                     <div>
-                        <strong id="nereMayoriaAnos">0</strong>
-                        <span id="nereMayoriaAnosLabel">años</span>
+                        <strong id="nereMayoriaAnos"></strong>
+                        <span id="nereMayoriaAnosLabel"></span>
                     </div>
                     <div>
-                        <strong id="nereMayoriaMeses">0</strong>
-                        <span id="nereMayoriaMesesLabel">meses</span>
+                        <strong id="nereMayoriaMeses"></strong>
+                        <span id="nereMayoriaMesesLabel"></span>
                     </div>
                     <div>
-                        <strong id="nereMayoriaDias">0</strong>
-                        <span id="nereMayoriaDiasLabel">días</span>
+                        <strong id="nereMayoriaDias"></strong>
+                        <span id="nereMayoriaDiasLabel"></span>
                     </div>
                 </div>
             </article>
 
             <article class="nere-hito nere-hito-objetivo">
-                <h4>🎯 Objetivo del plan</h4>
-                <p class="nere-hito-fecha" id="nereObjetivoFecha">--</p>
+                <h4>
+                    🎯 Objetivo del plan (25 años)
+                    <span class="nere-fecha-inline" id="nereObjetivoFecha"></span>
+                </h4>
                 <p class="nere-hito-faltan">Faltan exactamente:</p>
 
                 <div class="nere-contador">
                     <div>
-                        <strong id="nereObjetivoAnos">0</strong>
-                        <span id="nereObjetivoAnosLabel">años</span>
+                        <strong id="nereObjetivoAnos"></strong>
+                        <span id="nereObjetivoAnosLabel"></span>
                     </div>
                     <div>
-                        <strong id="nereObjetivoMeses">0</strong>
-                        <span id="nereObjetivoMesesLabel">meses</span>
+                        <strong id="nereObjetivoMeses"></strong>
+                        <span id="nereObjetivoMesesLabel"></span>
                     </div>
                     <div>
-                        <strong id="nereObjetivoDias">0</strong>
-                        <span id="nereObjetivoDiasLabel">días</span>
+                        <strong id="nereObjetivoDias"></strong>
+                        <span id="nereObjetivoDiasLabel"></span>
                     </div>
                 </div>
             </article>
@@ -321,7 +327,7 @@
         <div id="nereCarteraVacia" class="activo nere-vacia">
             <h3>🌍 Añade el primer ETF</h3>
             <p>Ejemplo recomendado: Vanguard FTSE All-World y un porcentaje reducido de Nasdaq 100.</p>
-            <button onclick="abrirEditorActivoNere()">➕ Añadir ETF</button>
+            
         </div>
     </section>
 
@@ -345,46 +351,7 @@
         <label for="nereRentabilidadEsperadaInput">Rentabilidad esperada anual (%)</label>
         <input id="nereRentabilidadEsperadaInput" type="number" min="0" max="20" step="0.1">
 
-        <button type="button" onclick="guardarAjustesNere()">💾 Guardar configuración</button>
-        <button type="button" class="botonCancelar" onclick="cerrarAjustesNere()">Cancelar</button>
-
-    </div>
-
-</div>
-
-<div id="modalActivoNere" class="modal oculto" role="dialog" aria-modal="true">
-
-    <div class="modalContenido modal-nere">
-
-        <h3 id="tituloModalActivoNere">➕ Añadir ETF</h3>
-
-        <label for="nereNombreActivoInput">Nombre</label>
-        <input id="nereNombreActivoInput" type="text" placeholder="Ej. Vanguard FTSE All-World">
-
-        <label for="nereTickerActivoInput">Ticker</label>
-        <input id="nereTickerActivoInput" type="text" placeholder="Ej. VWCE">
-
-        <label for="nereExchangeActivoInput">Bolsa o mercado</label>
-        <input id="nereExchangeActivoInput" type="text" placeholder="Ej. XETR">
-
-        <div class="nere-form-grid">
-            <div>
-                <label for="nerePrecioCompraInput">Precio medio de compra</label>
-                <input id="nerePrecioCompraInput" type="number" min="0" step="0.0001">
-            </div>
-
-            <div>
-                <label for="nereCantidadInput">Participaciones</label>
-                <input id="nereCantidadInput" type="number" min="0" step="0.000001">
-            </div>
-        </div>
-
-        <label for="nerePesoObjetivoInput">Peso objetivo (%)</label>
-        <input id="nerePesoObjetivoInput" type="number" min="0" max="100" step="1">
-
-        <p class="ayuda-input">Los pesos objetivo de todos los ETF deberían sumar aproximadamente el 100 %.</p>
-
-        <button type="button" onclick="guardarActivoNere()">💾 Guardar ETF</button>
+        
         <button type="button" id="botonEliminarNere" class="botonEliminarModal oculto" onclick="eliminarActivoNereDesdeModal()">🗑 Eliminar ETF</button>
         <button type="button" class="botonCancelar" onclick="cerrarEditorActivoNere()">Cancelar</button>
 
@@ -443,7 +410,7 @@
     <h2>⚙️ Ajustes</h2>
 
     <div class="activo">
-        <p>Versión 4.1 · Método Nere 1.2</p>
+        <p>Versión 4.1 · Método Nere 1.3</p>
         <p>Método Paco</p>
         <p>Desarrollado por Paco + ChatGPT</p>
     </div>
@@ -457,7 +424,7 @@
 <script src="cartera.js?v=4.1"></script>
 <script src="bit.js?v=4.1"></script>
 <script src="apiBit.js?v=4.1"></script>
-<script src="nere.js?v=1.2"></script>
+<script src="nere.js?v=1.3"></script>
 <script src="radar.js?v=4.1"></script>
 <script src="watchlist.js?v=4.1"></script>
 
