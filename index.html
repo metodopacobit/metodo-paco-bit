@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco · Método Nere v1.0</title>
-<link rel="stylesheet" href="style.css?v=nere1.0">
+<title>Método Paco · Método Nere v1.2</title>
+<link rel="stylesheet" href="style.css?v=nere1.2">
 </head>
 
 <body>
@@ -231,6 +231,78 @@
         <div id="nereMetasLista"></div>
     </section>
 
+    <section class="nere-tiempo">
+        <h3>⏳ Fechas importantes</h3>
+
+        <div class="nere-fecha-nacimiento">
+            <span>🎂 Fecha de nacimiento</span>
+            <strong id="nereFechaNacimientoTexto">06/05/2016</strong>
+        </div>
+
+        <div class="nere-hitos-grid">
+
+            <article class="nere-hito">
+                <h4>🎉 Próximo cumpleaños</h4>
+                <p class="nere-hito-fecha" id="nereProximoCumpleFecha">--</p>
+                <p class="nere-hito-faltan">Faltan exactamente:</p>
+
+                <div class="nere-contador nere-contador-dos">
+                    <div>
+                        <strong id="nereCumpleMeses">0</strong>
+                        <span id="nereCumpleMesesLabel">meses</span>
+                    </div>
+                    <div>
+                        <strong id="nereCumpleDias">0</strong>
+                        <span id="nereCumpleDiasLabel">días</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="nere-hito">
+                <h4>🔞 Mayoría de edad</h4>
+                <p class="nere-hito-fecha" id="nereMayoriaFecha">--</p>
+                <p class="nere-hito-faltan">Faltan exactamente:</p>
+
+                <div class="nere-contador">
+                    <div>
+                        <strong id="nereMayoriaAnos">0</strong>
+                        <span id="nereMayoriaAnosLabel">años</span>
+                    </div>
+                    <div>
+                        <strong id="nereMayoriaMeses">0</strong>
+                        <span id="nereMayoriaMesesLabel">meses</span>
+                    </div>
+                    <div>
+                        <strong id="nereMayoriaDias">0</strong>
+                        <span id="nereMayoriaDiasLabel">días</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="nere-hito nere-hito-objetivo">
+                <h4>🎯 Objetivo del plan</h4>
+                <p class="nere-hito-fecha" id="nereObjetivoFecha">--</p>
+                <p class="nere-hito-faltan">Faltan exactamente:</p>
+
+                <div class="nere-contador">
+                    <div>
+                        <strong id="nereObjetivoAnos">0</strong>
+                        <span id="nereObjetivoAnosLabel">años</span>
+                    </div>
+                    <div>
+                        <strong id="nereObjetivoMeses">0</strong>
+                        <span id="nereObjetivoMesesLabel">meses</span>
+                    </div>
+                    <div>
+                        <strong id="nereObjetivoDias">0</strong>
+                        <span id="nereObjetivoDiasLabel">días</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
     <section class="nere-proyeccion">
         <h3>🚀 Proyección de futuro</h3>
 
@@ -240,8 +312,6 @@
             <div><span>A los 30 años</span><strong id="nereProyeccion30">0,00 €</strong></div>
             <div><span>Edad objetivo</span><strong id="nereProyeccionObjetivo">0,00 €</strong></div>
         </div>
-
-        <canvas id="nereGrafico" width="900" height="420" aria-label="Proyección del Método Nere"></canvas>
     </section>
 
     <section>
@@ -263,17 +333,11 @@
 
         <h3>⚙️ Configurar Método Nere</h3>
 
-        <div class="nere-form-grid">
-            <div>
-                <label for="nereEdadInput">Edad actual</label>
-                <input id="nereEdadInput" type="number" min="0" max="30" step="1">
-            </div>
+        <label for="nereFechaNacimientoInput">Fecha de nacimiento</label>
+        <input id="nereFechaNacimientoInput" type="date" value="2016-05-06">
 
-            <div>
-                <label for="nereEdadObjetivoInput">Edad objetivo</label>
-                <input id="nereEdadObjetivoInput" type="number" min="1" max="60" step="1">
-            </div>
-        </div>
+        <label for="nereEdadObjetivoInput">Edad objetivo</label>
+        <input id="nereEdadObjetivoInput" type="number" min="18" max="60" step="1">
 
         <label for="nereAportacionInput">Aportación mensual (€)</label>
         <input id="nereAportacionInput" type="number" min="0" step="1">
@@ -379,7 +443,7 @@
     <h2>⚙️ Ajustes</h2>
 
     <div class="activo">
-        <p>Versión 4.1 · Método Nere 1.0</p>
+        <p>Versión 4.1 · Método Nere 1.2</p>
         <p>Método Paco</p>
         <p>Desarrollado por Paco + ChatGPT</p>
     </div>
@@ -393,7 +457,7 @@
 <script src="cartera.js?v=4.1"></script>
 <script src="bit.js?v=4.1"></script>
 <script src="apiBit.js?v=4.1"></script>
-<script src="nere.js?v=1.0"></script>
+<script src="nere.js?v=1.2"></script>
 <script src="radar.js?v=4.1"></script>
 <script src="watchlist.js?v=4.1"></script>
 
