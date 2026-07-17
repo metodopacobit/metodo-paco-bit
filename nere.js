@@ -1,5 +1,5 @@
 // ==========================
-// nere.js v1.0
+// nere.js v1.2
 // Método Nere
 // ==========================
 
@@ -10,7 +10,7 @@ const METAS_NERE = [1000, 5000, 10000, 25000, 50000, 100000, 250000];
 
 let metodoNere = {
     configuracion: {
-        edadActual: 10,
+        fechaNacimiento: "2016-05-06",
         edadObjetivo: 25,
         aportacionMensual: 100,
         rentabilidadEsperada: 7
@@ -24,6 +24,127 @@ let indiceActivoNereEditar = -1;
 function numeroNere(valor, defecto = 0) {
     const numero = Number(valor);
     return Number.isFinite(numero) ? numero : defecto;
+}
+
+function fechaLocalNere(valor) {
+    if (valor instanceof Date) {
+        return new Date(valor.getFullYear(), valor.getMonth(), valor.getDate());
+    }
+
+    const partes = String(valor || "").split("-").map(Number);
+
+    if (partes.length !== 3 || !partes.every(Number.isFinite)) {
+        return new Date(2016, 4, 6);
+    }
+
+    return new Date(partes[0], partes[1] - 1, partes[2]);
+}
+
+function hoyNere() {
+    const ahora = new Date();
+    return new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+}
+
+function sumarAnosNere(fecha, anos) {
+    const resultado = new Date(fecha.getFullYear() + anos, fecha.getMonth(), fecha.getDate());
+
+    // Ajuste para nacimientos el 29 de febrero.
+    if (resultado.getMonth() !== fecha.getMonth()) {
+        resultado.setDate(0);
+    }
+
+    return resultado;
+}
+
+function formatearFechaNere(fecha) {
+    return fecha.toLocaleDateString("es-ES", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+}
+
+function edadExactaNere(fechaNacimiento, referencia = hoyNere()) {
+    let anos = referencia.getFullYear() - fechaNacimiento.getFullYear();
+    const aniversario = sumarAnosNere(fechaNacimiento, anos);
+
+    if (aniversario > referencia) anos -= 1;
+    return Math.max(0, anos);
+}
+
+function diferenciaExactaNere(desde, hasta) {
+    const inicio = new Date(desde.getFullYear(), desde.getMonth(), desde.getDate());
+    const fin = new Date(hasta.getFullYear(), hasta.getMonth(), hasta.getDate());
+
+    if (fin <= inicio) {
+        return { anos: 0, meses: 0, dias: 0 };
+    }
+
+    let anos = fin.getFullYear() - inicio.getFullYear();
+    let cursor = new Date(inicio);
+    cursor.setFullYear(cursor.getFullYear() + anos);
+
+    if (cursor > fin) {
+        anos -= 1;
+        cursor = new Date(inicio);
+        cursor.setFullYear(cursor.getFullYear() + anos);
+    }
+
+    let meses = 0;
+
+    while (meses < 11) {
+        const siguiente = new Date(cursor);
+        siguiente.setMonth(siguiente.getMonth() + 1);
+
+        if (siguiente > fin) break;
+
+        cursor = siguiente;
+        meses += 1;
+    }
+
+    const dias = Math.max(
+        0,
+        Math.round((fin.getTime() - cursor.getTime()) / 86400000)
+    );
+
+    return { anos, meses, dias };
+}
+
+function mesesCompletosHastaNere(fechaObjetivo) {
+    const hoy = hoyNere();
+
+    if (fechaObjetivo <= hoy) return 0;
+
+    let meses =
+        (fechaObjetivo.getFullYear() - hoy.getFullYear()) * 12 +
+        (fechaObjetivo.getMonth() - hoy.getMonth());
+
+    if (fechaObjetivo.getDate() < hoy.getDate()) meses -= 1;
+
+    return Math.max(0, meses);
+}
+
+function siguienteCumpleanosNere(fechaNacimiento) {
+    const hoy = hoyNere();
+    let cumple = new Date(
+        hoy.getFullYear(),
+        fechaNacimiento.getMonth(),
+        fechaNacimiento.getDate()
+    );
+
+    if (cumple < hoy) {
+        cumple = new Date(
+            hoy.getFullYear() + 1,
+            fechaNacimiento.getMonth(),
+            fechaNacimiento.getDate()
+        );
+    }
+
+    return cumple;
+}
+
+function palabraNere(cantidad, singular, plural) {
+    return cantidad === 1 ? singular : plural;
 }
 
 function euroNere(valor) {
@@ -77,6 +198,12 @@ function cargarMetodoNere() {
                 ...metodoNere.configuracion,
                 ...(guardado.configuracion || {})
             };
+
+            if (!metodoNere.configuracion.fechaNacimiento) {
+                metodoNere.configuracion.fechaNacimiento = "2016-05-06";
+            }
+
+            delete metodoNere.configuracion.edadActual;
 
             metodoNere.activos = Array.isArray(guardado.activos)
                 ? guardado.activos.map(normalizarActivoNere)
@@ -164,7 +291,9 @@ function calcularCapitalFuturo(capitalInicial, mensual, rentabilidadAnual, meses
 
 function proyeccionAEdad(edad) {
     const config = metodoNere.configuracion;
-    const meses = Math.max(0, (edad - config.edadActual) * 12);
+    const nacimiento = fechaLocalNere(config.fechaNacimiento);
+    const fechaObjetivo = sumarAnosNere(nacimiento, edad);
+    const meses = mesesCompletosHastaNere(fechaObjetivo);
     const total = obtenerTotalesNere();
 
     return calcularCapitalFuturo(
@@ -288,7 +417,12 @@ function pintarResumenNere() {
     const config = metodoNere.configuracion;
     const total = obtenerTotalesNere();
 
-    escribirNere("nereEdadActual", `${config.edadActual} años`);
+    const nacimiento = fechaLocalNere(config.fechaNacimiento);
+    const edadActual = edadExactaNere(nacimiento);
+    escribirNere(
+        "nereEdadActual",
+        `${edadActual} ${palabraNere(edadActual, "año", "años")}`
+    );
     escribirNere("nereCapital", euroNere(total.invertido));
     escribirNere("nereValor", euroNere(total.valor));
     escribirNere("nereGanancia", euroNere(total.ganancia));
@@ -353,80 +487,71 @@ function pintarProyeccionesNere() {
         "nereProyeccionObjetivo",
         `${euroNere(proyeccionAEdad(config.edadObjetivo))} a los ${config.edadObjetivo}`
     );
-
-    dibujarGraficoNere();
 }
 
-function dibujarGraficoNere() {
-    const canvas = document.getElementById("nereGrafico");
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
+function pintarContadoresNere() {
     const config = metodoNere.configuracion;
-    const inicio = config.edadActual;
-    const fin = Math.max(inicio + 1, config.edadObjetivo);
-    const edades = [];
+    const nacimiento = fechaLocalNere(config.fechaNacimiento);
+    const hoy = hoyNere();
 
-    for (let edad = inicio; edad <= fin; edad += 1) {
-        edades.push({
-            edad,
-            valor: proyeccionAEdad(edad)
-        });
-    }
+    const proximoCumple = siguienteCumpleanosNere(nacimiento);
+    const mayoria = sumarAnosNere(nacimiento, 18);
+    const objetivo = sumarAnosNere(nacimiento, config.edadObjetivo);
 
-    const maximo = Math.max(1, ...edades.map(item => item.valor));
-    const ancho = canvas.width;
-    const alto = canvas.height;
-    const margen = 55;
+    const faltaCumple = diferenciaExactaNere(hoy, proximoCumple);
+    const faltaMayoria = diferenciaExactaNere(hoy, mayoria);
+    const faltaObjetivo = diferenciaExactaNere(hoy, objetivo);
 
-    ctx.clearRect(0, 0, ancho, alto);
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, ancho, alto);
+    escribirNere("nereFechaNacimientoTexto", formatearFechaNere(nacimiento));
 
-    ctx.strokeStyle = "#334155";
-    ctx.lineWidth = 1;
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "22px Arial";
+    escribirNere("nereProximoCumpleFecha", formatearFechaNere(proximoCumple));
+    escribirNere("nereCumpleMeses", faltaCumple.meses);
+    escribirNere("nereCumpleDias", faltaCumple.dias);
+    escribirNere(
+        "nereCumpleMesesLabel",
+        palabraNere(faltaCumple.meses, "mes", "meses")
+    );
+    escribirNere(
+        "nereCumpleDiasLabel",
+        palabraNere(faltaCumple.dias, "día", "días")
+    );
 
-    for (let i = 0; i <= 4; i += 1) {
-        const y = margen + ((alto - margen * 2) / 4) * i;
-        const valor = maximo * (1 - i / 4);
+    escribirNere("nereMayoriaFecha", formatearFechaNere(mayoria));
+    escribirNere("nereMayoriaAnos", faltaMayoria.anos);
+    escribirNere("nereMayoriaMeses", faltaMayoria.meses);
+    escribirNere("nereMayoriaDias", faltaMayoria.dias);
+    escribirNere(
+        "nereMayoriaAnosLabel",
+        palabraNere(faltaMayoria.anos, "año", "años")
+    );
+    escribirNere(
+        "nereMayoriaMesesLabel",
+        palabraNere(faltaMayoria.meses, "mes", "meses")
+    );
+    escribirNere(
+        "nereMayoriaDiasLabel",
+        palabraNere(faltaMayoria.dias, "día", "días")
+    );
 
-        ctx.beginPath();
-        ctx.moveTo(margen, y);
-        ctx.lineTo(ancho - margen, y);
-        ctx.stroke();
-
-        ctx.fillText(
-            Math.round(valor).toLocaleString("es-ES") + " €",
-            5,
-            y + 7
-        );
-    }
-
-    ctx.strokeStyle = "#60a5fa";
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-
-    edades.forEach(function(item, indice) {
-        const x = margen + (
-            indice / Math.max(1, edades.length - 1)
-        ) * (ancho - margen * 2);
-
-        const y = alto - margen - (
-            item.valor / maximo
-        ) * (alto - margen * 2);
-
-        if (indice === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-    });
-
-    ctx.stroke();
-
-    ctx.fillStyle = "#e2e8f0";
-    ctx.font = "20px Arial";
-    ctx.fillText(`${inicio} años`, margen, alto - 15);
-    ctx.fillText(`${fin} años`, ancho - margen - 75, alto - 15);
+    escribirNere(
+        "nereObjetivoFecha",
+        `${formatearFechaNere(objetivo)} (${config.edadObjetivo} años)`
+    );
+    escribirNere("nereObjetivoAnos", faltaObjetivo.anos);
+    escribirNere("nereObjetivoMeses", faltaObjetivo.meses);
+    escribirNere("nereObjetivoDias", faltaObjetivo.dias);
+    escribirNere(
+        "nereObjetivoAnosLabel",
+        palabraNere(faltaObjetivo.anos, "año", "años")
+    );
+    escribirNere(
+        "nereObjetivoMesesLabel",
+        palabraNere(faltaObjetivo.meses, "mes", "meses")
+    );
+    escribirNere(
+        "nereObjetivoDiasLabel",
+        palabraNere(faltaObjetivo.dias, "día", "días")
+    );
 }
 
 function pintarMetodoNere() {
@@ -446,13 +571,15 @@ function pintarMetodoNere() {
     pintarResumenNere();
     pintarPlanNere();
     pintarMetasNere();
+    pintarContadoresNere();
     pintarProyeccionesNere();
 }
 
 function abrirAjustesNere() {
     const config = metodoNere.configuracion;
 
-    document.getElementById("nereEdadInput").value = config.edadActual;
+    document.getElementById("nereFechaNacimientoInput").value =
+        config.fechaNacimiento || "2016-05-06";
     document.getElementById("nereEdadObjetivoInput").value = config.edadObjetivo;
     document.getElementById("nereAportacionInput").value = config.aportacionMensual;
     document.getElementById("nereRentabilidadEsperadaInput").value = config.rentabilidadEsperada;
@@ -465,10 +592,27 @@ function cerrarAjustesNere() {
 }
 
 function guardarAjustesNere() {
-    const edadActual = numeroNere(document.getElementById("nereEdadInput").value);
-    const edadObjetivo = numeroNere(document.getElementById("nereEdadObjetivoInput").value);
-    const aportacionMensual = numeroNere(document.getElementById("nereAportacionInput").value);
-    const rentabilidadEsperada = numeroNere(document.getElementById("nereRentabilidadEsperadaInput").value);
+    const fechaNacimiento =
+        document.getElementById("nereFechaNacimientoInput").value;
+    const edadObjetivo =
+        numeroNere(document.getElementById("nereEdadObjetivoInput").value);
+    const aportacionMensual =
+        numeroNere(document.getElementById("nereAportacionInput").value);
+    const rentabilidadEsperada =
+        numeroNere(document.getElementById("nereRentabilidadEsperadaInput").value);
+
+    const nacimiento = fechaLocalNere(fechaNacimiento);
+    const edadActual = edadExactaNere(nacimiento);
+
+    if (!fechaNacimiento) {
+        alert("Introduce la fecha de nacimiento.");
+        return;
+    }
+
+    if (nacimiento > hoyNere()) {
+        alert("La fecha de nacimiento no puede ser futura.");
+        return;
+    }
 
     if (edadObjetivo <= edadActual) {
         alert("La edad objetivo debe ser superior a la edad actual.");
@@ -476,7 +620,7 @@ function guardarAjustesNere() {
     }
 
     metodoNere.configuracion = {
-        edadActual,
+        fechaNacimiento,
         edadObjetivo,
         aportacionMensual,
         rentabilidadEsperada
