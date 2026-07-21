@@ -1,5 +1,5 @@
 // ==========================
-// nere.js v1.3
+// nere.js v1.4
 // Método Nere
 // ==========================
 
@@ -773,3 +773,208 @@ document.addEventListener("DOMContentLoaded", () => {
 window.abrirAjustesNere = abrirAjustesNere;
 window.cerrarAjustesNere = cerrarAjustesNere;
 window.guardarAjustesNere = guardarAjustesNere;
+
+
+// ==========================
+// MÉTODO NERE v1.4 · FUNCIONES ESTABLES
+// ==========================
+
+function nereGetEstado() {
+    if (!window.metodoNere || typeof window.metodoNere !== "object") {
+        window.metodoNere = {};
+    }
+    if (!window.metodoNere.configuracion) {
+        window.metodoNere.configuracion = {
+            fechaNacimiento: "2016-05-06",
+            edadObjetivo: 25,
+            aportacionMensual: 100,
+            rentabilidadEsperada: 7
+        };
+    }
+    if (!Array.isArray(window.metodoNere.etfs)) {
+        window.metodoNere.etfs = [];
+    }
+    return window.metodoNere;
+}
+
+function nereGuardarEstado() {
+    localStorage.setItem("metodoNere", JSON.stringify(nereGetEstado()));
+}
+
+function nereCargarEstado() {
+    try {
+        const raw = localStorage.getItem("metodoNere");
+        if (!raw) return nereGetEstado();
+
+        const guardado = JSON.parse(raw);
+        const estado = nereGetEstado();
+
+        if (guardado && guardado.configuracion) {
+            estado.configuracion = {
+                ...estado.configuracion,
+                ...guardado.configuracion
+            };
+        }
+
+        if (guardado && Array.isArray(guardado.etfs)) {
+            estado.etfs = guardado.etfs;
+        }
+
+        return estado;
+    } catch (e) {
+        console.error("Error al cargar Método Nere", e);
+        return nereGetEstado();
+    }
+}
+
+function abrirAjustesNereV14() {
+    const estado = nereCargarEstado();
+    const c = estado.configuracion;
+
+    document.getElementById("nereFechaNacimientoInput").value = c.fechaNacimiento || "2016-05-06";
+    document.getElementById("nereEdadObjetivoInput").value = c.edadObjetivo ?? 25;
+    document.getElementById("nereAportacionInput").value = c.aportacionMensual ?? 100;
+    document.getElementById("nereRentabilidadEsperadaInput").value = c.rentabilidadEsperada ?? 7;
+
+    document.getElementById("modalAjustesNere").classList.remove("oculto");
+}
+
+function cerrarAjustesNereV14() {
+    document.getElementById("modalAjustesNere")?.classList.add("oculto");
+}
+
+function guardarAjustesNereV14() {
+    const fechaNacimiento = document.getElementById("nereFechaNacimientoInput").value;
+    const edadObjetivo = Number(document.getElementById("nereEdadObjetivoInput").value);
+    const aportacionMensual = Number(document.getElementById("nereAportacionInput").value);
+    const rentabilidadEsperada = Number(document.getElementById("nereRentabilidadEsperadaInput").value);
+
+    if (!fechaNacimiento) {
+        alert("Introduce la fecha de nacimiento.");
+        return;
+    }
+
+    if (!Number.isFinite(edadObjetivo) || edadObjetivo < 18) {
+        alert("Introduce una edad objetivo válida.");
+        return;
+    }
+
+    const estado = nereGetEstado();
+    estado.configuracion = {
+        fechaNacimiento,
+        edadObjetivo,
+        aportacionMensual: Number.isFinite(aportacionMensual) ? aportacionMensual : 0,
+        rentabilidadEsperada: Number.isFinite(rentabilidadEsperada) ? rentabilidadEsperada : 0
+    };
+
+    nereGuardarEstado();
+    cerrarAjustesNereV14();
+
+    if (typeof pintarMetodoNere === "function") pintarMetodoNere();
+    if (typeof pintarContadoresNere === "function") pintarContadoresNere();
+}
+
+function abrirModalEtfNereV14(indice = -1) {
+    const estado = nereCargarEstado();
+    const etf = indice >= 0 ? estado.etfs[indice] : null;
+
+    document.getElementById("nereEtfIndiceEditar").value = indice;
+    document.getElementById("tituloModalEtfNere").textContent = etf ? "✏️ Editar ETF" : "➕ Añadir ETF";
+    document.getElementById("nereEtfNombreInput").value = etf?.nombre || "";
+    document.getElementById("nereEtfTickerInput").value = etf?.ticker || "";
+    document.getElementById("nereEtfPrecioCompraInput").value = etf?.precioCompra ?? "";
+    document.getElementById("nereEtfPrecioActualInput").value = etf?.precioActual ?? "";
+    document.getElementById("nereEtfCantidadInput").value = etf?.cantidad ?? "";
+
+    document.getElementById("modalEtfNere").classList.remove("oculto");
+}
+
+function cerrarModalEtfNereV14() {
+    document.getElementById("modalEtfNere")?.classList.add("oculto");
+}
+
+function guardarEtfNereV14() {
+    const indice = Number(document.getElementById("nereEtfIndiceEditar").value);
+    const nombre = document.getElementById("nereEtfNombreInput").value.trim();
+    const ticker = document.getElementById("nereEtfTickerInput").value.trim().toUpperCase();
+    const precioCompra = Number(document.getElementById("nereEtfPrecioCompraInput").value || 0);
+    const precioActual = Number(document.getElementById("nereEtfPrecioActualInput").value || 0);
+    const cantidad = Number(document.getElementById("nereEtfCantidadInput").value || 0);
+
+    if (!nombre) {
+        alert("Introduce el nombre del ETF.");
+        return;
+    }
+    if (!ticker) {
+        alert("Introduce el ticker del ETF.");
+        return;
+    }
+
+    const estado = nereGetEstado();
+    const registro = { nombre, ticker, precioCompra, precioActual, cantidad };
+
+    if (indice >= 0 && estado.etfs[indice]) {
+        estado.etfs[indice] = registro;
+    } else {
+        estado.etfs.push(registro);
+    }
+
+    nereGuardarEstado();
+    cerrarModalEtfNereV14();
+    pintarCarteraNereV14();
+}
+
+function eliminarEtfNereV14(indice) {
+    const estado = nereGetEstado();
+    if (!estado.etfs[indice]) return;
+    if (!confirm("¿Eliminar este ETF?")) return;
+    estado.etfs.splice(indice, 1);
+    nereGuardarEstado();
+    pintarCarteraNereV14();
+}
+
+function pintarCarteraNereV14() {
+    const contenedor = document.getElementById("nereListaEtfs");
+    if (!contenedor) return;
+
+    const estado = nereCargarEstado();
+
+    if (!estado.etfs.length) {
+        contenedor.innerHTML = '<p class="nere-vacio">No hay ETFs añadidos todavía.</p>';
+        return;
+    }
+
+    contenedor.innerHTML = estado.etfs.map((etf, i) => {
+        const invertido = (Number(etf.precioCompra) || 0) * (Number(etf.cantidad) || 0);
+        const valor = (Number(etf.precioActual) || 0) * (Number(etf.cantidad) || 0);
+        const beneficio = valor - invertido;
+        const rent = invertido > 0 ? (beneficio / invertido) * 100 : 0;
+
+        return `
+          <article class="nere-etf-card">
+            <div><strong>${etf.nombre}</strong><span>${etf.ticker}</span></div>
+            <div><small>Invertido</small><strong>${invertido.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</strong></div>
+            <div><small>Valor actual</small><strong>${valor.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</strong></div>
+            <div><small>Rentabilidad</small><strong>${rent.toFixed(2)}%</strong></div>
+            <div class="nere-etf-acciones">
+              <button type="button" onclick="abrirModalEtfNere(${i})">Editar</button>
+              <button type="button" onclick="eliminarEtfNere(${i})">Eliminar</button>
+            </div>
+          </article>
+        `;
+    }).join("");
+}
+
+window.abrirAjustesNere = abrirAjustesNereV14;
+window.cerrarAjustesNere = cerrarAjustesNereV14;
+window.guardarAjustesNere = guardarAjustesNereV14;
+window.abrirModalEtfNere = abrirModalEtfNereV14;
+window.cerrarModalEtfNere = cerrarModalEtfNereV14;
+window.guardarEtfNere = guardarEtfNereV14;
+window.eliminarEtfNere = eliminarEtfNereV14;
+
+document.addEventListener("DOMContentLoaded", () => {
+    nereCargarEstado();
+    pintarCarteraNereV14();
+    if (typeof pintarContadoresNere === "function") pintarContadoresNere();
+});
