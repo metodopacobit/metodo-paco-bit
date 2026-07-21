@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Método Paco · Método Nere v1.3</title>
-<link rel="stylesheet" href="style.css?v=nere1.3">
+<title>Método Paco · Método Nere v1.4</title>
+<link rel="stylesheet" href="style.css?v=nere1.4">
 </head>
 
 <body>
@@ -52,154 +52,7 @@
 
 <section id="cartera" class="pantalla oculto">
 
-    <button onclick="volver()">⬅ Volver</button>
-
-    <h2>💼 Método Paco</h2>
-    <p class="cartera-intro">Acciones y ETF con precios de mercado, objetivos y seguimiento de tu posición.</p>
-
-    <div class="cartera-actions">
-        <button id="botonActualizarCartera" onclick="actualizarTodaLaCartera()">🔄 Actualizar toda la cartera</button>
-        <button class="boton-secundario" onclick="abrirEditorActivo()">➕ Añadir activo</button>
-    </div>
-
-    <p class="ultima-actualizacion">
-        <strong>Última actualización:</strong>
-        <span id="carteraUltimaActualizacion">--</span>
-    </p>
-
-    <section class="resumen-cartera">
-        <h3>📊 Resumen de cartera</h3>
-
-        <div class="resumen-cartera-grid">
-            <div><span>Activos</span><strong id="numActivos">0</strong></div>
-            <div><span>Total invertido</span><strong id="totalInvertido">0,00 €</strong></div>
-            <div><span>Valor actual</span><strong id="valorActual">0,00 €</strong></div>
-            <div><span>Ganancia / Pérdida</span><strong id="beneficioCartera">0,00 €</strong></div>
-            <div><span>Rentabilidad</span><strong id="rentabilidad">0,00 %</strong></div>
-            <div><span>Mayor peso</span><strong id="mayorPesoCartera">--</strong></div>
-        </div>
-    </section>
-
-    <div id="lista"></div>
-
-    <div id="carteraVacia" class="activo cartera-vacia">
-        <h3>📈 Todavía no hay activos</h3>
-        <p>Añade una acción o ETF para comenzar a seguir la cartera.</p>
-        <button onclick="abrirEditorActivo()">➕ Añadir primer activo</button>
-    </div>
-
-</section>
-
-<div id="modalActivoCartera" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalActivoCartera">
-
-    <div class="modalContenido modal-cartera">
-
-        <h3 id="tituloModalActivoCartera">➕ Añadir activo</h3>
-
-        <label for="activoNombreInput">Nombre</label>
-        <input id="activoNombreInput" type="text" placeholder="Ej. Microsoft">
-
-        <label for="activoTickerInput">Ticker</label>
-        <input id="activoTickerInput" type="text" placeholder="Ej. MSFT">
-
-        <label for="activoExchangeInput">Bolsa o mercado (opcional)</label>
-        <input id="activoExchangeInput" type="text" placeholder="Ej. NASDAQ, XETR o LSE">
-
-        <div class="form-grid-cartera">
-            <div>
-                <label for="activoPrecioCompraInput">Precio medio de compra</label>
-                <input id="activoPrecioCompraInput" type="number" min="0" step="0.0001" placeholder="0,00">
-            </div>
-
-            <div>
-                <label for="activoCantidadInput">Participaciones</label>
-                <input id="activoCantidadInput" type="number" min="0" step="0.000001" placeholder="0">
-            </div>
-        </div>
-
-        <label for="activoObjetivoInput">Precio objetivo</label>
-        <input id="activoObjetivoInput" type="number" min="0" step="0.0001" placeholder="Objetivo personal o de consenso">
-
-        <p class="ayuda-input">
-            Para ETF europeos puede ser necesario indicar el mercado. Ejemplos: VWCE con XETR, EQQQ con LSE.
-        </p>
-
-        <button type="button" onclick="guardarActivo()">💾 Guardar activo</button>
-        <button type="button" class="botonEliminarModal oculto" id="botonEliminarActivoModal" onclick="eliminarActivoDesdeModal()">🗑 Eliminar activo</button>
-        <button type="button" class="botonCancelar" onclick="cerrarEditorActivo()">Cancelar</button>
-
-    </div>
-
-</div>
-
-<section id="bit" class="pantalla oculto">
-
-    <button onclick="volver()">⬅ Volver</button>
-
-    <h2>₿ Método Paco Bit</h2>
-    <p class="bit-intro">Bitcoin y metales en tiempo real. Metales expresados en euros por kilogramo.</p>
-
-    <div class="bit-actions">
-        <button id="botonActualizarBit" onclick="actualizarBit()">🔄 Actualizar todo</button>
-    </div>
-
-    <p class="ultima-actualizacion">
-        <strong>Última actualización:</strong>
-        <span id="bitUltimaActualizacion">--</span>
-    </p>
-
-    <section class="resumen-bit">
-        <h3>📊 Resumen Método Paco Bit</h3>
-
-        <div class="resumen-bit-grid">
-            <div><span>Total invertido</span><strong id="bitResumenInvertido">0,00 €</strong></div>
-            <div><span>Valor actual</span><strong id="bitResumenValor">0,00 €</strong></div>
-            <div><span>Ganancia / Pérdida</span><strong id="bitResumenGanancia">0,00 €</strong></div>
-            <div><span>Rentabilidad</span><strong id="bitResumenRentabilidad">0,00 %</strong></div>
-        </div>
-    </section>
-
-    <div id="activosBit"></div>
-
-</section>
-
-<div id="modalPosicionActivo" class="modal oculto" role="dialog" aria-modal="true" aria-labelledby="tituloModalActivo">
-
-    <div class="modalContenido">
-
-        <h3 id="tituloModalActivo">💼 Editar posición</h3>
-
-        <label for="posicionPrecioCompra">Precio medio de compra</label>
-        <input id="posicionPrecioCompra" type="number" min="0" step="0.00000001" placeholder="Precio de compra">
-
-        <label for="posicionCantidad">Cantidad</label>
-        <input id="posicionCantidad" type="number" min="0" step="0.00000001" placeholder="Cantidad">
-
-        <p id="ayudaUnidadPosicion" class="ayuda-input"></p>
-
-        <button type="button" onclick="guardarPosicionActivo()">💾 Guardar posición</button>
-        <button type="button" class="botonCancelar" onclick="cerrarEditorPosicionActivo()">Cancelar</button>
-
-    </div>
-
-</div>
-
-<section id="nere" class="pantalla oculto">
-
-    <button onclick="volver()">⬅ Volver</button>
-
-    <div class="nere-hero">
-        <div>
-            <h2>👧 Método Nere</h2>
-            <p>Construyendo el patrimonio de una vida.</p>
-        </div>
-
-        <button class="nere-boton-ajustes" onclick="abrirAjustesNere()">⚙️ Configurar plan</button>
-    </div>
-
-    <div class="nere-actions">
-        <button id="botonActualizarNere" onclick="actualizarMetodoNere()">🔄 Actualizar ETF</button>
-        <button class="boton-secundario" onclick="abrirEditorActivoNere()">➕ Añadir ETF</button>
+    <button type="button" class="btn-principal" onclick="abrirModalEtfNere()">➕ Añadir ETF</button>
     </div>
 
     <p class="ultima-actualizacion">
@@ -322,6 +175,7 @@
 
     <section>
         <h3>📦 Cartera Método Nere</h3>
+<div id="nereListaEtfs"></div>
         <div id="nereListaActivos"></div>
 
         <div id="nereCarteraVacia" class="activo nere-vacia">
@@ -333,31 +187,7 @@
 
 </section>
 
-<div id="modalAjustesNere" class="modal oculto" role="dialog" aria-modal="true">
 
-    <div class="modalContenido modal-nere">
-
-        <h3>⚙️ Configurar Método Nere</h3>
-
-        <label for="nereFechaNacimientoInput">Fecha de nacimiento</label>
-        <input id="nereFechaNacimientoInput" type="date" value="2016-05-06">
-
-        <label for="nereEdadObjetivoInput">Edad objetivo</label>
-        <input id="nereEdadObjetivoInput" type="number" min="18" max="60" step="1">
-
-        <label for="nereAportacionInput">Aportación mensual (€)</label>
-        <input id="nereAportacionInput" type="number" min="0" step="1">
-
-        <label for="nereRentabilidadEsperadaInput">Rentabilidad esperada anual (%)</label>
-        <input id="nereRentabilidadEsperadaInput" type="number" min="0" max="20" step="0.1">
-
-        
-        <button type="button" id="botonEliminarNere" class="botonEliminarModal oculto" onclick="eliminarActivoNereDesdeModal()">🗑 Eliminar ETF</button>
-        <button type="button" class="botonCancelar" onclick="cerrarEditorActivoNere()">Cancelar</button>
-
-    </div>
-
-</div>
 
 <section id="radar" class="pantalla oculto">
 
@@ -410,7 +240,7 @@
     <h2>⚙️ Ajustes</h2>
 
     <div class="activo">
-        <p>Versión 4.1 · Método Nere 1.3</p>
+        <p>Versión 4.1 · Método Nere 1.4</p>
         <p>Método Paco</p>
         <p>Desarrollado por Paco + ChatGPT</p>
     </div>
@@ -424,9 +254,68 @@
 <script src="cartera.js?v=4.1"></script>
 <script src="bit.js?v=4.1"></script>
 <script src="apiBit.js?v=4.1"></script>
-<script src="nere.js?v=1.3"></script>
+<script src="nere.js?v=1.4"></script>
 <script src="radar.js?v=4.1"></script>
 <script src="watchlist.js?v=4.1"></script>
+
+
+<div id="modalAjustesNere" class="modal oculto">
+  <div class="modal-contenido">
+    <div class="modal-cabecera">
+      <h3>⚙️ Configurar plan</h3>
+      <button type="button" class="btn-cerrar" onclick="cerrarAjustesNere()">✕</button>
+    </div>
+
+    <label for="nereFechaNacimientoInput">Fecha de nacimiento</label>
+    <input id="nereFechaNacimientoInput" type="date" value="2016-05-06">
+
+    <label for="nereEdadObjetivoInput">Edad objetivo</label>
+    <input id="nereEdadObjetivoInput" type="number" min="18" max="60" value="25">
+
+    <label for="nereAportacionInput">Aportación mensual (€)</label>
+    <input id="nereAportacionInput" type="number" min="0" step="1" value="100">
+
+    <label for="nereRentabilidadEsperadaInput">Rentabilidad esperada anual (%)</label>
+    <input id="nereRentabilidadEsperadaInput" type="number" min="0" max="30" step="0.1" value="7">
+
+    <div class="modal-acciones">
+      <button type="button" class="btn-secundario" onclick="cerrarAjustesNere()">Cancelar</button>
+      <button type="button" class="btn-principal" onclick="guardarAjustesNere()">💾 Guardar configuración</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="modalEtfNere" class="modal oculto">
+  <div class="modal-contenido">
+    <div class="modal-cabecera">
+      <h3 id="tituloModalEtfNere">➕ Añadir ETF</h3>
+      <button type="button" class="btn-cerrar" onclick="cerrarModalEtfNere()">✕</button>
+    </div>
+
+    <input id="nereEtfIndiceEditar" type="hidden" value="-1">
+
+    <label for="nereEtfNombreInput">Nombre del ETF</label>
+    <input id="nereEtfNombreInput" type="text" placeholder="Ej. Vanguard FTSE All-World">
+
+    <label for="nereEtfTickerInput">Ticker</label>
+    <input id="nereEtfTickerInput" type="text" placeholder="Ej. VWCE">
+
+    <label for="nereEtfPrecioCompraInput">Precio de compra</label>
+    <input id="nereEtfPrecioCompraInput" type="number" min="0" step="0.0001">
+
+    <label for="nereEtfPrecioActualInput">Precio actual</label>
+    <input id="nereEtfPrecioActualInput" type="number" min="0" step="0.0001">
+
+    <label for="nereEtfCantidadInput">Cantidad</label>
+    <input id="nereEtfCantidadInput" type="number" min="0" step="0.000001">
+
+    <div class="modal-acciones">
+      <button type="button" class="btn-secundario" onclick="cerrarModalEtfNere()">Cancelar</button>
+      <button type="button" class="btn-principal" onclick="guardarEtfNere()">💾 Guardar ETF</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
