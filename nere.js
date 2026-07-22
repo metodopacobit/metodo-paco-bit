@@ -1,11 +1,10 @@
 // ==========================
-// nere.js v1.2
+// nere.js v1.3
 // Método Nere
+// Precios compartidos con precios.js
 // ==========================
 
 const NERE_STORAGE_KEY = "metodoNereV1";
-const NERE_WORKER_URL = "https://late-lab-2625.rjaresarias.workers.dev";
-
 const METAS_NERE = [1000, 5000, 10000, 25000, 50000, 100000, 250000];
 
 let metodoNere = {
@@ -20,6 +19,7 @@ let metodoNere = {
 };
 
 let indiceActivoNereEditar = -1;
+let actualizandoNere = false;
 
 function numeroNere(valor, defecto = 0) {
     const numero = Number(valor);
@@ -46,9 +46,12 @@ function hoyNere() {
 }
 
 function sumarAnosNere(fecha, anos) {
-    const resultado = new Date(fecha.getFullYear() + anos, fecha.getMonth(), fecha.getDate());
+    const resultado = new Date(
+        fecha.getFullYear() + anos,
+        fecha.getMonth(),
+        fecha.getDate()
+    );
 
-    // Ajuste para nacimientos el 29 de febrero.
     if (resultado.getMonth() !== fecha.getMonth()) {
         resultado.setDate(0);
     }
@@ -69,6 +72,7 @@ function edadExactaNere(fechaNacimiento, referencia = hoyNere()) {
     const aniversario = sumarAnosNere(fechaNacimiento, anos);
 
     if (aniversario > referencia) anos -= 1;
+
     return Math.max(0, anos);
 }
 
@@ -183,7 +187,10 @@ function normalizarActivoNere(activo = {}) {
         precioActual: numeroNere(activo.precioActual),
         variacion: numeroNere(activo.variacion),
         max52: numeroNere(activo.max52),
-        moneda: String(activo.moneda || "EUR").toUpperCase(),
+        moneda: "EUR",
+        monedaNativa: String(activo.monedaNativa || activo.moneda || "EUR").toUpperCase(),
+        precioNativo: numeroNere(activo.precioNativo),
+        fxEur: numeroNere(activo.fxEur, 1),
         error: activo.error || "",
         ultimaRevision: activo.ultimaRevision || "--"
     };
@@ -317,6 +324,7 @@ function calcularPlanAportacionNere() {
 
     if (totalObjetivo <= 0) {
         const reparto = mensual / activos.length;
+
         return activos.map(activo => ({
             nombre: activo.nombre,
             importe: reparto,
@@ -419,10 +427,12 @@ function pintarResumenNere() {
 
     const nacimiento = fechaLocalNere(config.fechaNacimiento);
     const edadActual = edadExactaNere(nacimiento);
+
     escribirNere(
         "nereEdadActual",
         `${edadActual} ${palabraNere(edadActual, "año", "años")}`
     );
+
     escribirNere("nereCapital", euroNere(total.invertido));
     escribirNere("nereValor", euroNere(total.valor));
     escribirNere("nereGanancia", euroNere(total.ganancia));
@@ -507,31 +517,16 @@ function pintarContadoresNere() {
     escribirNere("nereProximoCumpleFecha", formatearFechaNere(proximoCumple));
     escribirNere("nereCumpleMeses", faltaCumple.meses);
     escribirNere("nereCumpleDias", faltaCumple.dias);
-    escribirNere(
-        "nereCumpleMesesLabel",
-        palabraNere(faltaCumple.meses, "mes", "meses")
-    );
-    escribirNere(
-        "nereCumpleDiasLabel",
-        palabraNere(faltaCumple.dias, "día", "días")
-    );
+    escribirNere("nereCumpleMesesLabel", palabraNere(faltaCumple.meses, "mes", "meses"));
+    escribirNere("nereCumpleDiasLabel", palabraNere(faltaCumple.dias, "día", "días"));
 
     escribirNere("nereMayoriaFecha", formatearFechaNere(mayoria));
     escribirNere("nereMayoriaAnos", faltaMayoria.anos);
     escribirNere("nereMayoriaMeses", faltaMayoria.meses);
     escribirNere("nereMayoriaDias", faltaMayoria.dias);
-    escribirNere(
-        "nereMayoriaAnosLabel",
-        palabraNere(faltaMayoria.anos, "año", "años")
-    );
-    escribirNere(
-        "nereMayoriaMesesLabel",
-        palabraNere(faltaMayoria.meses, "mes", "meses")
-    );
-    escribirNere(
-        "nereMayoriaDiasLabel",
-        palabraNere(faltaMayoria.dias, "día", "días")
-    );
+    escribirNere("nereMayoriaAnosLabel", palabraNere(faltaMayoria.anos, "año", "años"));
+    escribirNere("nereMayoriaMesesLabel", palabraNere(faltaMayoria.meses, "mes", "meses"));
+    escribirNere("nereMayoriaDiasLabel", palabraNere(faltaMayoria.dias, "día", "días"));
 
     escribirNere(
         "nereObjetivoFecha",
@@ -540,18 +535,9 @@ function pintarContadoresNere() {
     escribirNere("nereObjetivoAnos", faltaObjetivo.anos);
     escribirNere("nereObjetivoMeses", faltaObjetivo.meses);
     escribirNere("nereObjetivoDias", faltaObjetivo.dias);
-    escribirNere(
-        "nereObjetivoAnosLabel",
-        palabraNere(faltaObjetivo.anos, "año", "años")
-    );
-    escribirNere(
-        "nereObjetivoMesesLabel",
-        palabraNere(faltaObjetivo.meses, "mes", "meses")
-    );
-    escribirNere(
-        "nereObjetivoDiasLabel",
-        palabraNere(faltaObjetivo.dias, "día", "días")
-    );
+    escribirNere("nereObjetivoAnosLabel", palabraNere(faltaObjetivo.anos, "año", "años"));
+    escribirNere("nereObjetivoMesesLabel", palabraNere(faltaObjetivo.meses, "mes", "meses"));
+    escribirNere("nereObjetivoDiasLabel", palabraNere(faltaObjetivo.dias, "día", "días"));
 }
 
 function pintarMetodoNere() {
@@ -582,7 +568,8 @@ function abrirAjustesNere() {
         config.fechaNacimiento || "2016-05-06";
     document.getElementById("nereEdadObjetivoInput").value = config.edadObjetivo;
     document.getElementById("nereAportacionInput").value = config.aportacionMensual;
-    document.getElementById("nereRentabilidadEsperadaInput").value = config.rentabilidadEsperada;
+    document.getElementById("nereRentabilidadEsperadaInput").value =
+        config.rentabilidadEsperada;
 
     document.getElementById("modalAjustesNere")?.classList.remove("oculto");
 }
@@ -633,6 +620,7 @@ function guardarAjustesNere() {
 
 function abrirEditorActivoNere(indice = -1) {
     indiceActivoNereEditar = Number.isInteger(indice) ? indice : -1;
+
     const activo = indiceActivoNereEditar >= 0
         ? metodoNere.activos[indiceActivoNereEditar]
         : null;
@@ -661,12 +649,18 @@ function cerrarEditorActivoNere() {
 }
 
 function guardarActivoNere() {
-    const nombre = document.getElementById("nereNombreActivoInput").value.trim();
-    const ticker = document.getElementById("nereTickerActivoInput").value.trim().toUpperCase();
-    const exchange = document.getElementById("nereExchangeActivoInput").value.trim().toUpperCase();
-    const precioCompra = numeroNere(document.getElementById("nerePrecioCompraInput").value);
-    const cantidad = numeroNere(document.getElementById("nereCantidadInput").value);
-    const pesoObjetivo = numeroNere(document.getElementById("nerePesoObjetivoInput").value);
+    const nombre =
+        document.getElementById("nereNombreActivoInput").value.trim();
+    const ticker =
+        document.getElementById("nereTickerActivoInput").value.trim().toUpperCase();
+    const exchange =
+        document.getElementById("nereExchangeActivoInput").value.trim().toUpperCase();
+    const precioCompra =
+        numeroNere(document.getElementById("nerePrecioCompraInput").value);
+    const cantidad =
+        numeroNere(document.getElementById("nereCantidadInput").value);
+    const pesoObjetivo =
+        numeroNere(document.getElementById("nerePesoObjetivoInput").value);
 
     if (!nombre || !ticker || !(precioCompra > 0) || !(cantidad > 0)) {
         alert("Completa nombre, ticker, precio medio y participaciones.");
@@ -700,49 +694,55 @@ function eliminarActivoNereDesdeModal() {
     if (
         indiceActivoNereEditar < 0 ||
         !metodoNere.activos[indiceActivoNereEditar]
-    ) return;
+    ) {
+        return;
+    }
 
     if (!confirm(`¿Eliminar ${metodoNere.activos[indiceActivoNereEditar].nombre}?`)) {
         return;
     }
 
     metodoNere.activos.splice(indiceActivoNereEditar, 1);
+
     guardarMetodoNere();
     cerrarEditorActivoNere();
     pintarMetodoNere();
 }
 
-async function obtenerPrecioNere(activo) {
-    const url = new URL(NERE_WORKER_URL);
 
-    url.searchParams.set("ticker", activo.ticker);
-    url.searchParams.set("exchange", activo.exchange);
+// =====================================================
+// PRECIOS COMPARTIDOS CON precios.js
+// =====================================================
 
-    const respuesta = await fetch(url.toString(), { cache: "no-store" });
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos?.error || `HTTP ${respuesta.status}`);
+async function actualizarPrecioActivoNere(activo) {
+    if (typeof obtenerCotizacionActivo !== "function") {
+        throw new Error("precios.js no está disponible.");
     }
 
-    const precio = numeroNere(datos?.price ?? datos?.precio);
-    const variacionBruta = numeroNere(
-        datos?.percent_change ?? datos?.cambio_porcentual
-    );
-
-    if (!(precio > 0)) {
-        throw new Error("La fuente no devolvió un precio válido.");
+    if (typeof obtenerCambioAEur !== "function") {
+        throw new Error("No está disponible la conversión a EUR.");
     }
 
-    return {
-        precio,
-        variacion: Math.abs(variacionBruta) > 15 ? 0 : variacionBruta,
-        max52: numeroNere(datos?.high52 ?? datos?.maximo52),
-        moneda: String(datos?.currency ?? datos?.moneda ?? "EUR").toUpperCase()
-    };
+    const cotizacion = await obtenerCotizacionActivo(activo);
+    const fxEur = await obtenerCambioAEur(cotizacion.moneda);
+
+    activo.precioNativo = numeroNere(cotizacion.precio);
+    activo.monedaNativa = String(cotizacion.moneda || "EUR").toUpperCase();
+    activo.fxEur = numeroNere(fxEur, 1);
+
+    activo.precioActual = activo.precioNativo * activo.fxEur;
+    activo.max52 = numeroNere(cotizacion.max52) * activo.fxEur;
+    activo.variacion = numeroNere(cotizacion.variacion);
+    activo.moneda = "EUR";
+    activo.error = "";
+    activo.ultimaRevision = new Date().toLocaleString("es-ES");
+
+    recalcularActivoNere(activo);
 }
 
 async function actualizarMetodoNere() {
+    if (actualizandoNere) return;
+
     const boton = document.getElementById("botonActualizarNere");
 
     if (metodoNere.activos.length === 0) {
@@ -750,42 +750,46 @@ async function actualizarMetodoNere() {
         return;
     }
 
+    actualizandoNere = true;
+
     if (boton) {
         boton.disabled = true;
         boton.textContent = "⏳ Actualizando...";
     }
 
-    for (let indice = 0; indice < metodoNere.activos.length; indice += 1) {
-        const activo = metodoNere.activos[indice];
+    try {
+        for (let indice = 0; indice < metodoNere.activos.length; indice += 1) {
+            const activo = metodoNere.activos[indice];
 
-        try {
-            const cotizacion = await obtenerPrecioNere(activo);
+            try {
+                await actualizarPrecioActivoNere(activo);
+            } catch (error) {
+                console.error("Método Nere:", activo.ticker, error);
+                activo.error = `❌ ${activo.ticker}: ${error.message || "Precio no disponible"}`;
+            }
 
-            activo.precioActual = cotizacion.precio;
-            activo.variacion = cotizacion.variacion;
-            activo.max52 = cotizacion.max52;
-            activo.moneda = cotizacion.moneda;
-            activo.error = "";
-            activo.ultimaRevision = new Date().toLocaleString("es-ES");
-        } catch (error) {
-            activo.error = `❌ ${activo.ticker}: ${error.message}`;
+            recalcularNere();
+            pintarMetodoNere();
+
+            if (boton) {
+                boton.textContent =
+                    `⏳ Actualizando ${indice + 1}/${metodoNere.activos.length}`;
+            }
         }
 
+        metodoNere.ultimaActualizacion =
+            new Date().toLocaleString("es-ES");
+
+        guardarMetodoNere();
         pintarMetodoNere();
 
+    } finally {
+        actualizandoNere = false;
+
         if (boton) {
-            boton.textContent =
-                `⏳ Actualizando ${indice + 1}/${metodoNere.activos.length}`;
+            boton.disabled = false;
+            boton.textContent = "🔄 Actualizar ETF";
         }
-    }
-
-    metodoNere.ultimaActualizacion = new Date().toLocaleString("es-ES");
-    guardarMetodoNere();
-    pintarMetodoNere();
-
-    if (boton) {
-        boton.disabled = false;
-        boton.textContent = "🔄 Actualizar ETF";
     }
 }
 
