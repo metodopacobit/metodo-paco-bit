@@ -1090,3 +1090,251 @@ hr{
         flex-direction:column;
     }
 }
+
+
+/* ==========================
+   WATCHLIST v1.0
+========================== */
+
+.watchlist-intro,
+.radar-intro{
+    color:#cbd5e1;
+    margin-bottom:16px;
+}
+
+.watchlist-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.watchlist-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.watchlist-cabecera{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.watchlist-cabecera h3{
+    margin:0 0 5px;
+    color:#60a5fa;
+}
+
+.watchlist-cabecera p{
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.watchlist-editar{
+    width:auto;
+    margin:0;
+    padding:9px 12px;
+    background:#334155;
+}
+
+.watchlist-datos{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+}
+
+.watchlist-datos div{
+    min-width:0;
+    background:#0f172a;
+    border-radius:13px;
+    padding:12px;
+}
+
+.watchlist-datos span,
+.watchlist-datos strong{
+    display:block;
+}
+
+.watchlist-datos span{
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.watchlist-datos strong{
+    overflow-wrap:anywhere;
+}
+
+.watchlist-error{
+    min-height:18px;
+    color:#fbbf24;
+    text-align:center;
+    font-size:13px;
+    margin-top:10px;
+}
+
+
+/* ==========================
+   RADAR DE GANGAS v1.0
+========================== */
+
+.radar-resumen{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.radar-resumen div{
+    min-width:0;
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:13px;
+}
+
+.radar-resumen span,
+.radar-resumen strong{
+    display:block;
+}
+
+.radar-resumen span{
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.radar-resumen strong{
+    font-size:17px;
+    overflow-wrap:anywhere;
+}
+
+.radar-aviso{
+    color:#cbd5e1;
+    font-size:13px;
+    line-height:1.5;
+    margin:12px 0 18px;
+    padding:12px 14px;
+    background:#1e293b;
+    border-left:4px solid #64748b;
+    border-radius:12px;
+}
+
+.radar-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-left:5px solid #64748b;
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.radar-oportunidad{
+    border-left-color:#22c55e;
+}
+
+.radar-vigilar{
+    border-left-color:#eab308;
+}
+
+.radar-esperar{
+    border-left-color:#f97316;
+}
+
+.radar-cabecera{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:14px;
+}
+
+.radar-cabecera h3{
+    margin:2px 0 5px;
+    color:#60a5fa;
+}
+
+.radar-cabecera p{
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.radar-posicion{
+    color:#94a3b8;
+    font-size:12px;
+    font-weight:700;
+}
+
+.radar-score{
+    flex:0 0 auto;
+    min-width:72px;
+    text-align:center;
+    background:#0f172a;
+    border-radius:15px;
+    padding:10px;
+}
+
+.radar-score strong{
+    display:block;
+    font-size:24px;
+}
+
+.radar-score span{
+    color:#94a3b8;
+    font-size:12px;
+}
+
+.radar-datos{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+}
+
+.radar-datos div{
+    min-width:0;
+    background:#0f172a;
+    border-radius:13px;
+    padding:12px;
+}
+
+.radar-datos span,
+.radar-datos strong{
+    display:block;
+}
+
+.radar-datos span{
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.radar-datos strong{
+    overflow-wrap:anywhere;
+}
+
+.radar-error{
+    color:#fbbf24;
+    font-size:13px;
+    text-align:center;
+    margin-top:10px;
+}
+
+@media(max-width:700px){
+    .watchlist-datos,
+    .radar-datos,
+    .radar-resumen{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:500px){
+    .watchlist-actions{
+        grid-template-columns:1fr;
+    }
+}
