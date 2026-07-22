@@ -1,6 +1,6 @@
 // ==========================
-// apiBit.js v4.0
-// Bitcoin + metales + EUR
+// apiBit.js v4.2
+// Bitcoin + Brent + metales + EUR
 // ==========================
 
 const COINGECKO_API =
@@ -133,6 +133,103 @@ async function actualizarMetalV4(clave, usdEur) {
     });
 }
 
+async function obtenerBrentTwelve() {
+    if (typeof fetchTwelve !== "function") {
+        throw new Error("Twelve Data no está disponible");
+    }
+
+    const datos = await fetchTwelve("quote", {
+        symbol: "XBR/USD"
+    });
+
+    const precio = Number(
+        datos?.close ??
+        datos?.price ??
+        datos?.last ??
+        0
+    ) || 0;
+
+    const variacion = Number(
+        datos?.percent_change ??
+        datos?.change_percent ??
+        0
+    ) || 0;
+
+    const maximo = Number(
+        datos?.fifty_two_week?.high ??
+        datos?.fifty_two_week?.high_price ??
+        datos?.["52_week"]?.high ??
+        0
+    ) || 0;
+
+    if (!(precio > 0)) {
+        throw new Error("Twelve Data no devolvió un precio Brent válido");
+    }
+
+    return { precio, variacion, maximo };
+}
+
+async function obtenerBrentYahoo() {
+    const url =
+        "https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=5d";
+
+    const datos = await fetchJson(url);
+    const resultado = datos?.chart?.result?.[0];
+
+    if (!resultado) {
+        throw new Error("Yahoo no devolvió datos de Brent");
+    }
+
+    const meta = resultado.meta || {};
+    const cierres = resultado?.indicators?.quote?.[0]?.close || [];
+    const validos = cierres.filter(function(valor) {
+        return Number(valor) > 0;
+    });
+
+    const precio = Number(meta.regularMarketPrice) ||
+        Number(validos[validos.length - 1]) ||
+        0;
+
+    const anterior = Number(meta.chartPreviousClose) ||
+        Number(meta.previousClose) ||
+        Number(validos[validos.length - 2]) ||
+        precio;
+
+    const variacion = anterior > 0
+        ? ((precio - anterior) / anterior) * 100
+        : 0;
+
+    if (!(precio > 0)) {
+        throw new Error("Yahoo no devolvió un precio Brent válido");
+    }
+
+    return {
+        precio,
+        variacion,
+        maximo: 0
+    };
+}
+
+async function actualizarBrentV4(usdEur) {
+    let datos;
+
+    try {
+        datos = await obtenerBrentTwelve();
+    } catch (errorTwelve) {
+        console.warn("Brent Twelve Data no disponible, usando respaldo Yahoo:", errorTwelve);
+        datos = await obtenerBrentYahoo();
+    }
+
+    actualizarActivoBit("brent", {
+        precio: datos.precio,
+        variacion: datos.variacion,
+        maximoRegistrado: datos.maximo > 0
+            ? Math.max(datos.maximo, metodoPacoBit.brent.maximoRegistrado || 0)
+            : metodoPacoBit.brent.maximoRegistrado,
+        factorEur: Number(usdEur) > 0 ? Number(usdEur) : metodoPacoBit.brent.factorEur
+    });
+}
+
 async function actualizarBit() {
     if (actualizandoBit) return;
 
@@ -168,6 +265,13 @@ async function actualizarBit() {
             marcarErrorBit(clave, "No se pudo obtener el cambio USD/EUR.");
         });
     }
+
+    tareas.push(
+        actualizarBrentV4(usdEur).catch(function(error) {
+            console.error("Brent:", error);
+            marcarErrorBit("brent", "El petróleo Brent no pudo actualizarse.");
+        })
+    );
 
     if (usdEur) {
         ["oro", "plata", "platino", "paladio"].forEach(function(clave) {
