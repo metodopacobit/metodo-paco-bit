@@ -1,5 +1,5 @@
 // ==========================
-// bit.js v4.0
+// bit.js v4.2
 // Método Paco Bit
 // ==========================
 
@@ -15,6 +15,16 @@ const DEFINICIONES_BIT = {
         etiquetaCantidad: "Cantidad de BTC",
         unidadCantidad: "BTC",
         decimalesCantidad: 8
+    },
+    brent: {
+        nombre: "Petróleo Brent",
+        simbolo: "🛢️",
+        ticker: "XBR/USD",
+        unidadPrecio: "USD/barril",
+        etiquetaCantidad: "Cantidad de barriles",
+        unidadCantidad: "barriles",
+        decimalesCantidad: 4,
+        monedaPrecio: "USD"
     },
     oro: {
         nombre: "Oro",
@@ -73,6 +83,10 @@ Object.keys(DEFINICIONES_BIT).forEach(function(clave) {
         valorActual: 0,
         ganancia: 0,
         rentabilidad: 0,
+        factorEur: 1,
+        invertidoEur: 0,
+        valorActualEur: 0,
+        gananciaEur: 0,
         ultimaRevision: "--",
         error: ""
     };
@@ -93,6 +107,22 @@ function formatoEuro(valor) {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }) + " €";
+}
+
+function formatoDolar(valor) {
+    const numero = Number(valor);
+    if (!Number.isFinite(numero)) return "--";
+
+    return numero.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }) + " USD";
+}
+
+function formatoDineroActivo(clave, valor) {
+    return clave === "brent"
+        ? formatoDolar(valor)
+        : formatoEuro(valor);
 }
 
 function formatoPorcentaje(valor) {
@@ -150,6 +180,14 @@ function recalcularActivo(clave) {
         ? (activo.ganancia / activo.invertido) * 100
         : 0;
 
+    const factorEur = clave === "brent"
+        ? (Number(activo.factorEur) > 0 ? Number(activo.factorEur) : 0)
+        : 1;
+
+    activo.invertidoEur = activo.invertido * factorEur;
+    activo.valorActualEur = activo.valorActual * factorEur;
+    activo.gananciaEur = activo.ganancia * factorEur;
+
     if (activo.precio > activo.maximoRegistrado) {
         activo.maximoRegistrado = activo.precio;
     }
@@ -185,7 +223,8 @@ function guardarDatosBit() {
         datos.activos[clave] = {
             precioCompra: activo.precioCompra,
             cantidad: activo.cantidad,
-            maximoRegistrado: activo.maximoRegistrado
+            maximoRegistrado: activo.maximoRegistrado,
+            factorEur: activo.factorEur
         };
     });
 
@@ -204,6 +243,9 @@ function cargarDatosBit() {
             metodoPacoBit[clave].precioCompra = Number(guardado.precioCompra) || 0;
             metodoPacoBit[clave].cantidad = Number(guardado.cantidad) || 0;
             metodoPacoBit[clave].maximoRegistrado = Number(guardado.maximoRegistrado) || 0;
+            metodoPacoBit[clave].factorEur = clave === "brent"
+                ? (Number(guardado.factorEur) || 0)
+                : 1;
 
             recalcularActivo(clave);
         });
@@ -228,6 +270,7 @@ function crearFilaBit(etiqueta, id) {
 function crearPanelActivo(clave) {
     const activo = metodoPacoBit[clave];
     const esBitcoin = clave === "bitcoin";
+    const esBrent = clave === "brent";
 
     return `
         <section class="bit-activo" id="panel-${clave}">
@@ -243,7 +286,7 @@ function crearPanelActivo(clave) {
 
                     <h3>📊 Mercado</h3>
 
-                    ${crearFilaBit("💶 Precio actual", `${clave}Precio`)}
+                    ${crearFilaBit(esBrent ? "💵 Precio actual" : "💶 Precio actual", `${clave}Precio`)}
                     ${crearFilaBit("📈 Cambio 24 h", `${clave}Variacion`)}
                     ${crearFilaBit(esBitcoin ? "🏆 Máximo histórico" : "🏆 Máximo registrado", `${clave}Maximo`)}
                     ${crearFilaBit("📉 Caída desde máximo", `${clave}CaidaMaximo`)}
@@ -258,7 +301,14 @@ function crearPanelActivo(clave) {
                     <h3>💼 Tu posición</h3>
 
                     ${crearFilaBit("💰 Precio compra", `${clave}Compra`)}
-                    ${crearFilaBit(esBitcoin ? "₿ Cantidad BTC" : `⚖️ Cantidad (${activo.unidadCantidad})`, `${clave}Cantidad`)}
+                    ${crearFilaBit(
+                        esBitcoin
+                            ? "₿ Cantidad BTC"
+                            : esBrent
+                                ? "🛢️ Cantidad (barriles)"
+                                : `⚖️ Cantidad (${activo.unidadCantidad})`,
+                        `${clave}Cantidad`
+                    )}
                     ${crearFilaBit("💵 Invertido", `${clave}Invertido`)}
                     ${crearFilaBit("💎 Valor actual", `${clave}ValorActual`)}
                     ${crearFilaBit("📊 Ganancia / Pérdida", `${clave}Ganancia`)}
@@ -292,19 +342,19 @@ function pintarPanelesBit() {
 function mostrarActivoBit(clave) {
     const activo = metodoPacoBit[clave];
 
-    escribir(`${clave}Precio`, activo.precio > 0 ? formatoEuro(activo.precio) : "--");
+    escribir(`${clave}Precio`, activo.precio > 0 ? formatoDineroActivo(clave, activo.precio) : "--");
     escribir(`${clave}Variacion`, formatoPorcentaje(activo.variacion));
-    escribir(`${clave}Maximo`, activo.maximoRegistrado > 0 ? formatoEuro(activo.maximoRegistrado) : "--");
+    escribir(`${clave}Maximo`, activo.maximoRegistrado > 0 ? formatoDineroActivo(clave, activo.maximoRegistrado) : "--");
     escribir(`${clave}CaidaMaximo`, formatoPorcentaje(activo.caidaMaximo));
     escribir(`${clave}FearGreed`, activo.fearGreed || "--");
     escribir(`${clave}Indice`, activo.indice);
     escribir(`${clave}Estado`, activo.estado);
 
-    escribir(`${clave}Compra`, activo.precioCompra > 0 ? formatoEuro(activo.precioCompra) : "--");
+    escribir(`${clave}Compra`, activo.precioCompra > 0 ? formatoDineroActivo(clave, activo.precioCompra) : "--");
     escribir(`${clave}Cantidad`, formatoCantidad(activo));
-    escribir(`${clave}Invertido`, formatoEuro(activo.invertido));
-    escribir(`${clave}ValorActual`, formatoEuro(activo.valorActual));
-    escribir(`${clave}Ganancia`, formatoEuro(activo.ganancia));
+    escribir(`${clave}Invertido`, formatoDineroActivo(clave, activo.invertido));
+    escribir(`${clave}ValorActual`, formatoDineroActivo(clave, activo.valorActual));
+    escribir(`${clave}Ganancia`, formatoDineroActivo(clave, activo.ganancia));
     escribir(`${clave}Rentabilidad`, formatoPorcentaje(activo.rentabilidad));
     escribir(`${clave}Error`, activo.error || "");
 }
@@ -312,8 +362,14 @@ function mostrarActivoBit(clave) {
 function actualizarResumenBit() {
     const activos = Object.values(metodoPacoBit);
 
-    const invertido = activos.reduce((total, activo) => total + activo.invertido, 0);
-    const valor = activos.reduce((total, activo) => total + activo.valorActual, 0);
+    const invertido = activos.reduce(
+        (total, activo) => total + (Number(activo.invertidoEur) || 0),
+        0
+    );
+    const valor = activos.reduce(
+        (total, activo) => total + (Number(activo.valorActualEur) || 0),
+        0
+    );
     const ganancia = valor - invertido;
     const rentabilidad = invertido > 0 ? (ganancia / invertido) * 100 : 0;
 
