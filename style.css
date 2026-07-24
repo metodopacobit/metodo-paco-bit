@@ -1338,3 +1338,83 @@ hr{
         grid-template-columns:1fr;
     }
 }
+
+
+/* ==========================
+   RADAR · ANÁLISIS IA v1.0
+========================== */
+
+.radar-ia{
+    margin-top:28px;
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:20px;
+    padding:18px;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.radar-ia-cabecera h3{
+    margin:0 0 7px;
+    color:#60a5fa;
+}
+
+.radar-ia-cabecera p{
+    color:#cbd5e1;
+    line-height:1.5;
+}
+
+.radar-ia-aviso{
+    margin-top:12px;
+    color:#94a3b8;
+    font-size:12px;
+    line-height:1.45;
+}
+
+.radar-ia-contenido{
+    margin-top:16px;
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:16px;
+    padding:16px;
+    line-height:1.6;
+}
+
+.radar-ia-contenido p{
+    margin-bottom:12px;
+}
+
+.radar-ia-contenido p:last-child{
+    margin-bottom:0;
+}
+
+.radar-ia-cargando{
+    color:#cbd5e1;
+}
+
+.radar-ia-error{
+    color:#fca5a5;
+}
+
+.radar-ia-fuentes{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid #334155;
+}
+
+.radar-ia-fuentes h4{
+    margin-bottom:10px;
+    color:#93c5fd;
+}
+
+.radar-ia-fuentes ul{
+    margin-left:18px;
+}
+
+.radar-ia-fuentes li{
+    margin-bottom:8px;
+}
+
+.radar-ia-fuentes a{
+    color:#60a5fa;
+    word-break:break-word;
+}
