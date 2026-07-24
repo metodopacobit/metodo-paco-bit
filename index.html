@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Método Paco · Método Nere v1.3</title>
-<link rel="stylesheet" href="style.css?v=4.2">
+<link rel="stylesheet" href="style.css?v=4.3">
 </head>
 
 <body>
@@ -425,6 +425,34 @@
 
     <div id="radarLista"></div>
 
+    <section class="radar-ia">
+        <div class="radar-ia-cabecera">
+            <div>
+                <h3>🤖 Análisis con IA</h3>
+                <p>
+                    Cruza las cotizaciones del Radar con contexto reciente de mercado.
+                </p>
+            </div>
+        </div>
+
+        <button
+            id="botonAnalizarRadarIA"
+            onclick="analizarRadarConIA()"
+        >
+            🤖 Analizar con IA
+        </button>
+
+        <p class="radar-ia-aviso">
+            El análisis es orientativo y no sustituye una revisión fundamental ni asesoramiento financiero.
+        </p>
+
+        <div id="radarAnalisisIA" class="radar-ia-contenido">
+            <p>
+                Actualiza el Radar y pulsa «Analizar con IA» para obtener un resumen de oportunidades, riesgos y noticias recientes.
+            </p>
+        </div>
+    </section>
+
 </section>
 
 <section id="watchlist" class="pantalla oculto">
@@ -496,13 +524,13 @@
 </main>
 
 <script src="script.js?v=4.1"></script>
-<script src="precios.js?v=4.4"></script>
+<script src="precios.js?v=4.5"></script>
 <script src="cartera.js?v=4.1"></script>
 <script src="bit.js?v=4.3"></script>
 <script src="apiBit.js?v=4.3"></script>
 <script src="nere.js?v=1.3"></script>
 <script src="watchlist.js?v=1.0"></script>
-<script src="radar.js?v=1.0"></script>
+<script src="radar.js?v=1.1"></script>
 
 </body>
 </html>
