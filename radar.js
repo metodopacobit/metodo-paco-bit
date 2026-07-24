@@ -1,5 +1,5 @@
 // ==========================
-// radar.js v1.0
+// radar.js v1.1
 // Radar de Gangas
 // Usa la Watchlist como fuente
 // ==========================
@@ -358,6 +358,212 @@ async function actualizarRadar() {
         }
     }
 }
+
+// =====================================================
+// ANÁLISIS CON IA
+// =====================================================
+
+const RADAR_AI_URL =
+    "https://late-lab-2625.rjaresarias.workers.dev/ai";
+
+let analizandoRadarIA = false;
+
+function prepararDatosRadarIA() {
+    return obtenerResultadosRadar()
+        .filter(activo => activo.precio > 0)
+        .map(activo => ({
+            nombre: activo.nombre,
+            ticker: activo.ticker,
+            exchange: activo.exchange,
+            precio: activo.precio,
+            moneda: activo.moneda,
+            variacion24h: activo.variacion,
+            maximo52: activo.max52,
+            caidaDesdeMaximo: activo.caidaMaximo,
+            puntuacionRadar: activo.puntuacion,
+            señalRadar: activo.estadoRadar.etiqueta
+        }));
+}
+
+function escaparHtmlRadarIA(texto) {
+    return String(texto ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+}
+
+function textoRadarIAaHtml(texto) {
+    const seguro = escaparHtmlRadarIA(texto);
+
+    return seguro
+        .split(/\n{2,}/)
+        .map(bloque => `<p>${bloque.replaceAll("\n", "<br>")}</p>`)
+        .join("");
+}
+
+function pintarFuentesRadarIA(fuentes) {
+    if (!Array.isArray(fuentes) || fuentes.length === 0) {
+        return "";
+    }
+
+    const enlaces = fuentes
+        .filter(fuente => fuente?.url)
+        .slice(0, 8)
+        .map(fuente => {
+            const titulo =
+                escaparHtmlRadarIA(
+                    fuente.title ||
+                    fuente.url
+                );
+
+            const url =
+                String(fuente.url)
+                    .replaceAll('"', "%22");
+
+            return `
+                <li>
+                    <a
+                        href="${url}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >${titulo}</a>
+                </li>
+            `;
+        })
+        .join("");
+
+    if (!enlaces) return "";
+
+    return `
+        <div class="radar-ia-fuentes">
+            <h4>Fuentes consultadas</h4>
+            <ul>${enlaces}</ul>
+        </div>
+    `;
+}
+
+async function analizarRadarConIA() {
+    if (analizandoRadarIA) return;
+
+    const activos =
+        prepararDatosRadarIA();
+
+    if (activos.length === 0) {
+        alert(
+            "Primero actualiza el Radar para disponer de cotizaciones."
+        );
+        return;
+    }
+
+    analizandoRadarIA = true;
+
+    const boton =
+        document.getElementById(
+            "botonAnalizarRadarIA"
+        );
+
+    const contenedor =
+        document.getElementById(
+            "radarAnalisisIA"
+        );
+
+    if (boton) {
+        boton.disabled = true;
+        boton.textContent =
+            "🤖 Analizando...";
+    }
+
+    if (contenedor) {
+        contenedor.innerHTML = `
+            <p class="radar-ia-cargando">
+                La IA está revisando el ranking y buscando contexto reciente...
+            </p>
+        `;
+    }
+
+    try {
+        const respuesta =
+            await fetch(
+                RADAR_AI_URL,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify({
+                        activos
+                    })
+                }
+            );
+
+        let datos = null;
+
+        try {
+            datos = await respuesta.json();
+        } catch (error) {
+            throw new Error(
+                "El Worker IA no devolvió JSON válido."
+            );
+        }
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos?.error ||
+                `HTTP ${respuesta.status}`
+            );
+        }
+
+        const analisis =
+            String(
+                datos?.analysis ||
+                datos?.analisis ||
+                ""
+            ).trim();
+
+        if (!analisis) {
+            throw new Error(
+                "La IA no devolvió análisis."
+            );
+        }
+
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <div class="radar-ia-respuesta">
+                    ${textoRadarIAaHtml(analisis)}
+                    ${pintarFuentesRadarIA(datos?.sources)}
+                </div>
+            `;
+        }
+
+    } catch (error) {
+        console.error(
+            "Análisis IA:",
+            error
+        );
+
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <p class="radar-ia-error">
+                    ❌ ${escaparHtmlRadarIA(
+                        error.message ||
+                        "No se pudo completar el análisis."
+                    )}
+                </p>
+            `;
+        }
+
+    } finally {
+        analizandoRadarIA = false;
+
+        if (boton) {
+            boton.disabled = false;
+            boton.textContent =
+                "🤖 Analizar con IA";
+        }
+    }
+}
+
 
 document.addEventListener(
     "DOMContentLoaded",
